@@ -247,6 +247,7 @@ export default {
   name: "Purchaising",
   data() {
     return {
+      info: null,
       isEditing: true,
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,

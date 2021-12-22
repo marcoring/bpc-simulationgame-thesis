@@ -9,7 +9,7 @@
         </div>
       </v-col>
     </v-row>
-
+    
     <!-- Linear Progress-Bar -->
     <div ref="round-items">
       <v-row class="pa-6 text-left" ref="progress-bar">

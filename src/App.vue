@@ -21,7 +21,8 @@
       >
         <v-col class="d-flex flex-column justify-start align-start">
           <h1>{{ currentRouteName }}</h1>
-          <h3><b>Team Name: </b> {{ teamName }}</h3>
+          <h3><b>Team Name: </b>{{ teamName }}</h3>
+          <h3><b>Round: </b>{{ round }}</h3>
           <h3
             :style="'background-color:' + this.$store.state.color + '!important'"
             style="color: white"
@@ -308,7 +309,7 @@ export default {
         this.roundUpdate(++this.$store.state.round);
       }
 
-      // this 2 line are needed to block the game and wait until admin starts a new one.
+      // this 2 lines are needed to block the game and wait until admin starts a new one.
       // this.showMenu = false;
       // this.$store.state.blockGame = true;
     },
@@ -387,7 +388,7 @@ export default {
   mounted() {    
     this.newRoundRules();
     axios.get(
-      "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_BIKE_VUE_IHOR_SRV/"
+      "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/"
     ).then((response) => (this.info = response));
   },
 };
