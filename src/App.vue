@@ -389,7 +389,8 @@ export default {
     this.newRoundRules();
     axios.get(
       "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/"
-    ).then((response) => (this.info = response));
+    ).then(response => console.log(response));
+    //.then((response) => (this.info = response));
   },
 };
 </script>

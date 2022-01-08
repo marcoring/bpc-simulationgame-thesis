@@ -80,7 +80,7 @@
         <v-col>
           <v-select
             v-model="selectedVendor"
-            :items="vendors"
+            :items="vendorsSelect"
             :color="teamColor"
             label="Choose vendor..."
             item-text="name"
@@ -115,13 +115,13 @@
         <v-col>
           <v-text-field
             label="Frame: Cost per material (EUR)"
-            :value="calculateCostPerMaterial(selectedVendor[0])"
+            :value="calculateCostPerMaterial(selectedVendor != null ? selectedVendor.Developmentcost : 0)"
             filled
             disabled
           />
           <v-text-field
             label="Sensors: Cost per material (EUR)"
-            :value="calculateCostPerMaterial(selectedVendor[1])"
+            :value="calculateCostPerMaterial(selectedVendor != null ? selectedVendor.Developmentcost : 0)"
             filled
             disabled
           />
@@ -184,13 +184,13 @@
         <v-col>
           <v-text-field
             label="Frame: Total cost (EUR)"
-            :value="calculateTotalCost(selectedVendor[0], amount.frames)"
+            :value="calculateTotalCost(selectedVendor != null ? selectedVendor.Developmentcost : 0, amount.frames)"
             filled
             disabled
           />
           <v-text-field
             label="Sensors: Total cost (EUR)"
-            :value="calculateTotalCost(selectedVendor[1], amount.sensors)"
+            :value="calculateTotalCost(selectedVendor != null ? selectedVendor.Developmentcost : 0, amount.sensors)"
             filled
             disabled
           />
@@ -241,10 +241,27 @@
 <script>
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   components: { ConfirmationDialog, ErrorChagesDialog },
-  name: "Purchaising",
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "Purchasing",
+  computed: {
+    ...mapGetters(['vendors', 'vendor']),
+    vendorsSelect: function() {
+      return this.vendors.map(vendor => {
+        return {
+          name: vendor.Vendorname,
+          value: vendor
+        }
+      })
+    }
+    },
+    selectedVendor: {
+      get: () => this.vendor,
+      set: vendor => this.updateVendor(vendor)
+    },
   data() {
     return {
       info: null,
@@ -252,18 +269,18 @@ export default {
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
       showError: false,
-      selectedVendor: "",
+      // selectedVendor: {},
       stepText: '',
-      vendors: [
-        {
-          name: "Bavaria eBike",
-          value: ["242", "22"],
-        },
-        {
-          name: "eBikesDE",
-          value: ["180", "14"],
-        },
-      ],
+      // vendors: [
+      //   {
+      //     name: "Bavaria eBike",
+      //     value: ["242", "22"],
+      //   },
+      //   {
+      //     name: "eBikesDE",
+      //     value: ["180", "14"],
+      //   },
+      // ],
       quality: { label: "Quality (%)", val: 50 },
       amount: {
         frames: { label: "Frame: Amount (PC)", val: 1 },
@@ -318,11 +335,14 @@ export default {
     };
   },
   methods: {
+    // ... = spread Operator und verteilt die Properties im aktuellen Objekt
+    ...mapActions(['updateVendors']),
+    ...mapMutations(['updateVendor']),
     toggleShowError() {
       this.showError = !this.showError;
     },
     toggleDialog() {
-      if(this.selectedVendor === "") {
+      if(this.selectedVendor === null) {
         this.toggleShowError();
       } else if(this.$store.state.purchasingStep >= 5){
         this.confirmChangesDialog = !this.confirmChangesDialog;
@@ -429,7 +449,9 @@ export default {
 
     if(this.$store.state.purchasingStep <= 4) {
       this.nextPurchasingStep();
-    }  
+    }
+    
+    this.updateVendors()
   },
   watch: {
     '$store.state.purchasingStep': function() {
