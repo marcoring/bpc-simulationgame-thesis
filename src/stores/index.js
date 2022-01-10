@@ -1,6 +1,7 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import PurchasingStore from './modules/PurchasingStore'
+import LogisticsStore from './modules/LogisticsStore'
 
 Vue.use(Vuex)
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
       blockGame: false
     },
     modules: {
-        PurchasingStore
+        purchasing: PurchasingStore,
+        logistics: LogisticsStore
     }
 })

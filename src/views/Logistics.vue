@@ -66,8 +66,9 @@
       <v-row>
         <v-col>
           <v-select
-            v-model="selectedCompany"
-            :items="transportCompanies"
+            :value="vendor"
+            @input="updateVendor"
+            :items="vendorsSelect"
             :color="teamColor"
             label="Choose transportation company..."
             item-text="name"
@@ -76,14 +77,14 @@
 
         <v-col>
           <v-text-field
-            v-model="selectedCompany[0]"
             label="Delivery costs (EUR)"
+            :value="calculatedDeliveryCosts"
             filled
             disabled
           />
           <v-text-field
-            v-model="selectedCompany[1]"
             label="Quality of delivery (%)"
+            :value="calculatedDeliveryQuality"
             filled
             disabled
           />
@@ -127,34 +128,63 @@
 </template>
 
 <script>
+import axios from 'axios';
 import CostAccountingCard from "../components/CostAccountingCard.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "logistics",
   components: { CostAccountingCard, ConfirmationDialog, ErrorChagesDialog },
+    computed: {
+      // erster Parameter entspricht Module, aus welchen wir Parameter holen
+    ...mapGetters('logistics', ['vendors', 'vendor']),
+    vendorsSelect: function() {
+      return this.vendors.map(vendor => {
+        return {
+          name: vendor.Vendorname,
+          value: vendor
+        }
+      })
+    },
+    // selectedCompany: {
+    //   get: function() {
+    //     return this.vendor;
+    //   },
+    //   set: function(value){
+    //     this.updateVendor(value);
+    //   }
+    // },
+    calculatedDeliveryCosts: function() {
+      return this.vendor != null ? this.vendor.Deliverycost : "";
+    },
+    calculatedDeliveryQuality: function(){
+      return this.vendor != null ? this.vendor.Deliveryquality : ""
+    }
+  },
   data() {
     return {
       showError: false,
       stepText: '',
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
-      transportCompanies: [
-        {
-          name: "Company 1",
-          value: ["200", "81"],
-        },
-        {
-          name: "Company 2",
-          value: ["400", "97"],
-        },
-        {
-          name: "Company 3",
-          value: ["150", "77"],
-        },
-      ],
-      selectedCompany: "",
+      // transportCompanies: [
+      //   {
+      //     name: "Company 1",
+      //     value: ["200", "81"],
+      //   },
+      //   {
+      //     name: "Company 2",
+      //     value: ["400", "97"],
+      //   },
+      //   {
+      //     name: "Company 3",
+      //     value: ["150", "77"],
+      //   },
+      // ],
+      // selectedCompany: "",
       prevTranspComp: "Ebike GmBh",
       prevDelCosts: 0.0,
       prevQualDel: 0.0,
@@ -170,21 +200,35 @@ export default {
     };
   },
   methods: {
+    ...mapActions('logistics', ['updateVendors']),
+    ...mapMutations('logistics', ['updateVendor']),
     getCosts() {
-      if (!this.selectedCompany) {
+      if (!this.vendor.Deliverycost) {
         return null;
       } else {
-        return this.selectedCompany.costs;
+        return this.vendor.Deliverycost;
       }
     },
     getQuality() {
-      return this.selectedCompany.quality;
+      return this.vendor.Deliveryquality;
     },
     toggleShowError() {
       this.showError = !this.showError;
     },
-    toggleDialog() {
-      if(this.selectedCompany === "") {
+    async toggleDialog() {
+      var result = {
+        // TODO: das kann aktuell nicht richtig gelesen werden, wie hol ich das aus dem store (namespacing, modules in vuex doku)
+        purchasing: this.$store.purchasing.state,
+        logistics: this.$store.logistics.state
+      };
+      try{
+        await axios.post("http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/GameProgressSet", result);
+      }
+      catch(ex) {
+        console.log("POSTERROR:", ex);
+      }
+
+      if(this.vendor === null) {
         this.toggleShowError();
       } else if(this.$store.state.logisticStep >= 5){
         this.confirmChangesDialog = !this.confirmChangesDialog;
@@ -204,6 +248,24 @@ export default {
         this.$router.push({ path: "/purchasing" });
        }
     },
+    // updateCompanyCosts(){
+    //   // if (selectedCompany == null) {
+    //   //   return "";
+    //   // } else {
+    //   //   return selectedCompany.Deliverycost
+    //   // }
+    //   return this.selectedCompany == null ? "" : this.selectedCompany.Deliverycost;
+
+    // },
+    //  updateCompanyQuality(){
+    //   // if (selectedCompany == null) {
+    //   //   return "";
+    //   // } else {
+    //   //   return selectedCompany.Deliveryquality
+    //   // }
+    //   return this.selectedCompany == null ? "" : this.selectedCompany.Deliveryquality;
+
+    // },
     nextPurchasingStep() {
        if(this.$store.state.logisticStep === 1) {
         this.dataStep();
@@ -280,6 +342,8 @@ export default {
     if(this.$store.state.logisticStep <= 4) {
       this.nextPurchasingStep();
     }  
+
+    this.updateVendors()
   },
   watch: {
     '$store.state.logisticStep': function() {

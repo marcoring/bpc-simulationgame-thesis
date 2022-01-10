@@ -78,8 +78,10 @@
 
       <v-row>
         <v-col>
+          <!-- v-model statt input event listener nachteil: ich bräuchten hier ein Objekt, da wir einen getter und wir eine Methode bräuchten um das zu updaten -->
           <v-select
-            v-model="selectedVendor"
+            :value="vendor"
+            @input="updateVendor"
             :items="vendorsSelect"
             :color="teamColor"
             label="Choose vendor..."
@@ -115,13 +117,13 @@
         <v-col>
           <v-text-field
             label="Frame: Cost per material (EUR)"
-            :value="calculateCostPerMaterial(selectedVendor != null ? selectedVendor.Developmentcost : 0)"
+            :value="calculatedCostPerMaterialFrames"
             filled
             disabled
           />
           <v-text-field
             label="Sensors: Cost per material (EUR)"
-            :value="calculateCostPerMaterial(selectedVendor != null ? selectedVendor.Developmentcost : 0)"
+            :value="calculatedCostPerMaterialSensors"
             filled
             disabled
           />
@@ -184,13 +186,13 @@
         <v-col>
           <v-text-field
             label="Frame: Total cost (EUR)"
-            :value="calculateTotalCost(selectedVendor != null ? selectedVendor.Developmentcost : 0, amount.frames)"
+            :value="calculatedTotalCostFrames"
             filled
             disabled
           />
           <v-text-field
             label="Sensors: Total cost (EUR)"
-            :value="calculateTotalCost(selectedVendor != null ? selectedVendor.Developmentcost : 0, amount.sensors)"
+            :value="calculatedTotalCostSensors"
             filled
             disabled
           />
@@ -248,7 +250,7 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Purchasing",
   computed: {
-    ...mapGetters(['vendors', 'vendor']),
+    ...mapGetters('purchasing', ['vendors', 'vendor']),
     vendorsSelect: function() {
       return this.vendors.map(vendor => {
         return {
@@ -256,12 +258,25 @@ export default {
           value: vendor
         }
       })
+    },
+    
+    // TODO: add 2 more functions for engine and battery here
+    calculatedCostPerMaterialFrames: function() {
+      return this.vendor != null ? (this.vendor.Developmentcost * (1 + this.quality.val / 100)).toFixed(2) : "";
+    },
+    calculatedCostPerMaterialSensors: function() {
+      return this.vendor != null ? (this.vendor.Developmentcost * (1 + this.quality.val / 100)).toFixed(2) : "";
+    },
+    // TODO: add 2 more functions for engine and battery here
+    calculatedTotalCostFrames: function() {
+      // replace 1 with actual amount
+      return this.vendor != null ? (this.calculatedCostPerMaterialFrames * 1).toFixed(2) : "";
+    },
+    calculatedTotalCostSensors: function() {
+      // replace 1 with actual amount
+      return this.vendor != null ? (this.calculatedCostPerMaterialSensors * 1).toFixed(2) : "";
     }
-    },
-    selectedVendor: {
-      get: () => this.vendor,
-      set: vendor => this.updateVendor(vendor)
-    },
+  },
   data() {
     return {
       info: null,
@@ -336,13 +351,13 @@ export default {
   },
   methods: {
     // ... = spread Operator und verteilt die Properties im aktuellen Objekt
-    ...mapActions(['updateVendors']),
-    ...mapMutations(['updateVendor']),
+    ...mapActions('purchasing', ['updateVendors']),
+    ...mapMutations('purchasing', ['updateVendor']),
     toggleShowError() {
       this.showError = !this.showError;
     },
     toggleDialog() {
-      if(this.selectedVendor === null) {
+      if(this.vendor === null) {
         this.toggleShowError();
       } else if(this.$store.state.purchasingStep >= 5){
         this.confirmChangesDialog = !this.confirmChangesDialog;
@@ -357,22 +372,6 @@ export default {
       this.$emit("updateProgress", "purchasing", 100);
       //this.$router.push({ path: "/dashboard" });
       this.toggleDialog();
-    },
-    calculateCostPerMaterial(selectedVendor) {
-      // material * quality
-      if (typeof selectedVendor === "undefined") {
-        return "";
-      } else {
-        return (selectedVendor * (1 + this.quality.val / 100)).toFixed(2);
-      }
-    },
-    calculateTotalCost(selectedVendor, amount) {
-      // costPerMaterial * amount
-      if (typeof selectedVendor === "undefined") {
-        return "";
-      } else {
-        return (this.calculateCostPerMaterial(selectedVendor) * amount).toFixed(2);
-      }
     },
     nextPurchasingStep() {
        if(this.$store.state.purchasingStep === 1) {
