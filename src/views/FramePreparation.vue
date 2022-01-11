@@ -1,5 +1,5 @@
 <template>
-  <v-container id="frame-preparation" >
+  <v-container id="framePreparation" >
     <!-- custom component with statistic about current, previous round and cost accounting -->
     <div ref="round-data">
       <prev-cur-round-stats
@@ -52,7 +52,8 @@
       <v-row>
         <v-col>
           <v-select
-            v-model="selectedLine"
+            :value="vendor"
+            @input="updateVendor"
             :items="assemblyLines"
             :color="teamColor"
             label="Choose assembly line..."
@@ -61,19 +62,19 @@
 
           <v-text-field
             label="Assembly costs (EUR)"
-            :value="calculateCosts(selectedLine[0])"
+            :value="calculateAssemblyCosts"
             filled
             disabled
           />
           <v-text-field
             label="Production costs (EUR)"
-            :value="calculateCosts(selectedLine[1])"
+            :value="calculateProductionCosts"
             filled
             disabled
           />
           <v-text-field
             label="Production capacity (PC)"
-            :value="calculateCosts(selectedLine[2])"
+            :value="calculateCapacity"
             filled
             disabled
           />
@@ -225,13 +226,37 @@
 </template>
 
 <script>
+import axios from 'axios';
 import prevCurRoundStats from "../components/prevCurRoundStats.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   components: { prevCurRoundStats, ConfirmationDialog, ErrorChagesDialog },
-  name: "frame-preparation",
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: "framePreparation",
+      computed: {
+      // erster Parameter entspricht Module, aus welchen wir Parameter holen
+    ...mapGetters('framePreparation', ['vendors', 'vendor']),
+    vendorsSelect: function() {
+      return this.vendors.map(vendor => {
+        return {
+          name: vendor.vendorName,
+          value: vendor
+        }
+      })
+    },
+    calculateAssemblyCosts: function() {
+      return this.vendor != null ? this.vendor.Totalacquisitioncost : "";
+    },
+    calculateProductionCosts: function(){
+      return this.vendor != null ? this.vendor.Prodcost : ""
+    },
+    calculateCapacity: function(){
+      return this.vendor != null ? this.vendor.Prodcapacity : ""
+    }
+  },
   data() {
     return {
       showError: false,
@@ -268,13 +293,28 @@ export default {
     }
   },
   methods: {
+    ...mapActions('framePreparation', ['updateVendors']),
+    ...mapMutations('framePreparation', ['updateVendor']),
     toggleShowError() {
       this.showError = !this.showError;
     },
-    toggleDialog() {
-      if(this.selectedLine === "") {
+    async toggleDialog() {
+      var result = {
+        // TODO: das kann aktuell nicht richtig gelesen werden, wie hol ich das aus dem store (namespacing, modules in vuex doku)
+        purchasing: this.$store.purchasing.state,
+        logistics: this.$store.logistics.state,
+        framePreparation: this.$store.framePreparation.state,
+      };
+      try{
+        await axios.post("http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/GameProgressSet", result);
+      }
+      catch(ex) {
+        console.log("POSTERROR:", ex);
+      }
+
+      if(this.vendor === null) {
         this.toggleShowError();
-      } else if(this.$store.state.frameStep >= 5){
+      } else if(this.$store.state.logisticStep >= 5){
         this.confirmChangesDialog = !this.confirmChangesDialog;
       }
     },
@@ -283,20 +323,20 @@ export default {
       //this.$router.push({ path: "/dashboard" });
       this.toggleDialog();
     },
-    calculateCosts(selectedLine) {
-      // check for NaN
-      if (typeof selectedLine === "undefined") {
-        return "";
-      } else {
-        return (
-          selectedLine *
-          this.numOfLines *
-          (1 + this.quality.val / 100) *
-          (1 + this.workload.val / 100) *
-          (1 + this.safety.val / 100)
-        ).toFixed(2);
-      }
-    },
+    // calculateCosts(selectedLine) {
+    //   // check for NaN
+    //   if (typeof selectedLine === "undefined") {
+    //     return "";
+    //   } else {
+    //     return (
+    //       selectedLine *
+    //       this.numOfLines *
+    //       (1 + this.quality.val / 100) *
+    //       (1 + this.workload.val / 100) *
+    //       (1 + this.safety.val / 100)
+    //     ).toFixed(2);
+    //   }
+    // },
     toNextStep() {
       if(this.$store.state.frameStep >= 5) {
         this.$router.push({ path: "/sensorsPreparation" });
@@ -383,6 +423,8 @@ export default {
     if(this.$store.state.frameStep <= 4) {
       this.nextPurchasingStep();
     }  
+
+    this.updateVendors()
   },
 };
 </script>
