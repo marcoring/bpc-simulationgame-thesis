@@ -44,11 +44,21 @@ export default {
       timerCount: 5,
       rules: {
        round1Rules:
-          "The first round is an introductory round. IoT bikes are an innovation and they are not very popular yet. The current demand on the whole market is 1.000 bikes. For now, only standard bikes are available, which consist of a frame and ten sensors. In this round, the following important decisions can be made:",
+          "Welcome to the Bike Simulation Game! Here you are the CEO of your own bike manufacturing company. Therefore, you have to manage multiple processes for each round. All process tiles have their own info button. Good luck!",
+          // "The first round is an introductory round. IoT bikes are an innovation and they are not very popular yet. The current demand on the whole market is 1.000 bikes. For now, only standard bikes are available, which consist of a frame and ten sensors. In this round, the following important decisions can be made:",
         round1Keywords: [
-          "Purchasing process: An initial vendor selection has to be made for the required components to produce the bikes.",
-          "Production processes: It can be decided how many assembly lines should be used in the different production steps.",
-          "Sales process: There is an option for an Online Shop which boosts the sales numbers.",
+          "Purchase materials you can prepare and then assemlbe into bikes.",
+          "Decide for a good external partner that will handle your logistics.",
+          "Choose a right process to prepare you frame material for the bike assembly.",
+          "Choose a right process to prepare you sensors material for the bike assembly.",
+          "Choose a right process to prepare you engine material for the bike assembly.",
+          "Choose a right process to prepare you battery material for the bike assembly.",
+          "Manage your bike assembly process.",
+          "Develop and mantain your own application.",
+          "Decide between different options for a quality assurance process.",
+          "Sell bikes produced to ensure profitability.",
+          // "Production processes: It can be decided how many assembly lines should be used in the different production steps.",
+          // "Sales process: There is an option for an Online Shop which boosts the sales numbers.",
         ],
         round2Rules:
           "Every team gets 100.000 EUR on the top of the profit they earned during the first round. It will help everyone who suffered from big losses. At this stage, IoT bikes are starting to gain popularity. The demand grows up to 6.000 bikes. Furthermore, it is now possible to produce Standard Pro bikes, that contain a battery as further component. New features for the current round are as follows:",
