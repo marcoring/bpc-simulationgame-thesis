@@ -72,24 +72,160 @@
 
     <!-- Managing purchasing process -->
     <div ref="logic" style="margin: 1px;">
-      <v-row style="margin-top: 15px; margin-left: 3px">
+      <v-row style="margin-top: 15px; margin-left: 3px; margin-bottom: 15px">
         <h2 style="text-align: left;">Manage purchasing process</h2>
       </v-row>
 
-      <v-container fluid>
-        <v-row align="center"> 
-          <v-col>
-            <!-- v-model statt input event listener nachteil: ich bräuchten hier ein Objekt, da wir einen getter und wir eine Methode bräuchten um das zu updaten -->
+      <!-- Manage Battery purchasing process-->
+      <v-container>
+        <v-card elevation="5" class="mx-auto" outlined>
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          ><v-icon color="white" x-large right class="mr-1">mdi-shopping-outline</v-icon>
+          <span class="text-h6">Battery purchasing process</span>
+          </v-card-title>
+          <v-row align="center">
+
+            <v-col
+              cols="12"
+              sm="6"
+            >
+
             <!-- Choose vendor Battery-->
             <v-select
               :value="vendor"
               @input="updateVendor"
               :items="vendorsSelect"
               :color="teamColor"
-              label="Choose Battery vendor..."
+              label=" Choose Battery vendor..."
               item-text="name"
+              filled
             />
+          </v-col>
+            
+          <v-col
+              cols="12"
+              sm="6"
+          >
+            <!-- Quality Slider Battery -->
+            <v-subheader>Quality Battery</v-subheader>
+              <v-card-text>
+                <v-slider
+                  v-model="quality.battery"
+                  :label="quality.battery"
+                  :color="teamColor"
+                  :min="1"
+                  :max="100"
+                  :thumb-color="teamColor"
+                  thumb-label="always"
+                  :track-color="'teamColor' + 'lighten-3'"
+                  :track-fill-color="teamColor"
+                >
+                  <template v-slot:append>
+                    <v-text-field
+                      v-model="quality.battery"
+                      class="mt-0 pt-0"
+                      hide-details
+                      single-line
+                      :min="1"
+                      :thumb-size="24"
+                      :max="100"
+                      type="number"
+                      style="width: 60px"
+                    />
+                  </v-card-text>
+            </v-col>
 
+            <v-col
+              cols="12"
+              sm="6"
+            >  
+            <!-- Battery: Cost per material (EUR) -->
+            <v-text-field
+              label="Battery: Cost per material (EUR)"
+              :value="calculatedCostPerMaterialBattery"
+              filled
+              disabled
+            />
+            </v-col>
+
+            <v-col
+              cols="12"
+              sm="6"
+            >
+            <!-- Slider Battery: Amount(PC) -->
+            <v-slider
+              v-model="amount.battery"
+              label="Battery: Amount (PC)"
+              :color="teamColor"
+              :min="1"
+              :max="100"
+              :thumb-color="teamColor"
+              :thumb-size="24"
+              thumb-label="always"
+              :track-color="'teamColor' + 'lighten-3'"
+              :track-fill-color="teamColor"
+            >
+              <template v-slot:append>
+                <v-text-field
+                  v-model.number="amount.battery"
+                  class="mt-0 pt-0"
+                  hide-details
+                  single-line
+                  :min="1"
+                  :max="100"
+                  type="number"
+                  style="width: 60px"
+                />
+              </template>
+            </v-slider>
+            </v-col>
+
+            <v-col
+              cols="6"
+              sm="12"
+            >
+            <v-text-field
+                label="Battery: Total cost (EUR)"
+                :value="calculatedTotalCostBattery"
+                filled
+                disabled
+              />
+            </v-col>
+
+            <v-col
+              cols="6"
+              sm="12"
+            >         
+            <!-- Sustainability factor Battery -->
+            <v-text-field
+              label="Sustainability factor Battery"
+              :value="calculatedSustainabilityfactor"
+              filled
+              disabled
+            />
+            </v-col>
+
+            <v-col
+              cols="6"
+              sm="12"
+            >
+            <!-- Regionality factor Battery -->
+            <v-text-field
+              label="Regionality factor Battery"
+              :value="calculatedRegionalityfactor"
+              filled
+              disabled
+            />
+          </v-col>
+        </v-card>
+      </v-container>
+
+      <v-container fluid>
+        <v-row align="center"> 
+          <v-col>
+            <!-- v-model statt input event listener nachteil: ich bräuchten hier ein Objekt, da wir einen getter und wir eine Methode bräuchten um das zu updaten -->
             <!-- Choose vendor Engine-->
             <v-select
               :value="vendor"
@@ -119,34 +255,6 @@
               label="Choose Sensors vendor..."
               item-text="name"
             />
-
-            <!-- Quality Slider Battery -->
-            <v-subheader>Quality Battery</v-subheader>
-              <v-card-text>
-                <v-slider
-                  v-model="quality.battery"
-                  :label="quality.battery"
-                  :color="teamColor"
-                  :min="1"
-                  :max="100"
-                  :thumb-color="teamColor"
-                  thumb-label="always"
-                  :track-color="'teamColor' + 'lighten-3'"
-                  :track-fill-color="teamColor"
-                >
-                  <template v-slot:append>
-                    <v-text-field
-                      v-model="quality.battery"
-                      class="mt-0 pt-0"
-                      hide-details
-                      single-line
-                      :min="1"
-                      :thumb-size="24"
-                      :max="100"
-                      type="number"
-                      style="width: 60px"
-                    />
-                  </v-card-text>
 
             <!-- Quality Slider Engine -->
             <v-subheader>Quality Engine</v-subheader>
@@ -240,13 +348,6 @@
           </v-col>
 
           <v-col>
-            <!-- Battery: Cost per material (EUR) -->
-            <v-text-field
-              label="Battery: Cost per material (EUR)"
-              :value="calculatedCostPerMaterialBattery"
-              filled
-              disabled
-            />
             <!-- Engine: Cost per material (EUR) -->
             <v-text-field
               label="Engine: Cost per material (EUR)"
@@ -285,33 +386,6 @@
           </v-col>
 
           <v-col>
-            <!-- Slider Battery: Amount(PC) -->
-            <v-slider
-              v-model="amount.battery"
-              label="Battery: Amount (PC)"
-              :color="teamColor"
-              :min="1"
-              :max="100"
-              :thumb-color="teamColor"
-              :thumb-size="24"
-              thumb-label="always"
-              :track-color="'teamColor' + 'lighten-3'"
-              :track-fill-color="teamColor"
-            >
-              <template v-slot:append>
-                <v-text-field
-                  v-model.number="amount.battery"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  :min="1"
-                  :max="100"
-                  type="number"
-                  style="width: 60px"
-                />
-              </template>
-            </v-slider>
-
             <!-- Slider Engine: Amount(PC) -->
             <v-slider
               v-model="amount.engine"
@@ -395,12 +469,6 @@
           </v-col>
 
           <v-col>
-            <v-text-field
-              label="Battery: Total cost (EUR)"
-              :value="calculatedTotalCostBattery"
-              filled
-              disabled
-            />
             <v-text-field
               label="Engine: Total cost (EUR)"
               :value="calculatedTotalCostEngine"
