@@ -22,7 +22,7 @@
                 </div>
                 <div class="rules-text" v-if="this.currentRuleNumber == 1">
                     <div class="text-passage">
-                        <h2 :style="'color:' + teamColor">How to play?</h4>
+                        <h2 :style="'color:' + teamColor">How to play?</h2>
                     </div>
                     <span class="text-passage text-counter second-plate">
                         <b>The goal of the game is to design the production and sales of the IoT bikes in a way that it is possible to earn more than the other teams.</b>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="rules-text" v-if="this.currentRuleNumber == 2">
                     <div class="text-passage">
-                        <h2 :style="'color:' + teamColor">Navigation in the game</h4>
+                        <h2 :style="'color:' + teamColor">Navigation in the game</h2>
                     </div>
                     <span class="text-passage text-counter second-plate">
                         In order to save the data for each process step, the player has to click the <b>'Confirm'</b> button at the bottom of the screen. Otherwise, the data <b>WILL NOT</b> be saved. 
@@ -53,7 +53,7 @@
                 </div>
                 <div class="rules-text" v-if="this.currentRuleNumber == 3">
                     <div class="text-passage">
-                        <h2 :style="'color:' + teamColor">Different parameters in the game</h4>
+                        <h2 :style="'color:' + teamColor">Different parameters in the game</h2>
                     </div>
                     <span class="text-passage text-counter second-plate">
                         Be careful when choosing the '<b>Safety</b>' parameter in the different production steps. 
@@ -71,7 +71,7 @@
 
                 <div class="rules-text" v-if="this.currentRuleNumber == 4">
                     <div class="text-passage">
-                        <h2 :style="'color:' + teamColor">Last recommendations</h4>
+                        <h2 :style="'color:' + teamColor">Last recommendations</h2>
                     </div>
                     <span class="text-passage text-counter second-plate">
                         After all necessary data has been submitted, do not forget to click the '<b>End round</b>' button in the top right corner of the main screen. 

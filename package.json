@@ -1,6 +1,6 @@
 {
   "name": "zss18_t4",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -34,25 +34,7 @@
     "nwabap-ui5uploader": "^1.2.0",
     "sass": "^1.32.0",
     "sass-loader": "^10.1.0",
-    "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": false,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
-    ],
-    "parserOptions": {
-      "parser": "babel-eslint"
-    },
-    "rules": {}
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ]
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.46.0"
+  }
 }

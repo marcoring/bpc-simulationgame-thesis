@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app permanent expand-on-hover fixed :color="teamColor">
+  <v-navigation-drawer clipped mini-variant app permanent expand-on-hover fixed :color="teamColor">
         <v-list-item to="dashboard">
           <v-list-item-icon>
             <v-icon style="color:white">mdi-home</v-icon>

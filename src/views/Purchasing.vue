@@ -94,15 +94,17 @@
 
             <!-- Choose vendor Battery-->
             <v-select
-              :value="vendor"
-              @input="updateVendor"
-              :items="vendorsSelect"
+              :value="batteryVendor"
+              @input="updateBatteryVendor"
+              :items="batteryVendorsSelect"
               :color="teamColor"
               label=" Choose Battery vendor..."
               item-text="name"
               filled
             />
+          
           </v-col>
+          </v-row>
             
           <v-col
               cols="12"
@@ -121,7 +123,7 @@
                   thumb-label="always"
                   :track-color="'teamColor' + 'lighten-3'"
                   :track-fill-color="teamColor"
-                >
+                />
                   <template v-slot:append>
                     <v-text-field
                       v-model="quality.battery"
@@ -134,6 +136,7 @@
                       type="number"
                       style="width: 60px"
                     />
+                  </template>
                   </v-card-text>
             </v-col>
 
@@ -201,7 +204,7 @@
             <!-- Sustainability factor Battery -->
             <v-text-field
               label="Sustainability factor Battery"
-              :value="calculatedSustainabilityfactor"
+              :value="calculatedBatterySustainabilityfactor"
               filled
               disabled
             />
@@ -214,7 +217,7 @@
             <!-- Regionality factor Battery -->
             <v-text-field
               label="Regionality factor Battery"
-              :value="calculatedRegionalityfactor"
+              :value="calculatedBatteryRegionalityfactor"
               filled
               disabled
             />
@@ -490,6 +493,7 @@
           </v-col>
         </v-row>
       </v-container>
+    </div>
 
     <v-row ref="navigation">
         <v-col md='4' align="left">
@@ -541,12 +545,20 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Purchasing",
   computed: {
-    ...mapGetters('purchasing', ['vendors', 'vendor']),
+    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor']),
     vendorsSelect: function() {
       return this.vendors.map(vendor => {
         return {
           name: vendor.Vendorname,
           value: vendor
+        }
+      })
+    },
+    batteryVendorsSelect: function() {
+      return this.batteryVendors.map(batteryVendor => {
+        return {
+          name: batteryVendor.Vendorname,
+          value: batteryVendor
         }
       })
     },
@@ -559,7 +571,7 @@ export default {
       return this.vendor != null ? (this.vendor.Developmentcost * (1 + this.quality.sensors / 100)).toFixed(2) : "";
     },
      calculatedCostPerMaterialBattery: function() {
-      return this.vendor != null ? (this.vendor.Developmentcost * (1 + this.quality.battery / 100)).toFixed(2) : "";
+      return this.batteryVendor != null ? (this.batteryVendor.Developmentcost * (1 + this.quality.battery / 100)).toFixed(2) : "";
     },
     calculatedCostPerMaterialEngine: function() {
       return this.vendor != null ? (this.vendor.Developmentcost * (1 + this.quality.engine / 100)).toFixed(2) : "";
@@ -575,11 +587,17 @@ export default {
     },
     calculatedTotalCostBattery: function() {
       // replace 1 with actual amount
-      return this.vendor != null ? (this.calculatedCostPerMaterialBattery * this.amount.battery).toFixed(2) : "";
+      return this.batteryVendor != null ? (this.calculatedCostPerMaterialBattery * this.amount.battery).toFixed(2) : "";
     },
     calculatedTotalCostEngine: function() {
       // replace 1 with actual amount
       return this.vendor != null ? (this.calculatedCostPerMaterialEngine * this.amount.engine).toFixed(2) : "";
+    },
+    calculatedBatterySustainabilityfactor: function() {
+      return this.batteryVendor != null ? this.batteryVendor.Sustainabilityfactor : "";
+    },
+    calculatedBatteryRegionalityfactor: function() {
+      return this.batteryVendor != null ? this.batteryVendor.Regionalityfactor : "";
     },
     calculatedSustainabilityfactor: function() {
       return this.vendor != null ? this.vendor.Sustainabilityfactor : "";
@@ -661,9 +679,11 @@ export default {
     };
   },
   methods: {
-    // ... = spread Operator und verteilt die Properties im aktuellen Objekt
+    // ... => spread Operator und verteilt die Properties im aktuellen Objekt
     ...mapActions('purchasing', ['updateVendors']),
+    ...mapActions('purchasing', ['updateBatteryVendors']),
     ...mapMutations('purchasing', ['updateVendor']),
+    ...mapMutations('purchasing', ['updateBatteryVendor']),
     toggleShowError() {
       this.showError = !this.showError;
     },
@@ -761,7 +781,8 @@ export default {
       this.nextPurchasingStep();
     }
     
-    this.updateVendors()
+    this.updateVendors();
+    this.updateBatteryVendors()
   },
   watch: {
     '$store.state.purchasingStep': function() {

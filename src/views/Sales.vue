@@ -192,6 +192,7 @@ import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
 
 export default {
+  // eslint-disable-next-line vue/multi-word-component-names
   name: "sales",
   components: { prevCurRoundStats, ConfirmationDialog, ErrorChagesDialog },
   data() {
