@@ -85,13 +85,15 @@
           ><v-icon color="white" x-large right class="mr-1">mdi-shopping-outline</v-icon>
           <span class="text-h6">Battery purchasing process</span>
           </v-card-title>
-          <v-row align="center">
 
+          <v-row align="center" no-gutters>
             <v-col
-              cols="12"
+              cols="auto"
               sm="6"
+              align="center"
+              justify="center"
             >
-
+            <!-- v-model statt input event listener nachteil: ich bräuchten hier ein Objekt, da wir einen getter und wir eine Methode bräuchten um das zu updaten -->
             <!-- Choose vendor Battery-->
             <v-select
               :value="batteryVendor"
@@ -102,16 +104,14 @@
               item-text="name"
               filled
             />
-          
-          </v-col>
-          </v-row>
-            
-          <v-col
-              cols="12"
+            </v-col>
+
+            <v-col
+              cols="auto"
               sm="6"
-          >
+            >
             <!-- Quality Slider Battery -->
-            <v-subheader>Quality Battery</v-subheader>
+            <v-subheader style="padding: 32px">Quality Battery</v-subheader>
               <v-card-text>
                 <v-slider
                   v-model="quality.battery"
@@ -123,26 +123,28 @@
                   thumb-label="always"
                   :track-color="'teamColor' + 'lighten-3'"
                   :track-fill-color="teamColor"
-                />
-                  <template v-slot:append>
-                    <v-text-field
+                >
+                <template v-slot:append>
+                  <v-text-field
                       v-model="quality.battery"
                       class="mt-0 pt-0"
                       hide-details
                       single-line
                       :min="1"
-                      :thumb-size="24"
                       :max="100"
+                      :thumb-size="24"
                       type="number"
                       style="width: 60px"
-                    />
-                  </template>
-                  </v-card-text>
+                  />
+                </template>
+                </v-slider>
+              </v-card-text>
             </v-col>
-
+          </v-row>
+      
+          <v-row class="ma-0 pa-0" no-gutters>
             <v-col
-              cols="12"
-              sm="6"
+              class="pr-4"
             >  
             <!-- Battery: Cost per material (EUR) -->
             <v-text-field
@@ -154,11 +156,12 @@
             </v-col>
 
             <v-col
-              cols="12"
-              sm="6"
+              class="pr-4"
             >
-            <!-- Slider Battery: Amount(PC) -->
+
+          <!-- Slider Battery: Amount(PC) -->
             <v-slider
+              class="aign-center"
               v-model="amount.battery"
               label="Battery: Amount (PC)"
               :color="teamColor"
@@ -184,10 +187,11 @@
               </template>
             </v-slider>
             </v-col>
+          </v-row>
 
+          <v-row no-gutters>
             <v-col
-              cols="6"
-              sm="12"
+              class="pr-4"
             >
             <v-text-field
                 label="Battery: Total cost (EUR)"
@@ -196,10 +200,9 @@
                 disabled
               />
             </v-col>
-
+          
             <v-col
-              cols="6"
-              sm="12"
+              class="pr-4"
             >         
             <!-- Sustainability factor Battery -->
             <v-text-field
@@ -211,8 +214,6 @@
             </v-col>
 
             <v-col
-              cols="6"
-              sm="12"
             >
             <!-- Regionality factor Battery -->
             <v-text-field
@@ -222,49 +223,50 @@
               disabled
             />
           </v-col>
+        </v-row>
         </v-card>
       </v-container>
 
-      <v-container fluid>
-        <v-row align="center"> 
-          <v-col>
-            <!-- v-model statt input event listener nachteil: ich bräuchten hier ein Objekt, da wir einen getter und wir eine Methode bräuchten um das zu updaten -->
+      <!-- Manage Engine purchasing process-->
+      <v-container>
+        <v-card elevation="5" class="mx-auto" outlined>
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          ><v-icon color="white" x-large right class="mr-1">mdi-engine</v-icon>
+          <span class="text-h6">Engine purchasing process</span>
+          </v-card-title>
+
+          <v-row align="center" no-gutters>
+            <v-col
+              cols="auto"
+              sm="6"
+              align="center"
+              justify="center"
+            >
+
             <!-- Choose vendor Engine-->
             <v-select
-              :value="vendor"
-              @input="updateVendor"
-              :items="vendorsSelect"
+              :value="engineVendor"
+              @input="updateEngineVendor"
+              :items="engineVendorsSelect"
               :color="teamColor"
-              label="Choose Engine vendor..."
+              label=" Choose Engine vendor..."
               item-text="name"
+              filled
             />
+            </v-col>
 
-            <!-- Choose vendor Frame-->
-            <v-select
-              :value="vendor"
-              @input="updateVendor"
-              :items="vendorsSelect"
-              :color="teamColor"
-              label="Choose Frame vendor..."
-              item-text="name"
-            />
-
-            <!-- Choose vendor Sensors-->
-            <v-select
-              :value="vendor"
-              @input="updateVendor"
-              :items="vendorsSelect"
-              :color="teamColor"
-              label="Choose Sensors vendor..."
-              item-text="name"
-            />
-
+            <v-col
+              cols="auto"
+              sm="6"
+            >
             <!-- Quality Slider Engine -->
-            <v-subheader>Quality Engine</v-subheader>
+            <v-subheader style="padding: 32px">Quality Engine</v-subheader>
               <v-card-text>
                 <v-slider
                   v-model="quality.engine"
-                  :label="quality.engine" 
+                  :label="quality.engine"
                   :color="teamColor"
                   :min="1"
                   :max="100"
@@ -273,84 +275,28 @@
                   :track-color="'teamColor' + 'lighten-3'"
                   :track-fill-color="teamColor"
                 >
-                  <template v-slot:append>
-                    <v-text-field
+                <template v-slot:append>
+                  <v-text-field
                       v-model="quality.engine"
                       class="mt-0 pt-0"
                       hide-details
                       single-line
                       :min="1"
-                      :thumb-size="24"
                       :max="100"
+                      :thumb-size="24"
                       type="number"
                       style="width: 60px"
-                    />
-                  </template>
+                  />
+                </template>
                 </v-slider>
               </v-card-text>
-            
-            <!-- Quality Slider Frame -->
-            <v-subheader>Quality Frame</v-subheader>
-              <v-card-text>
-                <v-slider
-                  v-model="quality.frame"
-                  :label="quality.frame" 
-                  :color="teamColor"
-                  :min="1"
-                  :max="100"
-                  :thumb-color="teamColor"
-                  thumb-label="always"
-                  :track-color="'teamColor' + 'lighten-3'"
-                  :track-fill-color="teamColor"
-                >
-                  <template v-slot:append>
-                    <v-text-field
-                      v-model="quality.frame"
-                      class="mt-0 pt-0"
-                      hide-details
-                      single-line
-                      :min="1"
-                      :thumb-size="24"
-                      :max="100"
-                      type="number"
-                      style="width: 60px"
-                    />
-                  </template>
-                </v-slider>
-              </v-card-text>
-
-            <!-- Quality Slider Sensors -->
-            <v-subheader>Quality Sensors</v-subheader>
-              <v-card-text>
-                <v-slider
-                  v-model="quality.sensors"
-                  :label="quality.sensors" 
-                  :color="teamColor"
-                  :min="1"
-                  :max="100"
-                  :thumb-color="teamColor"
-                  thumb-label="always"
-                  :track-color="'teamColor' + 'lighten-3'"
-                  :track-fill-color="teamColor"
-                >
-                  <template v-slot:append>
-                    <v-text-field
-                      v-model="quality.sensors"
-                      class="mt-0 pt-0"
-                      hide-details
-                      single-line
-                      :min="1"
-                      :thumb-size="24"
-                      :max="100"
-                      type="number"
-                      style="width: 60px"
-                    />
-                  </template>
-                </v-slider>
-              </v-card-text>
-          </v-col>
-
-          <v-col>
+            </v-col>
+          </v-row>
+      
+          <v-row class="ma-0 pa-0" no-gutters>
+            <v-col
+              class="pr-4"
+            >  
             <!-- Engine: Cost per material (EUR) -->
             <v-text-field
               label="Engine: Cost per material (EUR)"
@@ -358,6 +304,150 @@
               filled
               disabled
             />
+            </v-col>
+
+            <v-col
+              class="pr-4"
+            >
+
+          <!-- Slider Engine: Amount(PC) -->
+            <v-slider
+              class="aign-center"
+              v-model="amount.engine"
+              label="Engine: Amount (PC)"
+              :color="teamColor"
+              :min="1"
+              :max="100"
+              :thumb-color="teamColor"
+              :thumb-size="24"
+              thumb-label="always"
+              :track-color="'teamColor' + 'lighten-3'"
+              :track-fill-color="teamColor"
+            >
+              <template v-slot:append>
+                <v-text-field
+                  v-model.number="amount.engine"
+                  class="mt-0 pt-0"
+                  hide-details
+                  single-line
+                  :min="1"
+                  :max="100"
+                  type="number"
+                  style="width: 60px"
+                />
+              </template>
+            </v-slider>
+            </v-col>
+          </v-row>
+
+          <v-row no-gutters>
+            <v-col
+              class="pr-4"
+            >
+            <v-text-field
+                label="Engine: Total cost (EUR)"
+                :value="calculatedTotalCostEngine"
+                filled
+                disabled
+              />
+            </v-col>
+          
+            <v-col
+              class="pr-4"
+            >         
+            <!-- Sustainability factor Engine -->
+            <v-text-field
+              label="Sustainability factor Engine"
+              :value="calculatedEngineSustainabilityfactor"
+              filled
+              disabled
+            />
+            </v-col>
+
+            <v-col
+            >
+            <!-- Regionality factor Engine -->
+            <v-text-field
+              label="Regionality factor Engine"
+              :value="calculatedEngineRegionalityfactor"
+              filled
+              disabled
+            />
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-container>
+
+    <!-- Manage Frame purchasing process-->
+      <v-container>
+        <v-card elevation="5" class="mx-auto" outlined>
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          ><v-icon color="white" x-large right class="mr-1">mdi-bicycle</v-icon>
+          <span class="text-h6">Frame purchasing process</span>
+          </v-card-title>
+
+          <v-row align="center" no-gutters>
+            <v-col
+              cols="auto"
+              sm="6"
+              align="center"
+              justify="center"
+            >
+
+            <!-- Choose vendor Frame-->
+            <v-select
+              :value="frameVendor"
+              @input="updateFrameVendor"
+              :items="frameVendorsSelect"
+              :color="teamColor"
+              label=" Choose Frame vendor..."
+              item-text="name"
+              filled
+            />
+            </v-col>
+
+            <v-col
+              cols="auto"
+              sm="6"
+            >
+            <!-- Quality Slider Frame -->
+            <v-subheader style="padding: 32px">Quality Frame</v-subheader>
+              <v-card-text>
+                <v-slider
+                  v-model="quality.frame"
+                  :label="quality.frame"
+                  :color="teamColor"
+                  :min="1"
+                  :max="100"
+                  :thumb-color="teamColor"
+                  thumb-label="always"
+                  :track-color="'teamColor' + 'lighten-3'"
+                  :track-fill-color="teamColor"
+                >
+                <template v-slot:append>
+                  <v-text-field
+                      v-model="quality.frame"
+                      class="mt-0 pt-0"
+                      hide-details
+                      single-line
+                      :min="1"
+                      :max="100"
+                      :thumb-size="24"
+                      type="number"
+                      style="width: 60px"
+                  />
+                </template>
+                </v-slider>
+              </v-card-text>
+            </v-col>
+          </v-row>
+      
+          <v-row class="ma-0 pa-0" no-gutters>
+            <v-col
+              class="pr-4"
+            >  
             <!-- Frame: Cost per material (EUR) -->
             <v-text-field
               label="Frame: Cost per material (EUR)"
@@ -365,6 +455,150 @@
               filled
               disabled
             />
+            </v-col>
+
+            <v-col
+              class="pr-4"
+            >
+
+          <!-- Slider Frame: Amount(PC) -->
+            <v-slider
+              class="aign-center"
+              v-model="amount.frame"
+              label="Frame: Amount (PC)"
+              :color="teamColor"
+              :min="1"
+              :max="100"
+              :thumb-color="teamColor"
+              :thumb-size="24"
+              thumb-label="always"
+              :track-color="'teamColor' + 'lighten-3'"
+              :track-fill-color="teamColor"
+            >
+              <template v-slot:append>
+                <v-text-field
+                  v-model.number="amount.frame"
+                  class="mt-0 pt-0"
+                  hide-details
+                  single-line
+                  :min="1"
+                  :max="100"
+                  type="number"
+                  style="width: 60px"
+                />
+              </template>
+            </v-slider>
+            </v-col>
+          </v-row>
+
+          <v-row no-gutters>
+            <v-col
+              class="pr-4"
+            >
+            <v-text-field
+                label="Frame: Total cost (EUR)"
+                :value="calculatedTotalCostFrame"
+                filled
+                disabled
+              />
+            </v-col>
+          
+            <v-col
+              class="pr-4"
+            >         
+            <!-- Sustainability factor Frame -->
+            <v-text-field
+              label="Sustainability factor Frame"
+              :value="calculatedFrameSustainabilityfactor"
+              filled
+              disabled
+            />
+            </v-col>
+
+            <v-col
+            >
+            <!-- Regionality factor Frame -->
+            <v-text-field
+              label="Regionality factor Frame"
+              :value="calculatedFrameRegionalityfactor"
+              filled
+              disabled
+            />
+          </v-col>
+        </v-row>
+        </v-card>
+      </v-container>
+
+      <!-- Manage Sensors purchasing process-->
+      <v-container>
+        <v-card elevation="5" class="mx-auto" outlined>
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          ><v-icon color="white" x-large right class="mr-1">mdi-chip</v-icon>
+          <span class="text-h6">Sensors purchasing process</span>
+          </v-card-title>
+
+          <v-row align="center" no-gutters>
+            <v-col
+              cols="auto"
+              sm="6"
+              align="center"
+              justify="center"
+            >
+
+            <!-- Choose vendor Sensors-->
+            <v-select
+              :value="sensorsVendor"
+              @input="updateSensorsVendor"
+              :items="sensorsVendorsSelect"
+              :color="teamColor"
+              label=" Choose Sensors vendor..."
+              item-text="name"
+              filled
+            />
+            </v-col>
+
+            <v-col
+              cols="auto"
+              sm="6"
+            >
+            <!-- Quality Slider Sensors -->
+            <v-subheader style="padding: 32px">Quality Sensors</v-subheader>
+              <v-card-text>
+                <v-slider
+                  v-model="quality.sensors"
+                  :label="quality.sensors"
+                  :color="teamColor"
+                  :min="1"
+                  :max="100"
+                  :thumb-color="teamColor"
+                  thumb-label="always"
+                  :track-color="'teamColor' + 'lighten-3'"
+                  :track-fill-color="teamColor"
+                >
+                <template v-slot:append>
+                  <v-text-field
+                      v-model="quality.sensors"
+                      class="mt-0 pt-0"
+                      hide-details
+                      single-line
+                      :min="1"
+                      :max="100"
+                      :thumb-size="24"
+                      type="number"
+                      style="width: 60px"
+                  />
+                </template>
+                </v-slider>
+              </v-card-text>
+            </v-col>
+          </v-row>
+      
+          <v-row class="ma-0 pa-0" no-gutters>
+            <v-col
+              class="pr-4"
+            >  
             <!-- Sensors: Cost per material (EUR) -->
             <v-text-field
               label="Sensors: Cost per material (EUR)"
@@ -372,93 +606,29 @@
               filled
               disabled
             />
-            <!-- Sustainability factor -->
-            <v-text-field
-              label="Sustainability factor"
-              :value="calculatedSustainabilityfactor"
-              filled
-              disabled
-            />
-            <!-- Regionality factor -->
-            <v-text-field
-              label="Regionality factor"
-              :value="calculatedRegionalityfactor"
-              filled
-              disabled
-            />
-          </v-col>
+            </v-col>
 
-          <v-col>
-            <!-- Slider Engine: Amount(PC) -->
-            <v-slider
-              v-model="amount.engine"
-              label="Engine: Amount (PC)"
-              :color="teamColor"
-              :min="1"
-              :max="100"
-              :thumb-color="teamColor"
-              thumb-label="always"
-              :thumb-size="24"
-              :track-color="'teamColor' + 'lighten-3'"
-              :track-fill-color="teamColor"
+            <v-col
+              class="pr-4"
             >
-              <template v-slot:append>
-                <v-text-field
-                  v-model="amount.engine"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  :min="1"
-                  :max="100"
-                  type="number"
-                  style="width: 60px"
-                />
-              </template>
-            </v-slider>
 
-            <!-- Slider Frame: Amount(PC) -->
+          <!-- Slider Sensors: Amount(PC) -->
             <v-slider
-              v-model="amount.frame"
-              label="Frame: Amount (PC)"
-              :color="teamColor"
-              :min="1"
-              :max="100"
-              :thumb-color="teamColor"
-              thumb-label="always"
-              :thumb-size="24"
-              :track-color="'teamColor' + 'lighten-3'"
-              :track-fill-color="teamColor"
-            >
-              <template v-slot:append>
-                <v-text-field
-                  v-model="amount.frame"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  :min="1"
-                  :max="100"
-                  type="number"
-                  style="width: 60px"
-                />
-              </template>
-            </v-slider>
-            
-            <!-- Slider Sensors: Amount(PC) -->
-            <v-slider
+              class="aign-center"
               v-model="amount.sensors"
               label="Sensors: Amount (PC)"
               :color="teamColor"
               :min="1"
               :max="100"
               :thumb-color="teamColor"
-              thumb-label="always"
               :thumb-size="24"
+              thumb-label="always"
               :track-color="'teamColor' + 'lighten-3'"
               :track-fill-color="teamColor"
             >
               <template v-slot:append>
                 <v-text-field
-                  v-model="amount.sensors"
+                  v-model.number="amount.sensors"
                   class="mt-0 pt-0"
                   hide-details
                   single-line
@@ -469,30 +639,46 @@
                 />
               </template>
             </v-slider>
-          </v-col>
+            </v-col>
+          </v-row>
 
-          <v-col>
+          <v-row no-gutters>
+            <v-col
+              class="pr-4"
+            >
             <v-text-field
-              label="Engine: Total cost (EUR)"
-              :value="calculatedTotalCostEngine"
+                label="Sensors: Total cost (EUR)"
+                :value="calculatedTotalCostSensors"
+                filled
+                disabled
+              />
+            </v-col>
+          
+            <v-col
+              class="pr-4"
+            >         
+            <!-- Sustainability factor Sensors -->
+            <v-text-field
+              label="Sustainability factor Sensors"
+              :value="calculatedSensorsSustainabilityfactor"
               filled
               disabled
             />
+            </v-col>
+
+            <v-col
+            >
+            <!-- Regionality factor Sensors -->
             <v-text-field
-              label="Frame: Total cost (EUR)"
-              :value="calculatedTotalCostFrame"
-              filled
-              disabled
-            />
-            <v-text-field
-              label="Sensors: Total cost (EUR)"
-              :value="calculatedTotalCostSensors"
+              label="Regionality factor Sensors"
+              :value="calculatedSensorsRegionalityfactor"
               filled
               disabled
             />
           </v-col>
         </v-row>
-      </v-container>
+      </v-card>
+    </v-container>
     </div>
 
     <v-row ref="navigation">
@@ -545,7 +731,7 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Purchasing",
   computed: {
-    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor']),
+    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor']),
     vendorsSelect: function() {
       return this.vendors.map(vendor => {
         return {
@@ -562,36 +748,55 @@ export default {
         }
       })
     },
+    engineVendorsSelect: function() {
+      return this.engineVendors.map(engineVendor => {
+        return {
+          name: engineVendor.Vendorname,
+          value: engineVendor
+        }
+      })
+    },
+    frameVendorsSelect: function() {
+      return this.frameVendors.map(frameVendor => {
+        return {
+          name: frameVendor.Vendorname,
+          value: frameVendor
+        }
+      })
+    },
+    sensorsVendorsSelect: function() {
+      return this.sensorsVendors.map(sensorsVendor => {
+        return {
+          name: sensorsVendor.Vendorname,
+          value: sensorsVendor
+        }
+      })
+    },
     
-    // TODO: add 2 more functions for engine and battery here
     calculatedCostPerMaterialFrame: function() {
-      return this.vendor != null ? (this.vendor.Developmentcost * (1 + this.quality.frame / 100)).toFixed(2) : "";
+      return this.frameVendor != null ? (this.frameVendor.Developmentcost * (1 + this.quality.frame / 100)).toFixed(2) : "";
     },
     calculatedCostPerMaterialSensors: function() {
-      return this.vendor != null ? (this.vendor.Developmentcost * (1 + this.quality.sensors / 100)).toFixed(2) : "";
+      return this.sensorsVendor != null ? (this.sensorsVendor.Developmentcost * (1 + this.quality.sensors / 100)).toFixed(2) : "";
     },
      calculatedCostPerMaterialBattery: function() {
       return this.batteryVendor != null ? (this.batteryVendor.Developmentcost * (1 + this.quality.battery / 100)).toFixed(2) : "";
     },
     calculatedCostPerMaterialEngine: function() {
-      return this.vendor != null ? (this.vendor.Developmentcost * (1 + this.quality.engine / 100)).toFixed(2) : "";
+      return this.engineVendor != null ? (this.engineVendor.Developmentcost * (1 + this.quality.engine / 100)).toFixed(2) : "";
     },
-    // TODO: add 2 more functions for engine and battery here
-    calculatedTotalCostFrame: function() {
-      // replace 1 with actual amount
-      return this.vendor != null ? (this.calculatedCostPerMaterialFrame * this.amount.frame).toFixed(2) : "";
-    },
-    calculatedTotalCostSensors: function() {
-      // replace 1 with actual amount
-      return this.vendor != null ? (this.calculatedCostPerMaterialSensors * this.amount.sensors).toFixed(2) : "";
-    },
+    
     calculatedTotalCostBattery: function() {
-      // replace 1 with actual amount
       return this.batteryVendor != null ? (this.calculatedCostPerMaterialBattery * this.amount.battery).toFixed(2) : "";
     },
     calculatedTotalCostEngine: function() {
-      // replace 1 with actual amount
-      return this.vendor != null ? (this.calculatedCostPerMaterialEngine * this.amount.engine).toFixed(2) : "";
+      return this.engineVendor != null ? (this.calculatedCostPerMaterialEngine * this.amount.engine).toFixed(2) : "";
+    },
+    calculatedTotalCostFrame: function() {
+      return this.frameVendor != null ? (this.calculatedCostPerMaterialFrame * this.amount.frame).toFixed(2) : "";
+    },
+    calculatedTotalCostSensors: function() {
+      return this.sensorsVendor != null ? (this.calculatedCostPerMaterialSensors * this.amount.sensors).toFixed(2) : "";
     },
     calculatedBatterySustainabilityfactor: function() {
       return this.batteryVendor != null ? this.batteryVendor.Sustainabilityfactor : "";
@@ -599,11 +804,23 @@ export default {
     calculatedBatteryRegionalityfactor: function() {
       return this.batteryVendor != null ? this.batteryVendor.Regionalityfactor : "";
     },
-    calculatedSustainabilityfactor: function() {
-      return this.vendor != null ? this.vendor.Sustainabilityfactor : "";
+    calculatedEngineSustainabilityfactor: function() {
+      return this.engineVendor != null ? this.engineVendor.Sustainabilityfactor : "";
     },
-    calculatedRegionalityfactor: function() {
-      return this.vendor != null ? this.vendor.Regionalityfactor : "";
+    calculatedEngineRegionalityfactor: function() {
+      return this.engineVendor != null ? this.engineVendor.Regionalityfactor : "";
+    },
+    calculatedFrameSustainabilityfactor: function() {
+      return this.frameVendor != null ? this.frameVendor.Sustainabilityfactor : "";
+    },
+    calculatedFrameRegionalityfactor: function() {
+      return this.frameVendor != null ? this.frameVendor.Regionalityfactor : "";
+    },
+    calculatedSensorsSustainabilityfactor: function() {
+      return this.sensorsVendor != null ? this.sensorsVendor.Sustainabilityfactor : "";
+    },
+    calculatedSensorsRegionalityfactor: function() {
+      return this.sensorsVendor != null ? this.sensorsVendor.Regionalityfactor : "";
     },
   },
   data() {
@@ -680,10 +897,14 @@ export default {
   },
   methods: {
     // ... => spread Operator und verteilt die Properties im aktuellen Objekt
-    ...mapActions('purchasing', ['updateVendors']),
     ...mapActions('purchasing', ['updateBatteryVendors']),
-    ...mapMutations('purchasing', ['updateVendor']),
+    ...mapActions('purchasing', ['updateEngineVendors']),
+    ...mapActions('purchasing', ['updateFrameVendors']),
+    ...mapActions('purchasing', ['updateSensorsVendors']),
     ...mapMutations('purchasing', ['updateBatteryVendor']),
+    ...mapMutations('purchasing', ['updateEngineVendor']),
+    ...mapMutations('purchasing', ['updateFrameVendor']),
+    ...mapMutations('purchasing', ['updateSensorsVendor']),
     toggleShowError() {
       this.showError = !this.showError;
     },
@@ -781,8 +1002,10 @@ export default {
       this.nextPurchasingStep();
     }
     
-    this.updateVendors();
-    this.updateBatteryVendors()
+    this.updateBatteryVendors();
+    this.updateEngineVendors();
+    this.updateFrameVendors();
+    this.updateSensorsVendors();
   },
   watch: {
     '$store.state.purchasingStep': function() {
