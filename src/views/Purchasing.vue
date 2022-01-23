@@ -76,6 +76,29 @@
         <h2 style="text-align: left;">Manage purchasing process</h2>
       </v-row>
 
+      <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-chat-question </v-icon>
+          Info
+        </v-btn>
+        </template>
+        <span>Sustainability factor: Level of sustainability of the company.</span><br>
+        <span>Regionality factor: Level of regionality of the company.</span><br>
+        <span>Quality: Depending on the quality the price for each material is changed</span><br>
+        <span>Amount: Each bike has 1 battery, 1 engine, 1 frame and 10 sensors</span>
+        </v-tooltip>
+        </v-col>
+      </v-container>
+
       <!-- Manage Battery purchasing process-->
       <v-container>
         <v-card elevation="5" class="mx-auto" outlined>

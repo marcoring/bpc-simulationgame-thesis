@@ -27,8 +27,12 @@
       </v-row>
 
       <!-- Circular Progress-Bars with Pop-Overs -->
-      <v-row class="pa-10 text-center" >
-        <v-col v-for="element in calculatedProgressElements" :key="element.id">
+      <!-- TODO Breakpoints for more responsiveness -->
+      <v-container fluid fill-height>
+      <v-layout align-center justify-center class="pa-1">
+      <v-flex>
+      <v-row justify="center">
+        <v-col class="mt-5 mb-1 mr-2 ml-2" justify="center" align="center" cols="2" v-for="element in calculatedProgressElements" :key="element.id">
           <v-tooltip bottom content-class='custom-tooltip' >
             <template v-slot:activator="{ on, attrs }">
               <v-progress-circular
@@ -49,9 +53,12 @@
               </v-progress-circular>
             </template>
           </v-tooltip>
-          <h3 v-show="showName(element)">{{ element.name }}</h3>
+          <h3 class="pa-2" align="center" justify="center" v-show="showName(element)">{{ element.name }}</h3>
         </v-col>
       </v-row>
+      </v-flex>
+      </v-layout>
+      </v-container>
     </div>
 
     <v-row v-if="this.$store.state.dashboardStep <= 4" ref="guide-btn" class="pa-2">
@@ -107,7 +114,11 @@ export default {
   },
   methods: {
     showName(element) {
-      return element.requiredRound <= this.$store.state.round;
+      return element
+      
+      // uncomment if you want to filter name of elements
+
+      // .requiredRound <= this.$store.state.round;
     },
     calculateClass(element) {
       if(this.$store.state.nextStep === element.id && this.$store.state.nextStep !== 'none') {
@@ -181,9 +192,13 @@ export default {
   },
   computed: {
     calculatedProgressElements() {
-      return this.progressElements.filter(
-        (element) => element.requiredRound <= this.$store.state.round
-      );
+      return this.progressElements
+
+      // uncomment if you want to filter elements
+
+      // .filter(
+      //   (element) => element.requiredRound <= this.$store.state.round
+      // );
     },
     calculateProgress() {
       const prEl = this.progressElements;
