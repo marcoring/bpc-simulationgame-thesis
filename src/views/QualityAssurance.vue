@@ -1,6 +1,6 @@
 <template>
   <v-container id="quality-assurance">
-    <v-container v-if="round >= 2">
+    <v-container>
       <!-- Statistic about current, previous round and cost accounting -->
       <v-row style="height: 400px;">
         <v-col>
@@ -182,10 +182,10 @@
       @closeError="toggleShowError"
     ></error-chages-dialog>
     </v-container>
-    <v-container v-else>
+    <!-- <v-container>
       <h1>Hey, url-hacker, you have no access to this component yet!!</h1>
       <v-icon size="500">mdi-police-badge</v-icon>
-    </v-container>
+    </v-container> -->
   </v-container>
 </template>
 
@@ -251,8 +251,8 @@ export default {
     toPreviousStep() {
       if(this.$store.state.round >= 4) {
         this.$router.push({ path: "/appDevAndMaintenance" });
-      } else {
-        this.$router.push({ path: "/bikeConstruction" });
+      // } else {
+      //   this.$router.push({ path: "/bikeConstruction" });
       }
        
     }

@@ -1,18 +1,19 @@
-// import dependency to handle HTTP request to our back end
 import axios from 'axios'
 
-//to handle state
 const state = {
+    assemblyVendors: [],
+    assemblyVendor: null,
     vendors: [],
     vendor: null,
     types: [],
     type: null,
     quality: [],
-    amount: [],
+    amount: []
 }
 
-//to handle state
 const getters = {
+    assemblyVendors: state => state.assemblyVendors,
+    assemblyVendor: state => state.assemblyVendor,
     vendors: state => state.vendors,
     vendor: state => state.vendor,
     types: state => state.types,
@@ -21,12 +22,11 @@ const getters = {
     amount: state => state.amount,
 }
 
-//to handle actions
 const actions = {
     async updateVendors({ commit }) {
         try {
             var response = await axios.get(
-                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsVendorSet?$format=json"
+                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/MaterialVendorSet?$format=json"
               );
             var vendors = response.data.d.results;
             commit('updateVendors', vendors);
@@ -49,13 +49,13 @@ const actions = {
               console.log(error.config);
         }
     },
-    async axiosPut({ commit }) {
+    async updateAssemblyVendors({ commit }) {
         try {
-        var response = await axios.put(
-            "/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet" 
-        );
-        var vendors = response.data.d.results;
-        commit('axiosPut', vendors);
+            var response = await axios.get(
+                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/AssemblyLineSet?$format=json"
+              );
+            var assemblyVendors = response.data.d.results;
+            commit('updateAssemblyVendors', assemblyVendors);
         } catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code
@@ -74,12 +74,13 @@ const actions = {
               }
               console.log(error.config);
         }
-    }
+    },
 }
 
-//to handle mutations
 const mutations = {
     // Hier könnte ich noch checks einbauen, ob Vendors so stimmt z.b., bevor ich sie setze
+    updateAssemblyVendors: (state, assemblyVendors) => state.assemblyVendors = assemblyVendors,
+    updateAssemblyVendor: (state, assemblyVendor) => state.assemblyVendor = assemblyVendor,
     updateVendors: (state, vendors) => state.vendors = vendors,
     updateVendor: (state, vendor) => state.vendor = vendor,
     updateTypes: (state, types) => state.types = types,
@@ -88,7 +89,6 @@ const mutations = {
     updateAmount: (state, amount) => state.amount = amount,
 }
 
-//export store module
 export default {
     namespaced: true,
     state,

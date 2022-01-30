@@ -1,6 +1,7 @@
 <template>
-  <v-container id="battery-preparation">
-    <v-container v-if="round >= 2">
+  <v-container id="batteryPreparation">
+    <!-- insert in v-container e.g. "v-if="round >= 2" to filter for rounds -->
+    <v-container>
       <!-- custom component with statistic about current, previous round and cost accounting -->
       <prev-cur-round-stats
         :prevAsmLine="'SmartLine'"
@@ -34,31 +35,66 @@
       <v-row style="margin-top: 10px;">
         <h2 style="text-align: left;">Manage battery preparation process</h2>
       </v-row>
+
+      <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-chat-question </v-icon>
+         Hover me
+        </v-btn>
+        </template>
+        <span>Number of production lines: Additional production lines could be bought to improve the production capacity.</span><br>
+        <span>Environmental facotr: Environmental friendliness of the process.</span><br>
+        <span>Quality: The quality at each step influences the total quality of the product. The weights for the quality could be different depending on the step and round.</span><br>
+        <span>Workload: chosen workload will affect production costs and the number of produced bikes.</span><br>
+        <span>Safety: Safety will influence the number of defective bikes.</span><br>
+        </v-tooltip>
+        </v-col>
+      </v-container>
+
       <v-row>
         <v-col>
+          <!-- Choose production line -->
           <v-select
-            v-model="selectedLine"
-            :items="assemblyLines"
-            label="Choose assembly line..."
+            :v-model="filterAssemblyVendor"
+            :value="assemblyVendor"
+            @input="updateAssemblyVendor"
+            :items="assemblyVendorsSelect"
             :color="teamColor"
+            label=" Choose production line... "
             item-text="name"
-          />
-
+            filled
+          >
+          </v-select>
           <v-text-field
-            label="Assembly costs (EUR)"
-            :value="calculateCosts(selectedLine[0])"
+            label="Production costs (EUR)"
+            :value="calculatedProductionCosts"
             filled
             disabled
           />
           <v-text-field
-            label="Production costs (EUR)"
-            :value="calculateCosts(selectedLine[1])"
+            label="Production line costs (EUR)"
+            :value="calculatedProductionlineCosts"
             filled
             disabled
           />
           <v-text-field
             label="Production capacity (PC)"
-            :value="calculateCosts(selectedLine[2])"
+            :value="calculatedCapacityCosts"
+            filled
+            disabled
+          />
+          <v-text-field
+            label="Environmental factor (%)"
+            :value="calculatedEnvironmentalFactor"
             filled
             disabled
           />
@@ -66,8 +102,8 @@
 
         <v-col>
           <v-slider
-            v-model="numOfLines"
-            label="Number of Assembly Lines"
+            v-model="amount.batterylines"
+            label="Number of Production lines"
             step="1"
             :min="1"
             :max="10"
@@ -82,7 +118,7 @@
           >
             <template v-slot:append>
               <v-text-field
-                v-model="numOfLines"
+                v-model.number="amount.batterylines"
                 class="mt-0 pt-0"
                 hide-details
                 single-line
@@ -206,10 +242,10 @@
         @closeError="toggleShowError"
       ></error-chages-dialog>
     </v-container>
-    <v-container v-else>
+    <!-- <v-container v-else>
       <h1>Hey, url-hacker, you have no access to this component yet!!</h1>
       <v-icon size="500">mdi-police-badge</v-icon>
-    </v-container>
+    </v-container> -->
   </v-container>
 </template>
 
@@ -217,43 +253,90 @@
 import prevCurRoundStats from "../components/prevCurRoundStats.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   components: { prevCurRoundStats, ConfirmationDialog, ErrorChagesDialog },
-  name: "battery-preparation",
+  name: "BatteryPreparation",
+    computed: {
+    ...mapGetters('batteryPreparation', ['vendors', 'vendor', 'assemblyVendors', 'assemblyVendor']),
+    vendorsSelect: function() {
+      return this.vendors.map(vendor => {
+        return {
+          name: vendor.Vendorname,
+          value: vendor
+        }
+      })
+    },
+    assemblyVendorsSelect: function() {
+      return this.assemblyVendors.map(assemblyVendor => {
+        return {
+          name: assemblyVendor.Alname,
+          value: assemblyVendor
+        }
+      })
+    },
+    // TODO: Filter Production lines for specific rounds
+    getRoundid: function(){
+      return this.$store.state.round != null ? this.$store.state.round: "";
+    },
+    getRoundidVendor: function(){
+      return this.assemblyVendor != null ? this.assemblyVendor.Roundid: "";
+    },
+    filterAssemblyVendor: function(){
+      return this.getRoundid != null ? this.getRoundidVendor: "";
+    },
+    calculatedCapacityCosts: function() {
+      return this.assemblyVendor != null ? this.assemblyVendor.Environmentalfactor: "";
+    },
+    calculatedEnvironmentalFactor: function() {
+      return this.assemblyVendor != null ? this.assemblyVendor.Maxcapacity: "";
+    },
+    calculatedProductionCosts: function() {
+      return this.assemblyVendor != null ? this.assemblyVendor.Baseprodcost : "";
+    },
+    calculatedProductionlineCosts: function() {
+      return this.assemblyVendor != null ? (this.calculatedProductionCosts * this.amount.batterylines).toFixed(2) : "";
+    },
+  },
   data() {
     return {
-       showError: false,
+      showError: false,
       confirmChangesDialog: false,
       selectedLine: "",
       numOfLines: 1,
       quality: { label: "Quality (%)", val: 50, color: "primary" },
       workload: { label: "Workload (%)", val: 50, color: "primary" },
       safety: { label: "Safety (%)", val: 50, color: "primary" },
-      assemblyLines: [
-        {
-          name: "Assembly Line 1",
-          value: ["100", "50", "200"],
-        },
-        {
-          name: "Assembly Line 2",
-          value: ["300", "100", "600"],
-        },
-        {
-          name: "Assembly Line 3",
-          value: ["500", "250", "2000"],
-        },
-      ],
+      amount: { label: "Number of Production Lines", val: 1},
+      // assemblyLines: [
+      //   {
+      //     name: "Assembly Line 1",
+      //     value: ["100", "50", "200"],
+      //   },
+      //   {
+      //     name: "Assembly Line 2",
+      //     value: ["300", "100", "600"],
+      //   },
+      //   {
+      //     name: "Assembly Line 3",
+      //     value: ["500", "250", "2000"],
+      //   },
+      // ],
       teamColor: this.$store.state.color,
       round: this.$store.state.round
     };
   },
   methods: {
+    ...mapActions('batteryPreparation', ['updateVendors']),
+    ...mapMutations('batteryPreparation', ['updateVendor']),
+    ...mapActions('batteryPreparation', ['updateAssemblyVendors']),
+    ...mapMutations('batteryPreparation', ['updateAssemblyVendor']),
    toggleShowError() {
       this.showError = !this.showError;
     },
     toggleDialog() {
-      if(this.selectedLine === "") {
+      if(this.vendor === null) {
         this.toggleShowError();
       } else {
         this.confirmChangesDialog = !this.confirmChangesDialog;
@@ -264,30 +347,34 @@ export default {
       //this.$router.push({ path: "/dashboard" });
       this.toggleDialog();
     },
-    calculateCosts(selectedLine) {
-      // check for NaN
-      if (typeof selectedLine === "undefined") {
-        return "";
-      } else {
-        return (
-          selectedLine *
-          this.numOfLines *
-          (1 + this.quality.val / 100) *
-          (1 + this.workload.val / 100) *
-          (1 + this.safety.val / 100)
-        ).toFixed(2);
-      }
-    },
+    // calculateCosts(selectedLine) {
+    //   // check for NaN
+    //   if (typeof selectedLine === "undefined") {
+    //     return "";
+    //   } else {
+    //     return (
+    //       selectedLine *
+    //       this.numOfLines *
+    //       (1 + this.quality.val / 100) *
+    //       (1 + this.workload.val / 100) *
+    //       (1 + this.safety.val / 100)
+    //     ).toFixed(2);
+    //   }
+    // },
     toNextStep() {
       this.$router.push({ path: "/bikeConstruction" });
     },
     toPreviousStep() {
       if(this.$store.state.round === 2) {
-        this.$router.push({ path: "/sensorsPreparation" });      
-      } else {
-        this.$router.push({ path: "/enginePreparation" });
+      //   this.$router.push({ path: "/sensorsPreparation" });      
+      // } else {
+      this.$router.push({ path: "/enginePreparation" });
       }
     }
+  },
+  mounted() {
+    this.updateVendors();
+    this.updateAssemblyVendors();
   },
 };
 </script>

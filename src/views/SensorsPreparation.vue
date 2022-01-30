@@ -290,13 +290,13 @@ export default {
     },
     toNextStep() {
       if(this.$store.state.sensorStep >= 5) {
-        if(this.$store.state.round === 1) {
-          this.$router.push({ path: "/bikeConstruction" });
-        } else if(this.$store.state.round === 2) {
-          this.$router.push({ path: "/batteryPreparation" });
-        } else {
-          this.$router.push({ path: "/enginePreparation" });
-        }
+        // if(this.$store.state.round === 1) {
+        //   this.$router.push({ path: "/bikeConstruction" });
+        // } else if(this.$store.state.round === 2) {
+        //   this.$router.push({ path: "/batteryPreparation" });
+        // } else {
+        this.$router.push({ path: "/enginePreparation" });
+        // }
       }
     },
     toPreviousStep() {

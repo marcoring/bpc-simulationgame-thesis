@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import PurchasingStore from './modules/PurchasingStore'
 import LogisticsStore from './modules/LogisticsStore'
+import BatteryPreparationStore from './modules/BatteryPreparationStore'
 
 Vue.use(Vuex)
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
     },
     modules: {
         purchasing: PurchasingStore,
-        logistics: LogisticsStore
+        logistics: LogisticsStore,
+        batteryPreparation: BatteryPreparationStore
     }
 })

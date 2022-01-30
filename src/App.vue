@@ -109,8 +109,8 @@ import GeneralRules from './components/gamerules/GeneralRules.vue';
 import RoundRulesDialog from './components/gamerules/RoundRulesDialog.vue';
 import TodoDialog from './dialogs/TodoDialog.vue';
 import PanicButton from './components/PanicButton/PanicButton.vue';
-
 import axios from "axios";
+
 export default {
   name: "App",
   components: { GeneralRules, EasterEggDialog, EndRoundDialog, MenuComponent, RoundRulesDialog, TodoDialog, PanicButton },
@@ -161,14 +161,14 @@ export default {
           name: "Engine Preparation",
           value: 5,
           icon: "mdi-pac-man",
-          requiredRound: 3,
+          requiredRound: 1,
         },
         {
           id: "batteryPreparation",
           name: "Battery Preparation",
           value: 5,
           icon: "mdi-battery-charging-high",
-          requiredRound: 2,
+          requiredRound: 1,
         },
         {
           id: "bikeConstruction",
@@ -182,14 +182,14 @@ export default {
           name: "Application Development and Maintenance",
           value: 5,
           icon: "mdi-cellphone",
-          requiredRound: 4,
+          requiredRound: 1,
         },
         {
           id: "qualityAssurance",
           name: "Quality Assurance",
           value: 5,
           icon: "mdi-quality-high",
-          requiredRound: 2,
+          requiredRound: 1,
         },
         {
           id: "sales",

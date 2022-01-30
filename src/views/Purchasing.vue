@@ -48,9 +48,21 @@
           </v-card-title>
           <v-data-table
             :headers="headersRound"
-            :items="dataCurrentRound"
+            :items="batteryVendors"
             :search="searchCurRound"
-          />
+          >
+          <div v-for="(batteryVendor, i) in batteryVendors" :key="i">
+          <tr>
+            <td> Battery </td>
+            <td> {{ getBatteryVendorname }} </td>
+            <td> {{ batteryVendor.calculatedBatterySustainabilityfactor }} </td>
+            <td> {{ batteryVendor.calculatedBatteryRegionalityfactor }} </td>
+            <td> {{ batteryVendor.Quality }} </td>
+            <td> {{ batteryVendor.Amount }} </td>
+            <td> {{ batteryVendor.calculatedTotalCostBattery }} </td>
+          </tr>
+          </div>
+          </v-data-table>
         </v-card>
       </v-col>
     </v-row>
@@ -88,7 +100,7 @@
           x-large
         >
         <v-icon>mdi-chat-question </v-icon>
-          Info
+          Hover me
         </v-btn>
         </template>
         <span>Sustainability factor: Level of sustainability of the company.</span><br>
@@ -795,7 +807,9 @@ export default {
         }
       })
     },
-    
+    getBatteryVendorname: function() {
+      return this.batteryVendor != null ? this.batteryVendor.Vendorname : "";
+    },
     calculatedCostPerMaterialFrame: function() {
       return this.frameVendor != null ? (this.frameVendor.Developmentcost * (1 + this.quality.frame / 100)).toFixed(2) : "";
     },
@@ -875,10 +889,12 @@ export default {
       headersRound: [
         { text: "Material", value: "material" },
         { text: "Vendor", value: "vendor" },
+        { text: "Sustainability Factor (%)", value: "sustainabilityFactor" },
+        { text: "Regionality Factor (%)", value: "regionalityFactor" },
         { text: "Quality (%)", value: "quality" },
         { text: "Amount (PC)", value: "amount" },
         { text: "Total Cost (EUR)", value: "totalCost" },
-        { text: "Cumulative Stock", value: "cumulativeStock" },
+        // { text: "Cumulative Stock", value: "cumulativeStock" },
       ],
       dataPrevRound: [
         {
@@ -935,6 +951,7 @@ export default {
       if(this.vendor === null) {
         this.toggleShowError();
       } else if(this.$store.state.purchasingStep >= 5){
+        this.updateBatteryVendors;
         this.confirmChangesDialog = !this.confirmChangesDialog;
       }
     },

@@ -1,6 +1,6 @@
 <template>
   <v-container id="engine-preparation">
-    <v-container v-if="round >= 3">
+    <v-container>
       <!-- custom component with statistic about current, previous round and cost accounting -->
       <prev-cur-round-stats
         :prevAsmLine="'SmartLine'"
@@ -206,10 +206,10 @@
         @closeError="toggleShowError"
       ></error-chages-dialog>
       </v-container>
-    <v-container v-else>
+    <!-- <v-container>
       <h1>Hey, url-hacker, you have no access to this component yet!!</h1>
       <v-icon size="500">mdi-police-badge</v-icon>
-    </v-container>
+    </v-container> -->
   </v-container>
 </template>
 

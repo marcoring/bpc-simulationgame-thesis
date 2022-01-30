@@ -9,9 +9,31 @@
             Previous Round
           </v-card-title>
           <v-card-text>
-            <p>Transport company: {{ prevTranspComp }}</p>
-            <p>Delivery costs (EUR): {{ prevDelCosts }}</p>
-            <p>Quality of delivery (%): {{ prevQualDel }}</p>
+             <v-text-field 
+            label="Transport company:"
+            :color="teamColor"
+            :value="getNamePrevround"
+            />
+            <v-text-field
+            label="Delivery costs (EUR):"
+            :color="teamColor"
+            :value="calculatedDeliveryCosts"
+            />
+            <v-text-field
+            label="Quality of delivery (%):"
+            :color="teamColor"
+            :value="calculatedDeliveryQuality"
+            />
+            <v-text-field
+            label="Sustainability factor:"
+            :color="teamColor"
+            :value="calculatedSustainabilityfactor"
+            />
+            <v-text-field
+            label="Regionality factor:"
+            :color="teamColor"
+            :value="calculatedRegionalityfactor"
+            />
           </v-card-text>
         </v-card>
       </v-col>
@@ -23,9 +45,31 @@
             Current Round
           </v-card-title>
           <v-card-text>
-            <p>Transport company: {{ curTranspComp }}</p>
-            <p>Delivery costs (EUR): {{ curDelCosts }}</p>
-            <p>Quality of delivery (%): {{ curQualDel }}</p>
+            <v-text-field 
+            label="Transport company:"
+            :color="teamColor"
+            :value="getName"
+            />
+            <v-text-field
+            label="Delivery costs (EUR):"
+            :color="teamColor"
+            :value="calculatedDeliveryCosts"
+            />
+            <v-text-field
+            label="Quality of delivery (%):"
+            :color="teamColor"
+            :value="calculatedDeliveryQuality"
+            />
+            <v-text-field
+            label="Sustainability factor:"
+            :color="teamColor"
+            :value="calculatedSustainabilityfactor"
+            />
+            <v-text-field
+            label="Regionality factor:"
+            :color="teamColor"
+            :value="calculatedRegionalityfactor"
+            />
           </v-card-text>
         </v-card>
       </v-col>
@@ -63,6 +107,30 @@
       <v-row style="margin-top: 15px; margin-left: 3px">
         <h2 style="text-align: left;">Manage logistic process</h2>
       </v-row>
+
+      <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-chat-question </v-icon>
+         Hover me
+        </v-btn>
+        </template>
+        <span>Transportation company: Transportation companies differ in quality and price.</span><br>
+        <span>Sustainability factor: Level of sustainability of the company.</span><br>
+        <span>Regionality factor: Level of regionality of the company.</span><br>
+        <span>Quality: Depending on the quality the price for each material is changed.</span><br>
+        </v-tooltip>
+        </v-col>
+      </v-container>
+
       <v-row>
         <v-col>
           <v-select
@@ -88,6 +156,20 @@
             filled
             disabled
           />
+          <!-- Sustainability -->
+            <v-text-field
+              label="Sustainability factor"
+              :value="calculatedSustainabilityfactor"
+              filled
+              disabled
+            />
+            <!-- Regionality factor -->
+            <v-text-field
+              label="Regionality factor"
+              :value="calculatedRegionalityfactor"
+              filled
+              disabled
+            />
         </v-col>
       </v-row>
     </div>
@@ -128,7 +210,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 import CostAccountingCard from "../components/CostAccountingCard.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
@@ -138,7 +220,7 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "logistics",
   components: { CostAccountingCard, ConfirmationDialog, ErrorChagesDialog },
-    computed: {
+  computed: {
       // erster Parameter entspricht Module, aus welchen wir Parameter holen
     ...mapGetters('logistics', ['vendors', 'vendor']),
     vendorsSelect: function() {
@@ -162,7 +244,16 @@ export default {
     },
     calculatedDeliveryQuality: function(){
       return this.vendor != null ? this.vendor.Deliveryquality : ""
-    }
+    },
+    calculatedSustainabilityfactor: function() {
+      return this.vendor != null ? this.vendor.Sustainabilityfactor : "";
+    },
+    calculatedRegionalityfactor: function() {
+      return this.vendor != null ? this.vendor.Regionalityfactor : "";
+    },
+    getName() {
+      return this.vendor != null ? this.vendor.Vendorname : "";
+    },
   },
   data() {
     return {
@@ -201,7 +292,22 @@ export default {
   },
   methods: {
     ...mapActions('logistics', ['updateVendors']),
+    ...mapActions('logistics', ['axiosPut']),
     ...mapMutations('logistics', ['updateVendor']),
+    ...mapMutations('logistics', ['axiosPut']),
+    toggleDialog() {
+    // TODO: das kann aktuell nicht richtig gelesen werden, wie hol ich das aus dem store (namespacing, modules in vuex doku)
+      if(this.vendor === null) {
+        return this.toggleShowError();
+      } else if (this.$store.state.logisticStep >= 5) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.confirmChangesDialog = !this.confirmChangesDialog;
+        this.axiosPut();
+        return this.$store.modules.logistics ;
+      } else {
+        return null;
+      }
+    },
     getCosts() {
       if (!this.vendor.Deliverycost) {
         return null;
@@ -209,30 +315,8 @@ export default {
         return this.vendor.Deliverycost;
       }
     },
-    getQuality() {
-      return this.vendor.Deliveryquality;
-    },
     toggleShowError() {
       this.showError = !this.showError;
-    },
-    async toggleDialog() {
-      var result = {
-        // TODO: das kann aktuell nicht richtig gelesen werden, wie hol ich das aus dem store (namespacing, modules in vuex doku)
-        purchasing: this.$store.purchasing.state,
-        logistics: this.$store.logistics.state
-      };
-      try{
-        await axios.post("http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/GameProgressSet", result);
-      }
-      catch(ex) {
-        console.log("POSTERROR:", ex);
-      }
-
-      if(this.vendor === null) {
-        this.toggleShowError();
-      } else if(this.$store.state.logisticStep >= 5){
-        this.confirmChangesDialog = !this.confirmChangesDialog;
-      }
     },
     updateProgress() {
       this.$emit("updateProgress", "logistics", 100);
@@ -342,8 +426,8 @@ export default {
     if(this.$store.state.logisticStep <= 4) {
       this.nextPurchasingStep();
     }  
-
-    this.updateVendors()
+    this.axiosPut();
+    this.updateVendors();
   },
   watch: {
     '$store.state.logisticStep': function() {

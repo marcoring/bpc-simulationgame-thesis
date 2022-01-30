@@ -293,22 +293,21 @@ export default {
     },
     toNextStep() {
       if(this.$store.state.bikeStep >= 5) {
-        if(this.$store.state.round === 1) {
-          this.$router.push({ path: "/sales" });
-        } else if(this.$store.state.round === 2 || this.$store.state.round === 3) {
-          this.$router.push({ path: "/qualityAssurance" });
-        } else {
+        // if(this.$store.state.round === 1) {
+        //   this.$router.push({ path: "/sales" });
+        // } else if(this.$store.state.round === 2 || this.$store.state.round === 3) {
+        //   this.$router.push({ path: "/qualityAssurance" });
+        // } else {
           this.$router.push({ path: "/appDevAndMaintenance" });
         }
-      }
     },
     toPreviousStep() {
       if(this.$store.state.bikeStep >= 5) {
-        if(this.$store.state.round === 1) {
-          this.$router.push({ path: "/sensorsPreparation" });
-        } else {
+        // if(this.$store.state.round === 1) {
+        //   this.$router.push({ path: "/sensorsPreparation" });
+        // } else {
           this.$router.push({ path: "/batteryPreparation" });
-        }
+        // }
       }
     },
     nextPurchasingStep() {
