@@ -23,10 +23,39 @@ const getters = {
 
 //to handle actions
 const actions = {
+    async getLastVendor({getters, rootGetters}) {
+      if(rootGetters.gameData.Roundid == 1) {
+        return null;
+      }
+      try {
+      var response = await axios.get(
+          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet?(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
+        );
+        console.log("TEST", response.data.d, getters.vendors)
+      return getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid);
+  } catch (error) {
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+  }
+    },
     async updateVendors({ commit }) {
         try {
             var response = await axios.get(
-                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsVendorSet?$format=json"
+                `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsVendorSet?$format=json`
               );
             var vendors = response.data.d.results;
             commit('updateVendors', vendors);
@@ -49,13 +78,20 @@ const actions = {
               console.log(error.config);
         }
     },
-    async axiosPut({ commit }) {
+    async saveVendor({ commit, dispatch, getters, rootGetters }) {
         try {
         var response = await axios.put(
-            "/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet" 
+            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}')`,
+            {
+              Guid: rootGetters.gameData.Guid,
+              Roundid: rootGetters.gameData.Roundid,
+              Userid: rootGetters.gameData.Userid,
+              Vendorid: getters.vendor.Vendorid
+            }
         );
         var vendors = response.data.d.results;
-        commit('axiosPut', vendors);
+        commit('saveVendor', vendors);
+        await dispatch('updateGameData', {}, { root: true });
         } catch (error) {
             if (error.response) {
                 // The request was made and the server responded with a status code

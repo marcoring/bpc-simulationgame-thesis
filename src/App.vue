@@ -111,6 +111,8 @@ import TodoDialog from './dialogs/TodoDialog.vue';
 import PanicButton from './components/PanicButton/PanicButton.vue';
 import axios from "axios";
 
+import { mapActions } from 'vuex';
+
 export default {
   name: "App",
   components: { GeneralRules, EasterEggDialog, EndRoundDialog, MenuComponent, RoundRulesDialog, TodoDialog, PanicButton },
@@ -241,6 +243,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["updateGameData"]),
     toggleShowTodo() {
       this.showTodo = !this.showTodo;
     },
@@ -385,8 +388,10 @@ export default {
       this.$router.push({ path: this.$route.path });    
     }
   },
-  mounted() {    
+  async mounted() {    
     this.newRoundRules();
+    await this.updateGameData();
+
     axios.get(
       "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/"
     ).then(response => console.log(response));

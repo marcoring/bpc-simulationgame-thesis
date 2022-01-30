@@ -12,7 +12,7 @@
              <v-text-field 
             label="Transport company:"
             :color="teamColor"
-            :value="getNamePrevround"
+            :value="lastVendor != null ? lastVendor.Vendorname : ''"
             />
             <v-text-field
             label="Delivery costs (EUR):"
@@ -224,12 +224,12 @@ export default {
       // erster Parameter entspricht Module, aus welchen wir Parameter holen
     ...mapGetters('logistics', ['vendors', 'vendor']),
     vendorsSelect: function() {
-      return this.vendors.map(vendor => {
+      return this.vendors ? this.vendors.map(vendor => {
         return {
           name: vendor.Vendorname,
           value: vendor
         }
-      })
+      }) : []
     },
     // selectedCompany: {
     //   get: function() {
@@ -257,6 +257,7 @@ export default {
   },
   data() {
     return {
+      lastVendor: null,
       showError: false,
       stepText: '',
       teamColor: this.$store.state.color,
@@ -292,18 +293,18 @@ export default {
   },
   methods: {
     ...mapActions('logistics', ['updateVendors']),
-    ...mapActions('logistics', ['axiosPut']),
+    ...mapActions('logistics', ['getLastVendor']),
+    ...mapActions('logistics', ['saveVendor']),
     ...mapMutations('logistics', ['updateVendor']),
-    ...mapMutations('logistics', ['axiosPut']),
-    toggleDialog() {
+    async toggleDialog() {
     // TODO: das kann aktuell nicht richtig gelesen werden, wie hol ich das aus dem store (namespacing, modules in vuex doku)
       if(this.vendor === null) {
         return this.toggleShowError();
       } else if (this.$store.state.logisticStep >= 5) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.confirmChangesDialog = !this.confirmChangesDialog;
-        this.axiosPut();
-        return this.$store.modules.logistics ;
+        await this.saveVendor();
+        //return this.$store.modules.logistics ;
       } else {
         return null;
       }
@@ -410,7 +411,7 @@ export default {
       this.$refs[name].style.opacity = value;
     },
   },
-  mounted() {
+  async mounted() {
     this.$store.state.innerGuideDone = 
                this.$store.state.purchasingStep >= 5 || 
                this.$store.state.logisticStep >= 5 || 
@@ -425,9 +426,9 @@ export default {
 
     if(this.$store.state.logisticStep <= 4) {
       this.nextPurchasingStep();
-    }  
-    this.axiosPut();
-    this.updateVendors();
+    }
+    await this.updateVendors();
+    this.lastVendor = await this.getLastVendor();
   },
   watch: {
     '$store.state.logisticStep': function() {
