@@ -5,7 +5,8 @@ import LogisticsStore from './modules/LogisticsStore'
 import BatteryPreparationStore from './modules/BatteryPreparationStore'
 import axios from 'axios'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
+
 
 /**
 {

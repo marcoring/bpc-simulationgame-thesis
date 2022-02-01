@@ -79,16 +79,26 @@ const actions = {
         }
     },
     async saveVendor({ commit, dispatch, getters, rootGetters }) {
+      let payload = JSON.stringify({
+                        
+            "Guid": rootGetters.gameData.Guid,    
+            "Roundid": rootGetters.gameData.Roundid,  
+            "Userid": rootGetters.gameData.Userid,
+            "Vendorid": getters.vendor.Vendorid,  
+              
+      });
         try {
         var response = await axios.put(
             `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}')`,
-            {
-              Guid: rootGetters.gameData.Guid,
-              Roundid: rootGetters.gameData.Roundid,
-              Userid: rootGetters.gameData.Userid,
-              Vendorid: getters.vendor.Vendorid
-            }
-        );
+              { 
+                payload 
+              },
+              {
+                headers:{
+                  'CSRF-TOKEN': fetch
+              },
+            },
+          );
         var vendors = response.data.d.results;
         commit('saveVendor', vendors);
         await dispatch('updateGameData', {}, { root: true });

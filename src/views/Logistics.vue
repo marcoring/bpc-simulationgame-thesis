@@ -9,30 +9,30 @@
             Previous Round
           </v-card-title>
           <v-card-text>
-             <v-text-field 
+             <v-text-field
             label="Transport company:"
-            :color="teamColor"
-            :value="lastVendor != null ? lastVendor.Vendorname : ''"
+            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+            disabled
             />
             <v-text-field
             label="Delivery costs (EUR):"
-            :color="teamColor"
-            :value="calculatedDeliveryCosts"
+            :value="lastCalculatedDeliveryCosts != null ? lastCalculatedDeliveryCosts : 'No Data'"
+            disabled
             />
             <v-text-field
             label="Quality of delivery (%):"
-            :color="teamColor"
-            :value="calculatedDeliveryQuality"
+            :value="lastCalculatedDeliveryQuality != null ? lastCalculatedDeliveryQuality : 'No Data'"
+            disabled
             />
             <v-text-field
             label="Sustainability factor:"
-            :color="teamColor"
-            :value="calculatedSustainabilityfactor"
+            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            disabled
             />
             <v-text-field
             label="Regionality factor:"
-            :color="teamColor"
-            :value="calculatedRegionalityfactor"
+            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            disabled
             />
           </v-card-text>
         </v-card>
@@ -47,28 +47,28 @@
           <v-card-text>
             <v-text-field 
             label="Transport company:"
-            :color="teamColor"
             :value="getName"
+            disabled
             />
             <v-text-field
             label="Delivery costs (EUR):"
-            :color="teamColor"
             :value="calculatedDeliveryCosts"
+            disabled
             />
             <v-text-field
             label="Quality of delivery (%):"
-            :color="teamColor"
             :value="calculatedDeliveryQuality"
+            disabled
             />
             <v-text-field
             label="Sustainability factor:"
-            :color="teamColor"
             :value="calculatedSustainabilityfactor"
+            disabled
             />
             <v-text-field
             label="Regionality factor:"
-            :color="teamColor"
             :value="calculatedRegionalityfactor"
+            disabled
             />
           </v-card-text>
         </v-card>
@@ -239,6 +239,18 @@ export default {
     //     this.updateVendor(value);
     //   }
     // },
+    lastCalculatedDeliveryCosts: function() {
+      return this.lastVendor != null ? this.lastVendor.Deliverycost : "No Data";
+    },
+    lastCalculatedDeliveryQuality: function(){
+      return this.lastVendor != null ? this.lastVendor.Deliveryquality : "No Data"
+    },
+    lastCalculatedSustainabilityfactor: function() {
+      return this.lastVendor != null ? this.lastVendor.Sustainabilityfactor : "No Data";
+    },
+    lastCalculatedRegionalityfactor: function() {
+      return this.lastVendor != null ? this.lastVendor.Regionalityfactor : "No Data";
+    },
     calculatedDeliveryCosts: function() {
       return this.vendor != null ? this.vendor.Deliverycost : "";
     },
@@ -297,7 +309,6 @@ export default {
     ...mapActions('logistics', ['saveVendor']),
     ...mapMutations('logistics', ['updateVendor']),
     async toggleDialog() {
-    // TODO: das kann aktuell nicht richtig gelesen werden, wie hol ich das aus dem store (namespacing, modules in vuex doku)
       if(this.vendor === null) {
         return this.toggleShowError();
       } else if (this.$store.state.logisticStep >= 5) {

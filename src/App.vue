@@ -109,8 +109,7 @@ import GeneralRules from './components/gamerules/GeneralRules.vue';
 import RoundRulesDialog from './components/gamerules/RoundRulesDialog.vue';
 import TodoDialog from './dialogs/TodoDialog.vue';
 import PanicButton from './components/PanicButton/PanicButton.vue';
-import axios from "axios";
-
+import axios from 'axios';
 import { mapActions } from 'vuex';
 
 export default {
@@ -393,10 +392,10 @@ export default {
     await this.updateGameData();
 
     axios.get(
-      "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/"
+      "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/$metadata"
     ).then(response => console.log(response));
     //.then((response) => (this.info = response));
-  },
+    },
 };
 </script>
 
