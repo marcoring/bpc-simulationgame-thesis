@@ -274,21 +274,6 @@ export default {
       stepText: '',
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
-      // transportCompanies: [
-      //   {
-      //     name: "Company 1",
-      //     value: ["200", "81"],
-      //   },
-      //   {
-      //     name: "Company 2",
-      //     value: ["400", "97"],
-      //   },
-      //   {
-      //     name: "Company 3",
-      //     value: ["150", "77"],
-      //   },
-      // ],
-      // selectedCompany: "",
       prevTranspComp: "Ebike GmBh",
       prevDelCosts: 0.0,
       prevQualDel: 0.0,

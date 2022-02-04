@@ -1,6 +1,8 @@
 // import dependency to handle HTTP request to our back end
 import axios from 'axios'
 
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
 //to handle state
 const state = {
     vendors: [],
@@ -79,26 +81,29 @@ const actions = {
         }
     },
     async saveVendor({ commit, dispatch, getters, rootGetters }) {
-      let payload = JSON.stringify({
-                        
-            "Guid": rootGetters.gameData.Guid,    
-            "Roundid": rootGetters.gameData.Roundid,  
-            "Userid": rootGetters.gameData.Userid,
-            "Vendorid": getters.vendor.Vendorid,  
-              
+      const payload = JSON.stringify({                       
+            Guid:rootGetters.gameData.Guid,    
+            Roundid:rootGetters.gameData.Roundid,  
+            Userid:rootGetters.gameData.Userid,
+            Vendorid:getters.vendor.Vendorid,            
       });
+      // this function return backslashes from JSON String
+      const payload_without_bs = JSON.parse(payload);
+      const axiosConfig = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+        }
+    };
         try {
         var response = await axios.put(
             `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}')`,
-              { 
-                payload 
-              },
+                payload_without_bs
+              ,
               {
-                headers:{
-                  'CSRF-TOKEN': fetch
+                axiosConfig
               },
-            },
-          );
+            );
         var vendors = response.data.d.results;
         commit('saveVendor', vendors);
         await dispatch('updateGameData', {}, { root: true });
