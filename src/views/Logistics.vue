@@ -206,7 +206,7 @@
       v-if="showError"
       @closeError="toggleShowError"
     ></error-chages-dialog>
-  </v-container>
+    </v-container>
 </template>
 
 <script>
@@ -231,14 +231,6 @@ export default {
         }
       }) : []
     },
-    // selectedCompany: {
-    //   get: function() {
-    //     return this.vendor;
-    //   },
-    //   set: function(value){
-    //     this.updateVendor(value);
-    //   }
-    // },
     lastCalculatedDeliveryCosts: function() {
       return this.lastVendor != null ? this.lastVendor.Deliverycost : "No Data";
     },
@@ -329,24 +321,6 @@ export default {
         this.$router.push({ path: "/purchasing" });
        }
     },
-    // updateCompanyCosts(){
-    //   // if (selectedCompany == null) {
-    //   //   return "";
-    //   // } else {
-    //   //   return selectedCompany.Deliverycost
-    //   // }
-    //   return this.selectedCompany == null ? "" : this.selectedCompany.Deliverycost;
-
-    // },
-    //  updateCompanyQuality(){
-    //   // if (selectedCompany == null) {
-    //   //   return "";
-    //   // } else {
-    //   //   return selectedCompany.Deliveryquality
-    //   // }
-    //   return this.selectedCompany == null ? "" : this.selectedCompany.Deliveryquality;
-
-    // },
     nextPurchasingStep() {
        if(this.$store.state.logisticStep === 1) {
         this.dataStep();

@@ -3,6 +3,13 @@ import Vue from 'vue'
 import PurchasingStore from './modules/PurchasingStore'
 import LogisticsStore from './modules/LogisticsStore'
 import BatteryPreparationStore from './modules/BatteryPreparationStore'
+import EnginePreparationStore from './modules/EnginePreparationStore'
+import AppDevAndMaintenanceStore from './modules/AppDevAndMaintenanceStore'
+import SalesStore from './modules/SalesStore'
+import SensorsPreparationStore from './modules/SensorsPreparationStore'
+import QualityAssuranceStore from './modules/QualityAssuranceStore'
+import FramePreparationStore from './modules/FramePreparationStore'
+import BikeConstructionStore from './modules/BikeConstructionStore'
 import axios from 'axios'
 
 Vue.use(Vuex);
@@ -98,6 +105,13 @@ export default new Vuex.Store({
     modules: {
         purchasing: PurchasingStore,
         logistics: LogisticsStore,
-        batteryPreparation: BatteryPreparationStore
+        batteryPreparation: BatteryPreparationStore,
+        enginePreparation: EnginePreparationStore,
+        appDevAndMaintenance: AppDevAndMaintenanceStore,
+        sales: SalesStore,
+        sensorsPreparation: SensorsPreparationStore,
+        qualityAssurance: QualityAssuranceStore,
+        framePreparation: FramePreparationStore,
+        bikeConstruction: BikeConstructionStore
     }
 })

@@ -45,7 +45,7 @@
     </v-row>
 
     <!-- Managing sales process -->
-    <div ref="logic" style="margin: 1px;">
+    <div class="mt-6 mb-3" ref="logic" style="margin: 1px;">
     <v-tabs v-model="salesTabs" :color="teamColor" centered>
       <v-tab>
         Manage Sales Activities
@@ -55,68 +55,107 @@
       </v-tab>
     </v-tabs>
 
+    <!-- Hover Me -->
+    <v-container>
+      <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-chat-question </v-icon>
+         Hover me
+        </v-btn>
+        </template>
+        <span>Additional sales tools that can boost the sales numbers by different coefficients. It is possible to choose more than one.</span><br>
+        </v-tooltip>
+      </v-col>
+    </v-container>
+
     <!-- Manage Sales Activities -->
     <v-tabs-items v-model="salesTabs">
       <v-tab-item>
         <v-row>
           <v-col>
-            <v-select
-              v-model="selectedSalesActivities"
-              :items="salesActivities"
-              label="Additional sales activities"
-              :color="teamColor"
-              item-text="name"
-            />
-
-            <v-slider
-              v-model="numOfSalesPers"
-              label="Number of Sales Persons"
-              step="1"
-              :min="1"
-              :max="10"
-              ticks="always"
-              tick-size="5"
-              thumb-label="always"
-              :color="teamColor"
-              :thumb-color="teamColor"
-              :thumb-size="24"
-              :track-color="'teamColor' + 'lighten-3'"
-              :track-fill-color="teamColor"
-            >
-              <template v-slot:append>
-                <v-text-field
-                  v-model="numOfSalesPers"
-                  class="mt-0 pt-0"
-                  hide-details
-                  single-line
-                  :min="1"
-                  :max="10"
-                  type="number"
-                  style="width: 60px"
-                />
-              </template>
-            </v-slider>
+            <v-row>
+              <v-text-field
+                class="pl-2 ml-2 mt-4"
+                prefix="Persons "
+                type='number' 
+                v-model="amount.numOfSalesPersons"
+                label="Number of Sales Persons"
+                :value="numOfSalesPers"
+                :min="0"
+                :max="1000000000"
+                outlined
+                hint="Only insert positiv integers here!"
+              ></v-text-field>
+            </v-row>
+            <v-row>
+              <v-text-field
+                class="pl-2 ml-2"
+                prefix="EUR  "
+                type='number'
+                :min="0"
+                :max="1000000000"
+                v-model="amount.pricePerBike"
+                label="Price per Bike"
+                outlined
+                hint="Only insert a positive integers like '2500.72'!"
+              ></v-text-field>
+            </v-row>
           </v-col>
 
           <v-col>
             <v-text-field
-              label="Base salary (EUR)"
-              :value="calculateCosts(selectedSalesActivities[0])"
+            class="mt-1"
+              label="Base Salary (EUR)"
+              :value="getBaseSalary"
               filled
               disabled
             />
             <v-text-field
               label="Sales Cost (EUR)"
-              :value="calculateCosts(selectedSalesActivities[1])"
+              :value="calculateSalesCost"
               filled
               disabled
             />
             <v-text-field
               label="Sales Capacity (PC)"
-              :value="calculateCosts(selectedSalesActivities[2])"
+              :value="calculateSalesCapacity"
               filled
               disabled
             />
+          <v-col>
+             <v-select
+              v-model="selected.selectedSalesActivities.label"
+              :items="salesActivities.name"
+              @click="setTemp"
+              label="Additional sales activities"
+              :color="teamColor"
+              item-text="name"
+              chips
+              multiple
+              attach
+            />
+            <v-text-field
+              label="New Sales Capacity + Additional Sales Activities (PC)"
+              :value="getNewCapacity"
+              filled
+              disabled
+            />
+            <v-text-field
+              :value="salesActivities.devCosts"
+              label="Development Costs for Additional Sales Activities (EUR)"
+              type='number'
+              filled
+              disabled
+            />
+          </v-col>
           </v-col>
         </v-row>
       </v-tab-item>
@@ -190,40 +229,65 @@
 import prevCurRoundStats from "../components/prevCurRoundStats.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "sales",
   components: { prevCurRoundStats, ConfirmationDialog, ErrorChagesDialog },
+  computed: {
+    ...mapGetters('sales', ['vendors', 'vendor']),
+    changeValue() {
+      return this.numOfSalesPers != 0 ? (this.numOfSalesPers * 0): "";
+    },
+    getNewCapacity() {
+      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * (7000 * this.capacityMultiplier)).toFixed(2): "";
+    },
+    calculateSalesCost() {
+      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 42366.00).toFixed(2) : "";
+    },
+    getBaseSalary() {
+      return (42366.00).toFixed(2);
+    },
+    calculateSalesCapacity() {
+      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 7000).toFixed(2) : "";
+    },
+  },
   data() {
     return {
       showError: false,
+      temp: false,
       stepText: '',
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
+      capacityMultiplier: this.calculateCapacityWithMultiplier(),
       salesTabs: null,
-      selectedSalesActivities: "",
-      numOfSalesPers: 1,
-      salesActivities: [
-        {
-          name: "Sales Activity 1",
-          value: ["100", "50", "200"],
+      selected: {
+        selectedSalesActivities: { 
+          label: "", 
+          val: 0
         },
-        {
-          name: "Sales Activity 2",
-          value: ["300", "100", "600"],
-        },
-        {
-          name: "Sales Activity 3",
-          value: ["500", "250", "2000"],
-        },
-      ],
+      },
+      numOfSalesPers: 0,
+      salesActivities: {
+        name: this.getActivitiesString(),
+        devCosts: this.getCalculateSalesActivitiesCost(),
+      },
+      // salesActivities: this.getActivitiesString(),
+      // salesDevelopmentCosts: this.getCalculateSalesActivitiesCost(),
       standardPrice: 0.0,
       standardProPrice: 0.0,
       premiumPrice: 0.0,
+      amount: {
+        numOfSalesPersons: { label: "Number of Sales Persons", val: 0 },
+        pricePerBike: { label: "Price per Bike", val: 0 },
+        getSelectedActivity: { label: "Development Cost (EUR)", val: 0}
+      },
     };
   },
   methods: {
+    ...mapActions('sales', ['vendor']),
+    ...mapMutations('sales', ['updateVendor']),
     toggleShowError() {
       this.showError = !this.showError;
     },
@@ -245,7 +309,7 @@ export default {
       if (typeof selectedSalesActivities === "undefined") {
         return "";
       } else {
-        return (selectedSalesActivities * this.numOfSalesPers).toFixed(2);
+        return (this.getSelectedActivity * this.numOfSalesPers).toFixed(2);
       }
     },
     toPreviousStep() {
@@ -316,6 +380,66 @@ export default {
     setOpacity(name, value) {
       this.$refs[name].style.opacity = value;
     },
+     createComboBoxItem: function(key, text){
+			var salesTypeComboBox = this.getView().byId("salesType");
+			var item = new item();
+			item.setKey(key);
+			item.setText(text);
+			salesTypeComboBox.insertItem(item, 10);
+			return item;
+		},
+    getActivitiesString: function(){
+			var activities = "";
+			if(this.$store.state.round >= 1){
+				activities += "Online Shop: 100.000 €"
+			}
+			else if(this.$store.state.round >= 2){
+				activities += "Online Marketing: 200.000 €"
+			}
+			else if(this.$store.state.round >= 3){
+				activities += "Market Analyzer: 800. 000 €"
+			}
+			else if(this.$store.state.round >= 4){
+				activities += "Drone Delivery: 3.000.000 €"
+			}
+			else if(activities !== ""){
+				activities = activities.slice(0, -1);
+				activities.charAt(0).toUpperCase();
+			}
+			return activities;
+		},
+    getCalculateSalesActivitiesCost: function() {
+      var cost = 0;
+      if(this.$store.state.round >= 1){
+        cost += 100000
+      }
+			else if(this.$store.state.round >= 2){
+        cost += 200000;
+      }
+      else if(this.$store.state.round >= 3){
+        cost += 800000;
+      }
+      else if(this.$store.state.round >= 4){
+        cost += 3000000;
+      }
+      return cost;
+    },
+		calculateCapacityWithMultiplier: function(){
+			var capacity = 1;
+			if(this.$store.state.round >= 1){
+						capacity*=1.2;
+      }
+			else if(this.$store.state.round >= 2){
+						capacity*=1.2;
+			}
+      else if(this.$store.state.round >= 3){
+						capacity*=1.5;
+			}
+      else if(this.$store.state.round >= 4){
+						capacity*=1.3;
+			}
+			return capacity;
+		},		
   },
   mounted() {
     this.$store.state.innerGuideDone = 
