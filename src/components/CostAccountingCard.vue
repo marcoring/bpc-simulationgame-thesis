@@ -4,7 +4,30 @@
     <v-card-title 
       :style="'background-color:' + this.$store.state.color +'!important'" 
       style="color: white"
-    >Cost accounting</v-card-title>
+    >Cost accounting
+    <!-- Hover Me -->
+  
+  
+        <v-col align="end">
+        <v-tooltip bottom :color="teamColor">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          v-bind="attrs"
+          v-on="on"
+          small
+          elevation="15"
+        >
+        <v-icon>mdi-chat-question </v-icon>
+        </v-btn>
+        </template>
+        <span>These fields reflect the last submitted changes.</span><br>
+        </v-tooltip>
+        </v-col>
+    
+
+
+    </v-card-title>
     <v-simple-table>
     <template v-slot:default>
       <tbody>
@@ -41,12 +64,13 @@ export default {
       currentItemValue: '',
       expanded: [],
       items: [
-        {name: 'Budget', value: 10.0, desc: 'This is your whole budget.'},
-        {name: 'Running costs', value: 222.3, desc: 'Running costs are needed for every day decisions.'},
-        {name: 'Average production cost per bike', value: 'Incomplete', desc: 'This can help you to understand what price do you need to be profitable'},
-        {name: 'Estimated quality', value: 21.29, desc: 'This value influences how many bicycles are broken.'},
-        {name: 'Maximum production capability', value: 'Incomplete', desc: 'You cannot produce not more bikes than this value'},
-        {name: 'Over demand', value: 40000, desc: 'Oversupply is an excessive amount of a product. Oversupply results when demand is lower than supply, resulting in a surplus. Simply put, an oversupply is when there is more product for sale than people are prepared to buy.'},
+        {name: 'Cash', value: 10000000.00, desc: 'This is your whole budget.'},
+        {name: 'Estimated variable costs', value: 0.00, desc: 'Running costs are needed for every day decisions.'},
+        {name: 'Estimated average production cost per bike', value: 0.00, desc: 'This can help you to understand what price do you need to be profitable'},
+        {name: 'Estimated total quality', value: 0.00, desc: 'This value influences how many bicycles are broken.'},
+        {name: 'Maximum production capability', value: 0.00, desc: 'You cannot produce not more bikes than this value'},
+        {name: 'Overall market demand', value: 60000, desc: 'Oversupply is an excessive amount of a product. Oversupply results when demand is lower than supply, resulting in a surplus. Simply put, an oversupply is when there is more product for sale than people are prepared to buy.'},
+        {name: 'Estimated customer satisfaction', value: 'Incomplete', desc: 'Due to the choosen decisions this value reflects the estimated customer satisfaction.'},
       ]
    }
   },

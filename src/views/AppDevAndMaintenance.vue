@@ -1,15 +1,30 @@
 <template>
   <v-container id="app-dev-and-maintenance">
+    <!-- Header with icon -->
+    <v-container align="left">
+      <v-row align="start"
+            justify="start"
+            class="mb-6 ml-6">
+        <v-btn :color="teamColor" fab x-large>
+        <v-icon color="white" x-large>mdi-cellphone</v-icon>
+        </v-btn>
+        <v-col align="start"
+            justify="start"
+            class="mb-6 ml-4">
+        <h1 class="font-weight-black">Application Development and Maintenance</h1>  
+        </v-col>   
+      </v-row>
+    </v-container>
     <v-container>
       <!-- Statistic about current, previous round and cost accounting -->
-      <v-row style="height: 400px;">
+      <v-row>
         <v-col>
           <!-- Previous Round Status -->
-          <v-card style="height:100%">
+          <v-card max-height="100%">
             <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
               Previous Round
             </v-card-title>
-            <v-card-text>
+            <v-card-text class="mt-3">
               <p>Outsourcing company: {{ prevOutsComp }}</p>
               <p>Development cost (EUR): {{ prevDevCost }}</p>
               <p>Application quality (%): {{ prevAppQual }}</p>
@@ -19,22 +34,25 @@
 
         <v-col>
           <!-- Current Round Status -->
-          <v-card style="height:100%">
+          <v-card max-height="100%">
             <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
               Current Round
             </v-card-title>
-            <v-card-text>
+            <v-card-text class="mt-3">
               <p>Outsourcing company: {{ curOutsComp }}</p>
               <p>Development cost (EUR): {{ curDevCost }}</p>
               <p>Application quality (%): {{ curAppQual }}</p>
             </v-card-text>
           </v-card>
         </v-col>
+        </v-row>
 
+        <v-row>
         <v-col>
           <!-- Cost Accounting -->
           <cost-accounting-card
-            style="height:100%"
+            align="center"
+            max-height="100%"
             :budget="10.0"
             :runningCosts="222.222"
             :avgProdCostBike="'Incomplete'"
@@ -45,7 +63,7 @@
         </v-col>
       </v-row>
 
-      <v-divider />
+      <v-divider class="mt-5 mb-5"/>
 
       <!-- Managing Application development and maintenance process -->
       <v-row style="margin-top: 10px;">

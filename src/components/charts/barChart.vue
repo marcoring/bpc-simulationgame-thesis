@@ -7,7 +7,7 @@ export default {
     this.renderChart(
       {
         labels: [
-          "Purchaising",
+          "Purchasing",
           "Logistics",
           "Frame Preparation",
           "Sensors Preparation",

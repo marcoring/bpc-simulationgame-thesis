@@ -20,14 +20,14 @@
         ref="header"
       >
         <v-col class="d-flex flex-column justify-start align-start">
-          <h1>{{ currentRouteName }}</h1>
-          <h3><b>Team Name: </b>{{ teamName }}</h3>
-          <h3><b>Round: </b>{{ round }}</h3>
-          <h3
+          <!-- <h1>{{ currentRouteName }}</h1> -->
+          <h2><b>Team Name: </b>{{ teamName }}</h2>
+          <h2><b>Round: </b>{{ round }}</h2>
+          <h2
             :style="'background-color:' + this.$store.state.color + '!important'"
             style="color: white"
           >
-          </h3>
+          </h2>
         </v-col>
 
         <v-col class="d-flex justify-center align-center">
@@ -339,6 +339,9 @@ export default {
       return this.progressElements.filter(
         (element) => element.requiredRound <= this.$store.state.round
       );
+    },
+    currentRouteNameDisplay() {
+      return this.$route.text;
     },
     currentRouteName() {
       return this.$route.name;
