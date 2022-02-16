@@ -51,7 +51,7 @@
             :items="batteryVendors"
             :search="searchCurRound"
           >
-          <div v-for="(batteryVendor, i) in batteryVendors" :key="i">
+          <div v-for="(batteryVendor, i) in tempSelection" :key="i">
           <tr>
             <td> Battery </td>
             <td> {{ getBatteryVendorname }} </td>
@@ -76,7 +76,7 @@
         </div>
       </v-col>
       <v-col align="right">
-        <v-btn @click="nextPurchasingStep" dark rounded link :color="teamColor">
+        <v-btn @click="nextPurchasingStep" dark rounded link color="red">
           <b>I understand</b>
         </v-btn>
       </v-col>
@@ -766,7 +766,11 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Purchasing",
   computed: {
-    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor']),
+  vendorSelection: function() {
+    console.log(Object.values(this.tempSelection))
+    return Object.values(this.tempSelection)
+  },
+    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor', 'tempSelection']),
     vendorsSelect: function() {
       return this.vendors.map(vendor => {
         return {
@@ -1046,6 +1050,7 @@ export default {
     this.updateEngineVendors();
     this.updateFrameVendors();
     this.updateSensorsVendors();
+    console.log(this.tempSelection);
   },
   watch: {
     '$store.state.purchasingStep': function() {

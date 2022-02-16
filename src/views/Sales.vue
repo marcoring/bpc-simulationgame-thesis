@@ -1,33 +1,126 @@
 <template>
   <v-container id="sales">
-    <!-- custom component with statistic about current, previous round and cost accounting -->
-    <div ref="round-data">
-      <prev-cur-round-stats
-        :prevAsmLine="'SmartLine'"
-        :prevAsmLineCost="0.0"
-        :prevNumOfAsmLines="0"
-        :prevProdCosts="0.0"
-        :prevProdCapac="0.0"
-        :prevQuality="0.0"
-        :prevWorkload="0.0"
-        :prevSafety="0.0"
-        :curAsmLine="'SmartLine'"
-        :curAsmLineCost="0.0"
-        :curNumOfAsmLines="0"
-        :curProdCosts="0.0"
-        :curProdCapac="0.0"
-        :curQuality="0.0"
-        :curWorkload="0.0"
-        :curSafety="0.0"
-        :budget="150000.0"
-        :runningCosts="0.0"
-        :avgProdCostBike="'Incomplete'"
-        :estimatedQual="0.0"
-        :maxProdCapac="'Incomplete'"
-        :overDemand="40000.0"
-        style="height: 500px;"
-      />
-    </div>
+
+    <!-- Header with icon -->
+    <v-container align="left">
+      <v-row align="start"
+            justify="start"
+            class="mb-6 ml-6">
+        <v-btn :color="teamColor" fab x-large>
+        <v-icon color="white" x-large>mdi-currency-eur</v-icon>
+        </v-btn>
+        <v-col align="start"
+            justify="start"
+            class="mb-6 ml-4">
+        <h1 class="font-weight-black">Sales</h1>  
+        </v-col>   
+      </v-row>
+    </v-container>
+    
+    <v-container v-model="salesTabs">
+      <!-- Statistic about current, previous round and cost accounting -->
+      <v-row style="height: 100%">
+        <v-col>
+         <!-- Previous Round Status -->
+        <v-card style="height:100%">
+          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+            Previous Round
+          </v-card-title>
+          <v-card-text>
+             <v-text-field
+            label="Internal/External: Yearly Costs (EUR):"
+            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Regionality Factor (%):"
+            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            disabled
+            />
+                        <v-text-field
+            label="Sustainability Factor (%):"
+            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Quality (%):"
+            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Number of Employees:"
+            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            disabled
+            />
+             <v-text-field
+            label="QA Capacity (PC):"
+            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            disabled
+            />
+          </v-card-text>
+          </v-card>
+        </v-col>
+
+        <v-col>
+          <!-- Current Round Status -->
+          <v-card style="height:100%">
+            <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+              Current Round
+            </v-card-title>
+            <v-card-text>
+             <v-text-field
+            label="Internal/External: Yearly Costs (EUR):"
+            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Regionality Factor (%):"
+            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            disabled
+            />
+                        <v-text-field
+            label="Sustainability Factor (%):"
+            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Quality (%):"
+            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Number of Employees:"
+            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            disabled
+            />
+             <v-text-field
+            label="QA Capacity (PC):"
+            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            disabled
+            />
+            </v-card-text>
+          </v-card>
+        </v-col>
+        </v-row>
+
+        <v-row>
+        <v-col>
+          <!-- Cost Accounting -->
+          <cost-accounting-card
+            align="center"
+            style="height:100%"
+            :budget="10.0"
+            :runningCosts="222.222"
+            :avgProdCostBike="'Incomplete'"
+            :estimatedQual="21.29"
+            :maxProdCapac="'Incomplete'"
+            :overDemand="40000.0"
+          />
+        </v-col>
+      </v-row>
+    </v-container>
+
+      <v-divider class="mt-5 mb-5"/>
 
     <v-divider />
 
@@ -38,7 +131,7 @@
         </div>
       </v-col>
       <v-col align="right">
-        <v-btn @click="nextSalesStep" dark rounded link :color="teamColor">
+        <v-btn @click="nextSalesStep" dark rounded link color="red">
           <b>I understand</b>
         </v-btn>
       </v-col>
@@ -225,8 +318,8 @@
   </v-container>
 </template>
 
+
 <script>
-import prevCurRoundStats from "../components/prevCurRoundStats.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -234,7 +327,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "sales",
-  components: { prevCurRoundStats, ConfirmationDialog, ErrorChagesDialog },
+  components: { ConfirmationDialog, ErrorChagesDialog },
   computed: {
     ...mapGetters('sales', ['vendors', 'vendor']),
     changeValue() {

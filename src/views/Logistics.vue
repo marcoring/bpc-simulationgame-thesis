@@ -1,5 +1,22 @@
 <template>
-  <v-container id="logistics">
+<v-container id="logistics">
+
+  <!-- Header with icon -->
+    <v-container align="left">
+      <v-row align="start"
+            justify="start"
+            class="mb-6 ml-6">
+        <v-btn :color="teamColor" fab x-large>
+        <v-icon color="white" x-large>mdi-truck</v-icon>
+        </v-btn>
+        <v-col align="start"
+            justify="start"
+            class="mb-6 ml-4">
+        <h1 class="font-weight-black">Logistics</h1>  
+        </v-col>   
+      </v-row>
+    </v-container>
+  
     <!-- Statistic about current and previous round -->
     <v-row ref="round-data">
       <v-col>
@@ -73,7 +90,9 @@
           </v-card-text>
         </v-card>
       </v-col>
+      </v-row>
 
+      <v-row>
       <v-col>
         <!-- Cost Accounting -->
         <cost-accounting-card
@@ -88,7 +107,8 @@
       </v-col>
     </v-row>
 
-    <v-divider />
+    <v-divider class="mt-5 mb-5"/>
+
     <v-row v-if="this.$store.state.logisticStep <= 4" class="pa-2" style="margin-top: 20px; margin-bottom: 40px;">
       <v-col align="left" cols="9">
         <div>
@@ -96,7 +116,7 @@
         </div>
       </v-col>
       <v-col align="right">
-        <v-btn @click="nextPurchasingStep" dark rounded link :color="teamColor">
+        <v-btn @click="nextPurchasingStep" dark rounded link color="red">
           <b>I understand</b>
         </v-btn>
       </v-col>

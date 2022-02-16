@@ -12,7 +12,13 @@ const state = {
     types: [],
     type: null,
     quality: [],
-    amount: []
+    amount: [],
+    tempSelection: {
+      batteryVendor: {},
+      engineVendor: {},
+      frameVendor: {},
+      sensorsVendor: {}
+    }
 }
 
 const getters = {
@@ -30,6 +36,7 @@ const getters = {
     type: state => state.type,
     quality: state => state.quality,
     amount: state => state.amount,
+    tempSelection: state => state.tempSelection
 }
 
 const actions = {
@@ -142,13 +149,25 @@ const actions = {
 const mutations = {
     // Hier könnte ich noch checks einbauen, ob Vendors so stimmt z.b., bevor ich sie setze
     updateBatteryVendors: (state, batteryVendors) => state.batteryVendors = batteryVendors,
-    updateBatteryVendor: (state, batteryVendor) => state.batteryVendor = batteryVendor,
+    updateBatteryVendor: (state, batteryVendor) => {
+      state.batteryVendor = batteryVendor
+      state.tempSelection.batteryVendor = batteryVendor
+    },
     updateEngineVendors: (state, engineVendors) => state.engineVendors = engineVendors,
-    updateEngineVendor: (state, engineVendor) => state.engineVendor = engineVendor,
+    updateEngineVendor: (state, engineVendor) => {
+      state.engineVendor = engineVendor
+      state.tempSelection.engineVendor = engineVendor
+    },
     updateFrameVendors: (state, frameVendors) => state.frameVendors = frameVendors,
-    updateFrameVendor: (state, frameVendor) => state.frameVendor = frameVendor,
+    updateFrameVendor: (state, frameVendor) => {
+      state.frameVendor = frameVendor
+      state.tempSelection.frameVendor = frameVendor
+    },
     updateSensorsVendors: (state, sensorsVendors) => state.sensorsVendors = sensorsVendors,
-    updateSensorsVendor: (state, sensorsVendor) => state.sensorsVendor = sensorsVendor,
+    updateSensorsVendor: (state, sensorsVendor) => {
+      state.sensorsVendor = sensorsVendor
+      state.tempSelection.sensorsVendor = sensorsVendor
+    },
     updateVendors: (state, vendors) => state.vendors = vendors,
     updateVendor: (state, vendor) => state.vendor = vendor,
     updateTypes: (state, types) => state.types = types,

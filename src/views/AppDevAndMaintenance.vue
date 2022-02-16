@@ -15,6 +15,7 @@
         </v-col>   
       </v-row>
     </v-container>
+    
     <v-container>
       <!-- Statistic about current, previous round and cost accounting -->
       <v-row>

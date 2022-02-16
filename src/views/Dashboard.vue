@@ -70,7 +70,7 @@
         </div>
       </v-col>
       <v-col align="right">
-        <v-btn @click="nextDashboardStep" link dark rounded :color="teamColor">
+        <v-btn @click="nextDashboardStep" link dark rounded color="red">
           <b>I understand</b>
         </v-btn>
       </v-col>

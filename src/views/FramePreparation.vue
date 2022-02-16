@@ -38,7 +38,7 @@
         </div>
       </v-col>
       <v-col align="right">
-        <v-btn @click="nextPurchasingStep" dark rounded link :color="teamColor">
+        <v-btn @click="nextPurchasingStep" dark rounded link color="red">
           <b>I understand</b>
         </v-btn>
       </v-col>
