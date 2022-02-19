@@ -11,6 +11,7 @@ import QualityAssuranceStore from './modules/QualityAssuranceStore'
 import FramePreparationStore from './modules/FramePreparationStore'
 import BikeConstructionStore from './modules/BikeConstructionStore'
 import axios from 'axios'
+import LastGameStore from './modules/LastGameStore'
 
 Vue.use(Vuex);
 
@@ -72,6 +73,7 @@ export default new Vuex.Store({
               "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/GetLastGame"
             );
           var gameData = response.data.d;
+          console.log('updateGameData', gameData)
           commit('updateGameData', gameData);
           await Promise.all([
             // Promise.all läuft parallel und awaitet mehrere gleichzeitig
@@ -112,6 +114,7 @@ export default new Vuex.Store({
         sensorsPreparation: SensorsPreparationStore,
         qualityAssurance: QualityAssuranceStore,
         framePreparation: FramePreparationStore,
-        bikeConstruction: BikeConstructionStore
+        bikeConstruction: BikeConstructionStore,
+        lastGame: LastGameStore,
     }
 })
