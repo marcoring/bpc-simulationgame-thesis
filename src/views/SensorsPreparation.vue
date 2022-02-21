@@ -334,7 +334,7 @@ export default {
       confirmChangesDialog: false,
       selectedLine: "",
       numOfLines: 1,
-            amount: {
+      amount: {
         assemblyLines: { label: "Number of Assembly Lines", val: 0 },
         quality: { label: "Quality (%)", val: 0, color: "primary" },
         workload: { label: "Workload (%)", val: 0, color: "primary" },

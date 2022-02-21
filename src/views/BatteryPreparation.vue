@@ -68,7 +68,7 @@
       <v-divider class="mt-5 mb-5"/>
 
       <!-- Managing battery preparation process -->
-      <v-row style="margin-top: 10px;">
+      <v-row style="margin-top: 15px; margin-left: 3px"> 
         <h2 style="text-align: left;">Manage Battery Preparation Process</h2>
       </v-row>
 
@@ -375,7 +375,7 @@ export default {
    toggleShowError() {
       this.showError = !this.showError;
     },
-async toggleDialog() {
+  async toggleDialog() {
       if(this.vendors === null) {
         return this.toggleShowError();
       } else {
