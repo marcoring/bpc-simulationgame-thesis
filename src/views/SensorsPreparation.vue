@@ -148,25 +148,25 @@
         </v-col>
 
         <v-text-field
-          label="Production Line (EUR)"
+          label="Production Line (EUR):"
           :value="assemblyLineCosts"
           filled
           disabled
         />
         <v-text-field
-          label="Production Costs (EUR)"
+          label="Production Costs (EUR):"
           :value="assemblyProductionCosts"
           filled
           disabled
         />
         <v-text-field
-          label="Production capacity (PC)"
+          label="Production capacity (PC):"
           :value="assemblyProductionCapacity"
           filled
           disabled
         />
         <v-text-field
-          label="Environmental Factor"
+          label="Environmental Factor (%):"
           :value="assemblyEnvironmentalFactor"
           filled
           disabled
@@ -212,6 +212,73 @@
             />
           </template>
         </v-slider>
+         <v-slider
+          @input="updateWorkload"
+          v-model="amount.workload.val"
+          :label="amount.workload.label"
+          :color="teamColor"
+          :thumb-color="teamColor"
+          :min="0"
+          :max="100"
+          :thumb-size="24"
+          thumb-label="always"
+          :track-color="'teamColor' + 'lighten-3'"
+          :track-fill-color="teamColor"
+        >
+          <template v-slot:append>
+            <v-text-field
+              v-model="amount.workload.val"
+              class="mt-0 pt-0"
+              hide-details
+              single-line
+              :min="0"
+              :max="100"
+              type="number"
+              style="width: 60px"
+            />
+          </template>
+        </v-slider>
+        <v-slider
+          v-model="amount.safety.val"
+          :label="amount.safety.label"
+          :color="teamColor"
+          :thumb-color="teamColor"
+          :min="0"
+          :max="100"
+          :thumb-size="24"
+          thumb-label="always"
+          :track-color="'teamColor' + 'lighten-3'"
+          :track-fill-color="teamColor"
+        >
+          <template v-slot:append>
+            <v-text-field
+              @input="updateSafety"
+              v-model="amount.safety.val"
+              class="mt-0 pt-0"
+              hide-details
+              single-line
+              :min="0"
+              :max="100"
+              type="number"
+              style="width: 60px"
+            />
+          </template>
+        </v-slider>
+          <v-container fluid>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="selectedCustomization"
+              label="Enable Product Customization"
+            ></v-checkbox>
+          </v-container>
+        <v-text-field
+          v-if="selectedCustomization"
+          label="Customization Tool Cost:"
+          :value="2454.00"
+          type="number"
+          filled
+          disabled
+        />
       </v-col>
     </v-row>
     </div>
@@ -261,6 +328,7 @@ export default {
   data() {
     return {
       showError: false,
+      selectedCustomization: false,
       stepText: '',
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
@@ -285,12 +353,18 @@ export default {
         }}
       }) : []
     },
+    // productCustomization() {
+    //   return this.vendor != null ? this.vendor.Productcustomization : '';
+    // },
     assemblyLineName() {
       return this.vendor != null ? this.vendor.Alname : '';
     },
     assemblyLineCosts() {
+      if (this.selectedCustomization) {
+        return this. vendor != null ? (this.vendor.Acqusitioncost * 1.2) : '';
+      } else {
       return this.vendor != null ? this.vendor.Acqusitioncost : '';
-    },
+    }},
     assemblyProductionCosts() {
       return this.vendor != null ? this.vendor.Baseprodcost : '';
     },

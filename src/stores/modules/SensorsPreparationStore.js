@@ -11,7 +11,8 @@ const state = {
     type: null,
     quality: [],
     amount: [],
-    alnumber: null
+    alnumber: null,
+    workload: null,
 }
 
 //to handle state
@@ -23,6 +24,8 @@ const getters = {
     quality: state => state.quality,
     amount: state => state.amount,
     alnumber: state => state.alnumber,
+    workload: state => state.workload,
+    safety: state => state.safety
 }
 
 //to handle actions
@@ -147,8 +150,10 @@ const mutations = {
     updateVendor: (state, vendor) => state.vendor = vendor,
     updateTypes: (state, types) => state.types = types,
     updateType: (state, type) => state.type = type,
+    updateWorkload: (state, workload) => state.workload = workload,
     updateQuality: (state, quality) => state.quality = quality,
     updateAmount: (state, amount) => state.amount = amount,
+    updateSafety: (state, safety) => state.safety = safety,
     updateAlnumber: (state, alnumber) => state.alnumber = alnumber
 }
 
