@@ -49,24 +49,9 @@
         </v-col>
         </v-row>
 
-        <!-- <v-row>
-        <v-col>
-          <cost-accounting-card
-            align="center"
-            max-height="100%"
-            :budget="10.0"
-            :runningCosts="222.222"
-            :avgProdCostBike="'Incomplete'"
-            :estimatedQual="21.29"
-            :maxProdCapac="'Incomplete'"
-            :overDemand="40000.0"
-          />
-        </v-col>
-      </v-row> -->
-
       <v-divider class="mt-5 mb-5"/>
 
-      <!-- Managing battery preparation process -->
+      <!-- Managing frame preparation process -->
       <v-row style="margin-top: 15px; margin-left: 3px"> 
         <h2 style="text-align: left;">Manage Frame Preparation Process</h2>
       </v-row>
