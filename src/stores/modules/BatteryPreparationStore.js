@@ -12,7 +12,8 @@ const state = {
     quality: [],
     amount: [],
     workload: null,
-    alnumber: null
+    alnumber: null,
+    safety: null
 }
 
 //to handle state
@@ -24,7 +25,8 @@ const getters = {
     quality: state => state.quality,
     amount: state => state.amount,
     alnumber: state => state.alnumber,
-    workload: state => state.workload
+    workload: state => state.workload,
+    safety: state => state.safety
 }
 
 //to handle actions
