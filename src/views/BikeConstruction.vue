@@ -341,20 +341,6 @@ export default {
         workload: { label: "Workload (%)", val: 0, color: "primary" },
         safety: { label: "Safety (%)", val: 0, color: "primary" },
       },
-      /*assemblyLines: [
-        {
-          name: "Assembly Line 1",
-          value: ["100", "50", "200"],
-        },
-        {
-          name: "Assembly Line 2",
-          value: ["300", "100", "600"],
-        },
-        {
-          name: "Assembly Line 3",
-          value: ["500", "250", "2000"],
-        },
-      ],*/
     };
   },
   computed: {
@@ -404,11 +390,16 @@ export default {
     toggleShowError() {
       this.showError = !this.showError;
     },
-    toggleDialog() {
-      if(this.selectedLine === "") {
-        this.toggleShowError();
-      } else if(this.$store.state.bikeStep >= 5){
+    async toggleDialog() {
+      if(this.vendors === null) {
+        return this.toggleShowError();
+      } else if (this.$store.state.bikeStep >= 5) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.confirmChangesDialog = !this.confirmChangesDialog;
+        await this.saveVendor();
+        //return this.$store.modules.logistics ;
+      } else {
+        return null;
       }
     },
     updateProgress() {

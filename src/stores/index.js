@@ -60,7 +60,6 @@ export default new Vuex.Store({
       salesStep: 1,
       innerGuideDone: false,
       blockGame: false,
-
       gameData: null
     },
     getters: {

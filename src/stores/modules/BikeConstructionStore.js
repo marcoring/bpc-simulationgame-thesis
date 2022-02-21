@@ -31,7 +31,7 @@ const actions = {
       }
       try {
       var response = await axios.get(
-          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/ProdProcessSet?(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
+          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/ProdProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
         );
         console.log("TEST", response.data.d, getters.vendors)
       return getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid);
@@ -85,9 +85,20 @@ const actions = {
             Guid:rootGetters.gameData.Guid,    
             Roundid:rootGetters.gameData.Roundid,  
             Userid:rootGetters.gameData.Userid,
-            Vendorid:getters.vendor.Assemblylineid,            
+            Materialid:getters.vendor.Materialid,   
+            Assemblylineid:getters.vendor.Assemblylineid,
+            Totalacquisitioncost:getters.vendor.Acqusitioncost,
+            Prodcapacity:getters.vendor.Maxcapacity,
+            Prodcost:getters.vendor.Baseprodcost,
+            Employeesatisfaction:getters.vendor.Employeesatisfaction,
+            // TODO
+            /*Quality:getters.amount.quality.val,
+            Workload:getters.amount.workload.val,
+            Safety:getters.amount.safety.val,
+            Alnumber:getters.amount.assemblyLines.val,*/
+
       });
-      // this function return backslashes from JSON String
+      // this function removes backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
       const axiosConfig = {
         headers: {
@@ -97,8 +108,9 @@ const actions = {
     };
         try {
         var response = await axios.put(
-            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/QaProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}')`,
-                payload_without_bs
+            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/ProdProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}',Materialid='CON')`,
+                payload_without_bs,
+                console.log("PAYLOAD", payload_without_bs)
               ,
               {
                 axiosConfig
