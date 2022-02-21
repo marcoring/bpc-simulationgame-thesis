@@ -85,9 +85,8 @@
         </v-col>
         </v-row>
 
-        <v-row>
+        <!-- <v-row>
         <v-col>
-          <!-- Cost Accounting -->
           <cost-accounting-card
             align="center"
             max-height="100%"
@@ -99,7 +98,7 @@
             :overDemand="40000.0"
           />
         </v-col>
-      </v-row>
+      </v-row> -->
 
       <v-divider class="mt-5 mb-5"/>
 
@@ -197,11 +196,13 @@
           label="Number of Assembly Lines"
           outlined
           hint="Only insert a positive integers like '2500'!"
+          @input="updateAlnumber"
         ></v-text-field>
       </v-col>
 
       <v-col class="mt-13 pt-13">
         <v-slider
+          @input="updateQuality"
           v-model="amount.quality.val"
           :label="amount.quality.label"
           :color="teamColor"
@@ -228,6 +229,7 @@
         </v-slider>
 
         <v-slider
+          @input="updateWorkload"
           v-model="amount.workload.val"
           :label="amount.workload.label"
           :color="teamColor"
@@ -267,6 +269,7 @@
         >
           <template v-slot:append>
             <v-text-field
+              @input="updateSafety"
               v-model="amount.safety.val"
               class="mt-0 pt-0"
               hide-details
@@ -318,14 +321,14 @@
 </template>
 
 <script>
-import CostAccountingCard from '../components/CostAccountingCard.vue';
+/*import CostAccountingCard from '../components/CostAccountingCard.vue';*/
 import ConfirmationDialog from '../dialogs/ConfirmationDialog.vue';
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 
 export default {
-  components: { CostAccountingCard, ConfirmationDialog, ErrorChagesDialog },
+  components: { /*CostAccountingCard*/ ConfirmationDialog, ErrorChagesDialog },
   name: "bike-construction",
   data() {
     return {

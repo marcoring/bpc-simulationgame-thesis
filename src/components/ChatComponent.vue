@@ -1,6 +1,6 @@
 <template>
     <div align="center">
-        <v-card width="70%" color="#F8F8F8">
+        <v-card width="90%" color="#F8F8F8">
             <v-card-title class="justify-center"><h2>Chat</h2></v-card-title>
             <v-divider />
 
@@ -19,7 +19,7 @@
                     <v-container>
                         <v-row>
                             <v-col cols="11" align="left">
-                                <v-text-field v-model="message" style="text-align: center;" placeholder="Message" outlined clearable left></v-text-field>
+                                <v-text-field v-model="message" style="text-align: center;" class="mr-12" placeholder="Message" outlined clearable left></v-text-field>
                             </v-col>
                             <v-col cols="1" align="left">
                                 <v-btn @click="send" style="margin-top: 5px;" dark large :color="teamColor">Send!</v-btn>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+
 export default {
   name: "chat-component",
   data() {

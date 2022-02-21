@@ -1,39 +1,75 @@
 <template>
   <v-container id="batteryPreparation">
-    <!-- insert in v-container e.g. "v-if="round >= 2" to filter for rounds -->
-    <v-container>
-      <!-- custom component with statistic about current, previous round and cost accounting -->
-      <prev-cur-round-stats
-        :prevAsmLine="'SmartLine'"
-        :prevAsmLineCost="0.0"
-        :prevNumOfAsmLines="0"
-        :prevProdCosts="0.0"
-        :prevProdCapac="0.0"
-        :prevQuality="0.0"
-        :prevWorkload="0.0"
-        :prevSafety="0.0"
-        :curAsmLine="'SmartLine'"
-        :curAsmLineCost="0.0"
-        :curNumOfAsmLines="0"
-        :curProdCosts="0.0"
-        :curProdCapac="0.0"
-        :curQuality="0.0"
-        :curWorkload="0.0"
-        :curSafety="0.0"
-        :budget="150000.0"
-        :runningCosts="0.0"
-        :avgProdCostBike="'Incomplete'"
-        :estimatedQual="0.0"
-        :maxProdCapac="'Incomplete'"
-        :overDemand="40000.0"
-        style="height: 500px;"
-      />
 
-      <v-divider />
+    <!-- Header with icon -->
+    <v-container align="left">
+      <v-row align="start"
+            justify="start"
+            class="mb-6 ml-6">
+        <v-btn :color="teamColor" fab x-large>
+        <v-icon color="white" x-large>mdi-battery</v-icon>
+        </v-btn>
+        <v-col align="start"
+            justify="start"
+            class="mb-6 ml-4">
+        <h1 class="font-weight-black">Battery Preparation</h1>
+        </v-col>
+      </v-row>
+    </v-container>
+    <!-- insert in v-container e.g. "v-if="round >= 2" to filter for rounds -->
+          <!-- Statistic about current, previous round and cost accounting -->
+      <v-row>
+        <v-col>
+         <!-- Previous Round Status -->
+        <v-card style="height:100%">
+          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+            Previous Round
+          </v-card-title>
+        </v-card>
+        </v-col>
+
+        <v-col>
+        <!-- Current Round Status -->
+        <v-card style="height:100%">
+          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+            Current Round
+          </v-card-title>
+          <v-card-text>
+             <v-text-field
+            label="Assembly Line Name:"
+            :value="this.assemblyLineName != null ? this.assemblyLineName : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Assembly Line Costs (EUR):"
+            :value="this.assemblyLineCosts != null ? this.assemblyLineCosts : 'No Data'"
+            disabled
+            />
+          </v-card-text>
+        </v-card>
+        </v-col>
+        </v-row>
+
+        <!-- <v-row>
+        <v-col>
+          <cost-accounting-card
+            align="center"
+            max-height="100%"
+            :budget="10.0"
+            :runningCosts="222.222"
+            :avgProdCostBike="'Incomplete'"
+            :estimatedQual="21.29"
+            :maxProdCapac="'Incomplete'"
+            :overDemand="40000.0"
+          />
+        </v-col>
+      </v-row> -->
+
+      <v-divider class="mt-5 mb-5"/>
 
       <!-- Managing battery preparation process -->
       <v-row style="margin-top: 10px;">
-        <h2 style="text-align: left;">Manage battery preparation process</h2>
+        <h2 style="text-align: left;">Manage Battery Preparation Process</h2>
       </v-row>
 
       <v-container>
@@ -51,11 +87,12 @@
          Hover me
         </v-btn>
         </template>
-        <span>Number of production lines: Additional production lines could be bought to improve the production capacity.</span><br>
-        <span>Environmental facotr: Environmental friendliness of the process.</span><br>
-        <span>Quality: The quality at each step influences the total quality of the product. The weights for the quality could be different depending on the step and round.</span><br>
-        <span>Workload: chosen workload will affect production costs and the number of produced bikes.</span><br>
-        <span>Safety: Safety will influence the number of defective bikes.</span><br>
+          <span>Assembly Line Cost: Different production lines with additional features are available depending on the round.</span><br>
+          <span>Production Cost: Additional production lines could be bought to improve the production capacity.</span><br>
+          <span>Environmental Factor: Environmental friendliness of the process.</span><br>
+          <span>Quality: The quality at each step influences the total quality of the product. The weights for the quality could be different depending on the step and round.</span><br>
+          <span>Workload: Chosen workload will affect production costs and the number of produced bikes.</span><br>
+          <span>Safety: Safety will influence the number of defective bikes.</span>
         </v-tooltip>
         </v-col>
       </v-container>
@@ -64,150 +101,133 @@
         <v-col>
           <!-- Choose production line -->
           <v-select
-            :v-model="filterAssemblyVendor"
-            :value="assemblyVendor"
-            @input="updateAssemblyVendor"
-            :items="assemblyVendorsSelect"
+            :value="vendor"
+            @input="updateVendor"
+            :items="vendorsSelect"
             :color="teamColor"
-            label=" Choose production line... "
+            label="Select Production Line ..."
             item-text="name"
-            filled
-          >
-          </v-select>
-          <v-text-field
-            label="Production costs (EUR)"
-            :value="calculatedProductionCosts"
-            filled
-            disabled
           />
-          <v-text-field
-            label="Production line costs (EUR)"
-            :value="calculatedProductionlineCosts"
-            filled
-            disabled
-          />
-          <v-text-field
-            label="Production capacity (PC)"
-            :value="calculatedCapacityCosts"
-            filled
-            disabled
-          />
-          <v-text-field
-            label="Environmental factor (%)"
-            :value="calculatedEnvironmentalFactor"
-            filled
-            disabled
-          />
+        <v-text-field
+          label="Assembly costs (EUR)"
+          :value="assemblyLineCosts"
+          filled
+          disabled
+        />
+        <v-text-field
+          label="Production Costs (EUR)"
+          :value="assemblyProductionCosts"
+          filled
+          disabled
+        />
+        <v-text-field
+          label="Production capacity (PC)"
+          :value="assemblyProductionCapacity"
+          filled
+          disabled
+        />
+        <v-text-field
+          label="Environmental Factor"
+          :value="assemblyEnvironmentalFactor"
+          filled
+          disabled
+        />
+        <v-text-field
+          class="pl-0 ml-0"
+          prefix="Lines  "
+          type='number'
+          :min="0"
+          :max="1000000000"
+          v-model="amount.assemblyLines.val"
+          label="Number of Assembly Lines"
+          outlined
+          hint="Only insert a positive integers like '2500'!"
+          @input="updateAlnumber"
+        ></v-text-field>
         </v-col>
 
-        <v-col>
-          <v-slider
-            v-model="amount.batterylines"
-            label="Number of Production lines"
-            step="1"
-            :min="1"
-            :max="10"
-            ticks="always"
-            tick-size="5"
-            thumb-label="always"
-            :color="teamColor"
-            :thumb-color="teamColor"
-            :track-color="'teamColor' + 'lighten-3'"
-            :track-fill-color="teamColor"
-            :thumb-size="24"
-          >
-            <template v-slot:append>
-              <v-text-field
-                v-model.number="amount.batterylines"
-                class="mt-0 pt-0"
-                hide-details
-                single-line
-                :min="1"
-                :max="10"
-                type="number"
-                style="width: 60px"
-              />
-            </template>
-          </v-slider>
+        <v-col class="mt-13 pt-13">
+        <v-slider
+          @input="updateQuality"
+          v-model="amount.quality.val"
+          :label="amount.quality.label"
+          :color="teamColor"
+          :thumb-color="teamColor"
+          :min="0"
+          :max="100"
+          :thumb-size="24"
+          thumb-label="always"
+          :track-color="'teamColor' + 'lighten-3'"
+          :track-fill-color="teamColor"
+        >
+          <template v-slot:append>
+            <v-text-field
+              v-model="amount.quality.val"
+              class="mt-0 pt-0"
+              hide-details
+              single-line
+              :min="0"
+              :max="100"
+              type="number"
+              style="width: 60px"
+            />
+          </template>
+        </v-slider>
 
-          <v-slider
-            v-model="quality.val"
-            :label="quality.label"
-            :color="teamColor"
-            :thumb-color="teamColor"
-            :min="1"
-            :max="100"
-            :thumb-size="24"
-            thumb-label="always"
-            :track-color="'teamColor' + 'lighten-3'"
-            :track-fill-color="teamColor"
-          >
-            <template v-slot:append>
-              <v-text-field
-                v-model="quality.val"
-                class="mt-0 pt-0"
-                hide-details
-                single-line
-                :min="1"
-                :max="100"
-                type="number"
-                style="width: 60px"
-              />
-            </template>
-          </v-slider>
+        <v-slider
+          @input="updateWorkload"
+          v-model="amount.workload.val"
+          :label="amount.workload.label"
+          :color="teamColor"
+          :thumb-color="teamColor"
+          :min="0"
+          :max="100"
+          :thumb-size="24"
+          thumb-label="always"
+          :track-color="'teamColor' + 'lighten-3'"
+          :track-fill-color="teamColor"
+        >
+          <template v-slot:append>
+            <v-text-field
+              v-model="amount.workload.val"
+              class="mt-0 pt-0"
+              hide-details
+              single-line
+              :min="0"
+              :max="100"
+              type="number"
+              style="width: 60px"
+            />
+          </template>
+        </v-slider>
 
-          <v-slider
-            v-model="workload.val"
-            :label="workload.label"
-            :color="teamColor"
-            :thumb-color="teamColor"
-            :min="1"
-            :max="100"
-            :thumb-size="24"
-            thumb-label="always"
-            :track-color="'teamColor' + 'lighten-3'"
-            :track-fill-color="teamColor"
-          >
-            <template v-slot:append>
-              <v-text-field
-                v-model="workload.val"
-                class="mt-0 pt-0"
-                hide-details
-                single-line
-                :min="1"
-                :max="100"
-                type="number"
-                style="width: 60px"
-              />
-            </template>
-          </v-slider>
-
-          <v-slider
-            v-model="safety.val"
-            :label="safety.label"
-            :color="teamColor"
-            :thumb-color="teamColor"
-            :min="1"
-            :max="100"
-            :thumb-size="24"
-            thumb-label="always"
-            :track-color="'teamColor' + 'lighten-3'"
-            :track-fill-color="teamColor"
-          >
-            <template v-slot:append>
-              <v-text-field
-                v-model="safety.val"
-                class="mt-0 pt-0"
-                hide-details
-                single-line
-                :min="1"
-                :max="100"
-                type="number"
-                style="width: 60px"
-              />
-            </template>
-          </v-slider>
-        </v-col>
+        <v-slider
+          v-model="amount.safety.val"
+          :label="amount.safety.label"
+          :color="teamColor"
+          :thumb-color="teamColor"
+          :min="0"
+          :max="100"
+          :thumb-size="24"
+          thumb-label="always"
+          :track-color="'teamColor' + 'lighten-3'"
+          :track-fill-color="teamColor"
+        >
+          <template v-slot:append>
+            <v-text-field
+              @input="updateSafety"
+              v-model="amount.safety.val"
+              class="mt-0 pt-0"
+              hide-details
+              single-line
+              :min="0"
+              :max="100"
+              type="number"
+              style="width: 60px"
+            />
+          </template>
+        </v-slider>
+      </v-col>
       </v-row>
 
      <v-row>
@@ -246,69 +266,89 @@
       <h1>Hey, url-hacker, you have no access to this component yet!!</h1>
       <v-icon size="500">mdi-police-badge</v-icon>
     </v-container> -->
-  </v-container>
 </template>
 
 <script>
-import prevCurRoundStats from "../components/prevCurRoundStats.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
-  components: { prevCurRoundStats, ConfirmationDialog, ErrorChagesDialog },
+  components: { ConfirmationDialog, ErrorChagesDialog },
   name: "BatteryPreparation",
     computed: {
-    ...mapGetters('batteryPreparation', ['vendors', 'vendor', 'assemblyVendors', 'assemblyVendor']),
+    ...mapGetters('batteryPreparation', ['vendors', 'vendor']),
     vendorsSelect: function() {
-      return this.vendors.map(vendor => {
+      return this.vendors ? this.vendors.map(vendor => {
+        if (vendor.Materialid == 'BAT') {
         return {
-          name: vendor.Vendorname,
+          name: vendor.Alname,
           value: vendor
-        }
-      })
-    },
-    assemblyVendorsSelect: function() {
-      return this.assemblyVendors.map(assemblyVendor => {
-        return {
-          name: assemblyVendor.Alname,
-          value: assemblyVendor
-        }
-      })
+        }}
+      }) : []
     },
     // TODO: Filter Production lines for specific rounds
-    getRoundid: function(){
-      return this.$store.state.round != null ? this.$store.state.round: "";
+    // getRoundid: function(){
+    //   return this.$store.state.round != null ? this.$store.state.round: "";
+    // },
+    // getRoundidVendor: function(){
+    //   return this.assemblyVendor != null ? this.assemblyVendor.Roundid: "";
+    // },
+    // filterAssemblyVendor: function(){
+    //   return this.getRoundid != null ? this.getRoundidVendor: "";
+    // },
+    // calculatedCapacityCosts: function() {
+    //   return this.assemblyVendor != null ? this.assemblyVendor.Environmentalfactor: "";
+    // },
+    // calculatedEnvironmentalFactor: function() {
+    //   return this.assemblyVendor != null ? this.assemblyVendor.Maxcapacity: "";
+    // },
+    // calculatedProductionCosts: function() {
+    //   return this.assemblyVendor != null ? this.assemblyVendor.Baseprodcost : "";
+    // },
+    // calculatedProductionlineCosts: function() {
+    //   return this.assemblyVendor != null ? (this.calculatedProductionCosts * this.amount.batterylines).toFixed(2) : "";
+    // },
+    assemblyLineName() {
+      return this.vendor != null ? this.vendor.Alname : '';
     },
-    getRoundidVendor: function(){
-      return this.assemblyVendor != null ? this.assemblyVendor.Roundid: "";
+    assemblyLineCosts() {
+      return this.vendor != null ? this.vendor.Acqusitioncost : '';
     },
-    filterAssemblyVendor: function(){
-      return this.getRoundid != null ? this.getRoundidVendor: "";
+    assemblyProductionCosts() {
+      return this.vendor != null ? this.vendor.Baseprodcost : '';
     },
-    calculatedCapacityCosts: function() {
-      return this.assemblyVendor != null ? this.assemblyVendor.Environmentalfactor: "";
+    assemblyProductionCapacity() {
+      return this.vendor != null ? this.vendor.Maxcapacity : '';
     },
-    calculatedEnvironmentalFactor: function() {
-      return this.assemblyVendor != null ? this.assemblyVendor.Maxcapacity: "";
+    assemblyEnvironmentalFactor() {
+      return this.vendor != null ? this.vendor.Environmentalfactor : '';
     },
-    calculatedProductionCosts: function() {
-      return this.assemblyVendor != null ? this.assemblyVendor.Baseprodcost : "";
+    assemblyQuality() {
+      return this.amount.quality != null ? this.amount.quality.val : 'No Data';
     },
-    calculatedProductionlineCosts: function() {
-      return this.assemblyVendor != null ? (this.calculatedProductionCosts * this.amount.batterylines).toFixed(2) : "";
+    assemblyWorkload() {
+      return this.amount.workload != null ? this.amount.workload.val : 'No Data';
     },
+    assemblySafety() {
+      return this.amount.safety != null ? this.amount.safety.val : 'No Data';
+    },
+    assemblyNumberLines() {
+      return this.amount.assemblyLines != null ? this.amount.assemblyLines.val : 'No Data' ;
+    }
   },
   data() {
     return {
+      amount: {
+        assemblyLines: { label: "Number of Assembly Lines", val: 0 },
+        quality: { label: "Quality (%)", val: 0, color: "primary" },
+        workload: { label: "Workload (%)", val: 0, color: "primary" },
+        safety: { label: "Safety (%)", val: 0, color: "primary" },
+      },
       showError: false,
       confirmChangesDialog: false,
       selectedLine: "",
       numOfLines: 1,
-      quality: { label: "Quality (%)", val: 50, color: "primary" },
-      workload: { label: "Workload (%)", val: 50, color: "primary" },
-      safety: { label: "Safety (%)", val: 50, color: "primary" },
-      amount: { label: "Number of Production Lines", val: 1},
       // assemblyLines: [
       //   {
       //     name: "Assembly Line 1",
@@ -329,18 +369,21 @@ export default {
   },
   methods: {
     ...mapActions('batteryPreparation', ['updateVendors']),
+    ...mapActions('batteryPreparation', ['getLastVendor']),
+    ...mapActions('batteryPreparation', ['saveVendor']),
     ...mapMutations('batteryPreparation', ['updateVendor']),
-    ...mapActions('batteryPreparation', ['updateAssemblyVendors']),
-    ...mapMutations('batteryPreparation', ['updateAssemblyVendor']),
    toggleShowError() {
       this.showError = !this.showError;
     },
-    toggleDialog() {
-      if(this.vendor === null) {
-        this.toggleShowError();
+async toggleDialog() {
+      if(this.vendors === null) {
+        return this.toggleShowError();
       } else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.confirmChangesDialog = !this.confirmChangesDialog;
-      }
+        await this.saveVendor();
+        //return this.$store.modules.logistics ;
+      } 
     },
     updateProgress() {
       this.$emit("updateProgress", "batteryPreparation", 100);
@@ -374,7 +417,6 @@ export default {
   },
   mounted() {
     this.updateVendors();
-    this.updateAssemblyVendors();
   },
 };
 </script>

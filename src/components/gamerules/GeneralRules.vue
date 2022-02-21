@@ -129,7 +129,8 @@ export default {
           showNextButton: true,
           currentRuleNumber: 0,
           teamColor: this.$store.state.color,
-          timerCount: 5
+          // TODO set timerCount to 5 Seconds
+          timerCount: 0
         }
     },
     methods: {
@@ -141,7 +142,8 @@ export default {
         }
       },
       next() {
-            this.timerCount = 5;
+          // TODO set timerCount to 5 Seconds
+            this.timerCount = 0;
             if(this.currentRuleNumber === 3) {
                 this.$store.state.generalRulesRead = true;
             } 

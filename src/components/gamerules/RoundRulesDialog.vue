@@ -41,7 +41,8 @@
 export default {
   data() {
     return {
-      timerCount: 5,
+      // TODO set timerCount to 5
+      timerCount: 0,
       rules: {
        round1Rules:
           "Welcome to the Bike Simulation Game! Here you are the CEO of your own bike manufacturing company. Therefore, you have to manage multiple processes for each round. All process tiles have their own info button. Good luck!",
@@ -68,11 +69,13 @@ export default {
           "Sales process: Online marketing is available to make sales more efficient. Furthermore, sales can be split to two different products (Standard and Standard Pro).",
         ],
         round3Rules:
-          "Finally, IoT Bikes have a great success and the demand increases up to 35.000 bikes. Furthermore, Premium bikes can be produced by now, which additionally contain an engine. New features for the current round are as follows:",
+          "Welcome to round 3! You can check your statistics on the left side. Also, check out these new features:",
         round3Keywords: [
-          "Production processes: An additional production step is required to prepare the engines for production. Furthermore, automated assembly lines with predictive maintenance are available (improved capacity and less expenses).",
-          "Sales process: Automatic market analyser base on deep learning can be chosen. Moreover, sales can be split to three different products (Standard, Standard Pro, Premium)",
-          "Quality assurance: some external vendors now offer a robot-based solution for the Quality assurance process.",
+          "Costumize your bike parts.",
+          "Automatic production with predictive maintenance is now possible.",
+          "You can now choose robotic quality assurance options.",
+          "Analyze markets based on deep learning.",
+          "Good Luck! May the Force be with you."
         ],
         round4Rules:
           "The popularity of IoT Bikes reaches towards its peak. Demand has risen up to 40.000 bikes. New features for round four are as follows:",

@@ -11,6 +11,8 @@ const state = {
     type: null,
     quality: [],
     amount: [],
+    workload: null,
+    alnumber: null
 }
 
 //to handle state
@@ -21,6 +23,8 @@ const getters = {
     type: state => state.type,
     quality: state => state.quality,
     amount: state => state.amount,
+    alnumber: state => state.alnumber,
+    workload: state => state.workload
 }
 
 //to handle actions
@@ -90,13 +94,11 @@ const actions = {
             Totalacquisitioncost:getters.vendor.Acqusitioncost,
             Prodcapacity:getters.vendor.Maxcapacity,
             Prodcost:getters.vendor.Baseprodcost,
-            Employeesatisfaction:getters.vendor.Employeesatisfaction,
-            // TODO
-            /*Quality:getters.amount.quality.val,
-            Workload:getters.amount.workload.val,
-            Safety:getters.amount.safety.val,
-            Alnumber:getters.amount.assemblyLines.val,*/
-
+            // TODO: Amount input below not working
+            Quality:getters.amount.quality,
+            Workload:getters.amount.workload,
+            Safety:getters.amount.safety,
+            Alnumber:getters.amount.assemblyLines,
       });
       // this function removes backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -147,8 +149,11 @@ const mutations = {
     updateVendor: (state, vendor) => state.vendor = vendor,
     updateTypes: (state, types) => state.types = types,
     updateType: (state, type) => state.type = type,
+    updateWorkload: (state, workload) => state.workload = workload,
     updateQuality: (state, quality) => state.quality = quality,
     updateAmount: (state, amount) => state.amount = amount,
+    updateSafety: (state, safety) => state.safety = safety,
+    updateAlnumber: (state, alnumber) => state.alnumber = alnumber
 }
 
 //export store module
