@@ -1,5 +1,31 @@
 <template>
   <v-container id="dashboard">
+
+    <v-overlay 
+    v-if="gameData.Roundid != this.$store.state.round && overlay" :overlay="true"
+    v-model="overlay" contained class="align-center justify-center">
+      <v-card align="center" justify="center" elevation="2" light>
+          <v-card-title align="center" justify="center">
+               Whoops! The next round has not started yet
+          </v-card-title>
+          <v-img 
+          max-height="80%"
+          max-width="80%"
+          :src="require('../assets/spongebobAlone.png')" aspect-ratio="1"></v-img>
+          <v-card-title align="center" justify="center">
+              Please wait until the lecturer starts the next round
+            </v-card-title>
+        </v-card>
+          <br><br>
+        <v-btn fab :color="teamColor" elevation="2">
+            <v-icon color="white" @click="reloadPage">refresh</v-icon>
+        </v-btn>
+        <br><br>
+        <v-btn @click="overlay = false" >
+          Close Overlay (only for Development)
+        </v-btn>
+    </v-overlay>
+
     <v-row v-if="this.$store.state.blockGame">
       <v-col align="center">
         <div>
@@ -95,11 +121,13 @@
 <script>
 import TeamsLeaderboard from "../components/TeamsLeaderboard.vue";
 import CostAccountingCard from "../components/CostAccountingCard.vue";
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   components: {CostAccountingCard, TeamsLeaderboard},
   data() {
     return {
+      overlay: true,
       teamColor: this.$store.state.color,
       stepText: ''
     };
@@ -113,6 +141,11 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['updateGameData']),
+    ...mapMutations(['updateGameData']),
+    reloadPage(){
+    window.location.href = 'http://z40lp1.informatik.tu-muenchen.de:8000/sap/bc/ui5_ui5/sap/z_v3_bpc_game/';
+    },
     showName(element) {
       return element
       
@@ -191,6 +224,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['gameData']),
     calculatedProgressElements() {
       return this.progressElements
 
