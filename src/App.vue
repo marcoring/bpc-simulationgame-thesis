@@ -22,7 +22,7 @@
         <v-col class="d-flex flex-column justify-start align-start">
           <!-- <h1>{{ currentRouteName }}</h1> -->
           <h2><b>Team Name: </b>{{ teamName }}</h2>
-          <h2><b>Round:  {{ this.$store.state.round }}</h2>
+          <h2><b>Round: </b>{{ this.$store.state.round }}</h2>
           <h2
             :style="'background-color:' + this.$store.state.color + '!important'"
             style="color: white"
