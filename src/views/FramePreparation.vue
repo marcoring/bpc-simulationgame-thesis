@@ -17,7 +17,7 @@
       </v-row>
     </v-container>
     
-          <v-row>
+      <v-row ref="round-data">
         <v-col>
          <!-- Previous Round Status -->
         <v-card style="height:100%">
@@ -51,7 +51,21 @@
 
       <v-divider class="mt-5 mb-5"/>
 
+          <v-row v-if="this.$store.state.frameStep <= 4" class="pa-2" style="margin-top: 20px; margin-bottom: 40px;">
+            <v-col align="left" cols="9">
+              <div>
+                <h2>{{ this.stepText }}</h2>
+              </div>
+            </v-col>
+            <v-col align="right">
+              <v-btn @click="nextPurchasingStep" dark rounded link :color="teamColor">
+                <b>I understand</b>
+              </v-btn>
+            </v-col>
+          </v-row>
+
       <!-- Managing frame preparation process -->
+      <div ref="logic" style="margin: 1px;">
       <v-row style="margin-top: 15px; margin-left: 3px"> 
         <h2 style="text-align: left;">Manage Frame Preparation Process</h2>
       </v-row>
@@ -228,6 +242,7 @@
         />
       </v-col>
       </v-row>
+      </div>
 
    <v-row ref="navigation">
         <v-col md='4' align="left">
@@ -421,7 +436,7 @@ export default {
       this.setBorder("round-data");
     },
     logicStep() {
-      this.stepText = 'Here ypu can configure your frame production!'
+      this.stepText = 'Here you can configure your frame production!'
 
       this.setOpacity("logic", 1);
       this.setOpacity("round-data", 0.3);
