@@ -883,8 +883,15 @@ export default {
       //     value: ["180", "14"],
       //   },
       // ],
-      quality: { label: "Quality (%)", val: 50 },
+      quality: { 
+        battery: { label: "Battery: Quality (%)", val: 50 },
+        engine: { label: "Engine: Quality (%)", val: 50 },
+        frames: { label: "Frame: Quality (%)", val: 50 },
+        sensors: { label: "Sensor: Quality (%)", val: 50 },
+        },
       amount: {
+        battery: { label: "Frame: Amount (PC)", val: 1 },
+        engine: { label: "Sensor: Amount (PC)", val: 1 },
         frames: { label: "Frame: Amount (PC)", val: 1 },
         sensors: { label: "Sensor: Amount (PC)", val: 1 },
       },
