@@ -85,7 +85,15 @@ const actions = {
             Guid:rootGetters.gameData.Guid,    
             Roundid:rootGetters.gameData.Roundid,  
             Userid:rootGetters.gameData.Userid,
-            Vendorid:getters.vendor.Vendorid,            
+            Vendorid:getters.vendor.Vendorid,    
+             /*"Priceperbike" : "0.00",        
+            "Onlineshop" : false,        
+            "Onlinemarketing" : false,        
+            "Marketanalyzer" : false,        
+            "Dronedelivery" : false,        
+            "Salespersons" : 0,        
+            "Salescost" : "0.00",        
+            "Salescapacity" : "0.00"*/         
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -97,7 +105,7 @@ const actions = {
     };
         try {
         var response = await axios.put(
-            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}')`,
+            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/SalesProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}')`,
                 payload_without_bs
               ,
               {

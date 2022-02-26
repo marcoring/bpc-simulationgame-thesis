@@ -201,6 +201,42 @@
                 hint="Only insert a positive integers like '2500.72'!"
               ></v-text-field>
             </v-row>
+            <v-row>
+              <v-checkbox
+              class="pl-6 ml-6 mt-8"
+              v-if="this.$store.state.round >= 1"
+              v-model="Onlineshop"
+              :color="teamColor"
+              label="Online Shop: 100.000€"
+            ></v-checkbox>
+            </v-row>
+            <v-row>
+              <v-checkbox
+              class="pl-6 ml-6 mt-2"
+              v-if="this.$store.state.round >= 2"
+              v-model="Onlinemarketing"
+              :color="teamColor"
+              label="Online Marketing: 200.000€"
+            ></v-checkbox>
+            </v-row>
+            <v-row>
+              <v-checkbox
+              class="pl-6 ml-6 mt-2"
+              v-if="this.$store.state.round >= 3"
+              v-model="Marketanalyzer"
+              :color="teamColor"
+              label="Market Analyzer based on Deep Learning: 800.000€"
+            ></v-checkbox>
+            </v-row>
+            <v-row>
+              <v-checkbox
+              class="pl-6 ml-6 mt-2"
+              v-if="this.$store.state.round >= 4"
+              v-model="Dronedelivery"
+              :color="teamColor"
+              label="Online Marketing: 3.000.000€"
+            ></v-checkbox>
+            </v-row>
           </v-col>
 
           <v-col>
@@ -224,17 +260,6 @@
               disabled
             />
           <v-col>
-             <v-select
-              v-model="selected.selectedSalesActivities.label"
-              :items="salesActivities.name"
-              @click="setTemp"
-              label="Additional sales activities"
-              :color="teamColor"
-              item-text="name"
-              chips
-              multiple
-              attach
-            />
             <v-text-field
               label="New Sales Capacity + Additional Sales Activities (PC)"
               :value="getNewCapacity"
@@ -242,11 +267,13 @@
               disabled
             />
             <v-text-field
-              :value="salesActivities.devCosts"
+              v-model="getCalculateSalesActivitiesCost"
+              :value="getCalculateSalesActivitiesCost"
               label="Development Costs for Additional Sales Activities (EUR)"
               type='number'
               filled
               disabled
+              :color="teamColor"
             />
           </v-col>
           </v-col>
@@ -330,6 +357,22 @@ export default {
   components: { ConfirmationDialog, ErrorChagesDialog },
   computed: {
     ...mapGetters('sales', ['vendors', 'vendor']),
+     getCalculateSalesActivitiesCost() {
+       var devCostTemp = 0;
+      if(this.$store.state.round >= 1 && this.Onlineshop == true){
+        devCostTemp += 100000
+      }
+			if(this.$store.state.round >= 2 && this.Onlinemarketing == true){
+        devCostTemp += 200000;
+      }
+      if(this.$store.state.round >= 3 && this.Marketanalyzer == true){
+        devCostTemp += 800000;
+      }
+      if(this.$store.state.round >= 4 && this.Dronedelivery == true){
+        devCostTemp += 3000000;
+      }
+      return devCostTemp
+    },
     changeValue() {
       return this.numOfSalesPers != 0 ? (this.numOfSalesPers * 0): "";
     },
@@ -345,29 +388,43 @@ export default {
     calculateSalesCapacity() {
       return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 7000).toFixed(2) : "";
     },
+    // getActivities() {
+		// 	if(this.$store.state.round == 1){
+		// 		return this.activitiesNameRound1, this.activitiesValueRound1;
+		// 	}
+		// 	else if(this.$store.state.round == 2){
+    //     return this.activitiesNameRound2, this.activitiesValueRound2;
+		// 	}
+		// 	else if(this.$store.state.round == 3){
+    //   return this.activitiesNameRound2, this.activitiesValueRound2;
+		// 	}
+		// 	else if(this.$store.state.round >= 4){
+    //   return this.activitiesNameRound2, this.activitiesValueRound2;
+		// 	}
+    //   else return null;
+		// },
   },
   data() {
     return {
       showError: false,
       temp: false,
+      Onlineshop: false,
+      Onlinemarketing: false,
+      Marketanalyzer: false,
+      Dronedelivery: false,
+      devCost: this.getDevCost,
       stepText: '',
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
       capacityMultiplier: this.calculateCapacityWithMultiplier(),
       salesTabs: null,
-      selected: {
-        selectedSalesActivities: { 
-          label: "", 
-          val: 0
-        },
-      },
+      // selected: {
+      //   selectedSalesActivities: { 
+      //     label: "", 
+      //     val: 0
+      //   },
+      // },
       numOfSalesPers: 0,
-      salesActivities: {
-        name: this.getActivitiesString(),
-        devCosts: this.getCalculateSalesActivitiesCost(),
-      },
-      // salesActivities: this.getActivitiesString(),
-      // salesDevelopmentCosts: this.getCalculateSalesActivitiesCost(),
       standardPrice: 0.0,
       standardProPrice: 0.0,
       premiumPrice: 0.0,
@@ -383,6 +440,9 @@ export default {
     ...mapMutations('sales', ['updateVendor']),
     toggleShowError() {
       this.showError = !this.showError;
+    },
+    getDevCost() {
+      return this.getCalculateSalesActivitiesCost;
     },
     toggleDialog() {
        if(this.selectedSalesActivities === "") {
@@ -481,42 +541,6 @@ export default {
 			salesTypeComboBox.insertItem(item, 10);
 			return item;
 		},
-    getActivitiesString: function(){
-			var activities = "";
-			if(this.$store.state.round >= 1){
-				activities += "Online Shop: 100.000 €"
-			}
-			else if(this.$store.state.round >= 2){
-				activities += "Online Marketing: 200.000 €"
-			}
-			else if(this.$store.state.round >= 3){
-				activities += "Market Analyzer: 800. 000 €"
-			}
-			else if(this.$store.state.round >= 4){
-				activities += "Drone Delivery: 3.000.000 €"
-			}
-			else if(activities !== ""){
-				activities = activities.slice(0, -1);
-				activities.charAt(0).toUpperCase();
-			}
-			return activities;
-		},
-    getCalculateSalesActivitiesCost: function() {
-      var cost = 0;
-      if(this.$store.state.round >= 1){
-        cost += 100000
-      }
-			else if(this.$store.state.round >= 2){
-        cost += 200000;
-      }
-      else if(this.$store.state.round >= 3){
-        cost += 800000;
-      }
-      else if(this.$store.state.round >= 4){
-        cost += 3000000;
-      }
-      return cost;
-    },
 		calculateCapacityWithMultiplier: function(){
 			var capacity = 1;
 			if(this.$store.state.round >= 1){
