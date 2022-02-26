@@ -19,7 +19,7 @@
     
     <v-container v-model="salesTabs">
       <!-- Statistic about current, previous round and cost accounting -->
-      <v-row style="height: 100%">
+      <v-row style="height: 100%" ref="round-data">
         <v-col>
          <!-- Previous Round Status -->
         <v-card style="height:100%">
