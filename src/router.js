@@ -142,7 +142,8 @@ const routes = [{
 ];
 
 const router = new VueRouter({
-    mode: 'history',
+    // TODO History Mode einführen, SAP Server muss richtig konfiguriert werden das er das unterstützt
+    //mode: 'history',
     // eslint-disable-next-line no-undef
     base: process.env.BASE_URL,
     routes,

@@ -242,7 +242,7 @@ export default {
   components: { CostAccountingCard, ConfirmationDialog, ErrorChagesDialog },
   computed: {
       // erster Parameter entspricht Module, aus welchen wir Parameter holen
-    ...mapGetters('logistics', ['vendors', 'vendor']),
+    ...mapGetters('logistics', ['vendors', 'vendor', 'lastVendor']),
     vendorsSelect: function() {
       return this.vendors ? this.vendors.map(vendor => {
         return {
@@ -281,7 +281,6 @@ export default {
   },
   data() {
     return {
-      lastVendor: null,
       showError: false,
       stepText: '',
       teamColor: this.$store.state.color,
@@ -418,7 +417,7 @@ export default {
       this.nextPurchasingStep();
     }
     await this.updateVendors();
-    this.lastVendor = await this.getLastVendor();
+    await this.getLastVendor();
   },
   watch: {
     '$store.state.logisticStep': function() {

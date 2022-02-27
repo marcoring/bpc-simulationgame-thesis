@@ -54,49 +54,26 @@ const actions = {
         console.log(error.config);
   }
     },
-    async updateVendors({ commit }) {
-        try {
-            var response = await axios.get(
-                `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/AppDevVendorSet?$format=json`
-              );
-            var vendors = response.data.d.results;
-            commit('updateVendors', vendors);
-        } catch (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-              } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                // http.ClientRequest in node.js
-                console.log(error.request);
-              } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-              }
-              console.log(error.config);
-        }
-    },
-    async saveVendor({ commit, dispatch, getters, rootGetters }) {
+    async saveVendor({ commit, dispatch, /*getters,*/ rootGetters }, data) {
+      console.log("SAVE VENDOR", data)
       const payload = JSON.stringify({                       
             Guid:rootGetters.gameData.Guid,    
             Roundid:rootGetters.gameData.Roundid,  
-            Userid:rootGetters.gameData.Userid,
-            Vendorid:getters.vendor.Vendorid,    
-             /*"Priceperbike" : "0.00",        
-            "Onlineshop" : false,        
-            "Onlinemarketing" : false,        
-            "Marketanalyzer" : false,        
-            "Dronedelivery" : false,        
-            "Salespersons" : 0,        
-            "Salescost" : "0.00",        
-            "Salescapacity" : "0.00"*/         
+            Userid:rootGetters.gameData.Userid,   
+            Priceperbike:data.amount.pricePerBike,        
+            Onlineshop:data.Onlineshop, 
+            /*Onlinemarketing:getters.Onlinemarketing,        
+            Marketanalyzer:getters.Onlinemarketing,        
+            Dronedelivery:getters.Dronedelivery,        
+            Salespersons:getters.amount.numOfSalesPersons,        
+            Salescost:getters.calculateSalesCost,        
+            Salescapacity:getters.calculateSalesCapacity*/
       });
       // this function return backslashes from JSON String
+      
+      console.log("PAYLOAD", payload);
       const payload_without_bs = JSON.parse(payload);
+      console.log("PAYLOAD WITHOUT BS", payload_without_bs);
       const axiosConfig = {
         headers: {
           'Accept': 'application/json',
@@ -114,6 +91,7 @@ const actions = {
             );
         var vendors = response.data.d.results;
         commit('saveVendor', vendors);
+        console.log('PAYLOAD', payload_without_bs)
         await dispatch('updateGameData', {}, { root: true });
         } catch (error) {
             if (error.response) {

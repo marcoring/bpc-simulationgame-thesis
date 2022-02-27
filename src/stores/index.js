@@ -102,6 +102,7 @@ export default new Vuex.Store({
     },
     mutations: {
       updateGameData: (state, gameData) => state.gameData = gameData,
+      updateRound: (state, roundId) => state.round = roundId
     },
     modules: {
         purchasing: PurchasingStore,

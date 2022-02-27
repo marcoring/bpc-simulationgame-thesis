@@ -11,6 +11,7 @@ const state = {
     type: null,
     quality: [],
     amount: [],
+    lastVendor: null
 }
 
 //to handle state
@@ -21,20 +22,22 @@ const getters = {
     type: state => state.type,
     quality: state => state.quality,
     amount: state => state.amount,
+    lastVendor: state => state.lastVendor
 }
 
 //to handle actions
 const actions = {
-    async getLastVendor({getters, rootGetters}) {
+    async getLastVendor({getters, commit, rootGetters}) {
       if(rootGetters.gameData.Roundid == 1) {
         return null;
       }
       try {
       var response = await axios.get(
-          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet?(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
+          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/LogisticsProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')?$format=json`
         );
-        console.log("TEST", response.data.d, getters.vendors)
-      return getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid);
+        
+      console.log("LASTVENDORID", response.data.d, getters.vendors);
+      commit('updateLastVendor',  getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid));
   } catch (error) {
       if (error.response) {
           // The request was made and the server responded with a status code
@@ -137,6 +140,7 @@ const mutations = {
     updateType: (state, type) => state.type = type,
     updateQuality: (state, quality) => state.quality = quality,
     updateAmount: (state, amount) => state.amount = amount,
+    updateLastVendor: (state, vendor) => state.lastVendor = vendor
 }
 
 //export store module

@@ -2,7 +2,7 @@
   <v-container id="dashboard">
 
     <v-overlay 
-    v-if="gameData.Roundid != this.$store.state.round && overlay" :overlay="true"
+    v-if="showOverlay" :overlay="true"
     v-model="overlay" contained class="align-center justify-center">
       <v-card align="center" justify="center" elevation="2" light>
           <v-card-title align="center" justify="center">
@@ -121,7 +121,7 @@
 <script>
 import TeamsLeaderboard from "../components/TeamsLeaderboard.vue";
 import CostAccountingCard from "../components/CostAccountingCard.vue";
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {CostAccountingCard, TeamsLeaderboard},
@@ -129,7 +129,8 @@ export default {
     return {
       overlay: true,
       teamColor: this.$store.state.color,
-      stepText: ''
+      stepText: '',
+      refreshInterval: 0,
     };
   },
   watch: {
@@ -138,13 +139,26 @@ export default {
         this.$store.state.dashboardStep++;
         this.nextDashboardStep();
       }
+    },
+    showOverlay(newValue) {
+      if(newValue) {
+        this.refreshInterval = setInterval(async () => {
+          await this.updateGameData();
+          console.log("UPDATE", this.gameData);
+        }, 3000);
+      }
+      else {
+        console.log("UPDATE STOPPED");
+        clearInterval(this.refreshInterval);
+      }
     }
   },
   methods: {
     ...mapActions(['updateGameData']),
-    ...mapMutations(['updateGameData']),
     reloadPage(){
-    window.location.href = 'http://z40lp1.informatik.tu-muenchen.de:8000/sap/bc/ui5_ui5/sap/z_v3_bpc_game/';
+
+    // DO NOT DO THIS window.location.href = 'http://z40lp1.informatik.tu-muenchen.de:8000/sap/bc/ui5_ui5/sap/z_v3_bpc_game/';
+
     },
     showName(element) {
       return element
@@ -225,6 +239,9 @@ export default {
   },
   computed: {
     ...mapGetters(['gameData']),
+    showOverlay() {
+      return this.gameData.Roundid != this.$store.state.round && this.overlay
+    },
     calculatedProgressElements() {
       return this.progressElements
 

@@ -420,6 +420,8 @@ export default {
   },
   methods: {
     ...mapActions('sales', ['vendor']),
+    ...mapActions('sales', ['getLastVendor']),
+    ...mapActions('sales', ['saveVendor']),
     ...mapMutations('sales', ['updateVendor']),
     toggleShowError() {
       this.showError = !this.showError;
@@ -427,11 +429,16 @@ export default {
     getDevCost() {
       return this.getCalculateSalesActivitiesCost;
     },
-    toggleDialog() {
+    async toggleDialog() {
        if(this.selectedSalesActivities === "") {
         this.toggleShowError();
       } else if(this.$store.state.salesStep >= 5){
          this.confirmChangesDialog = !this.confirmChangesDialog;
+         // Parameter kann in Methode hier mitgegeben werden
+         await this.saveVendor({
+           amount: this.amount, 
+           Onlineshop: this.Onlineshop
+          });
        }
     },
     updateProgress() {

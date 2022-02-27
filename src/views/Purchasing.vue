@@ -48,21 +48,9 @@
           </v-card-title>
           <v-data-table
             :headers="headersRound"
-            :items="batteryVendors"
+            :items="currentRoundTableData"
             :search="searchCurRound"
-          >
-          <div v-for="(batteryVendor, i) in tempSelection" :key="i">
-          <tr>
-            <td> Battery </td>
-            <td> {{ getBatteryVendorname }} </td>
-            <td> {{ batteryVendor.calculatedBatterySustainabilityfactor }} </td>
-            <td> {{ batteryVendor.calculatedBatteryRegionalityfactor }} </td>
-            <td> {{ batteryVendor.Quality }} </td>
-            <td> {{ batteryVendor.Amount }} </td>
-            <td> {{ batteryVendor.calculatedTotalCostBattery }} </td>
-          </tr>
-          </div>
-          </v-data-table>
+          />
         </v-card>
       </v-col>
     </v-row>
@@ -811,6 +799,22 @@ export default {
         }
       })
     },
+    currentRoundTableData: function() {
+      const lines = [];
+      if(this.batteryVendor != null) {
+        lines.push({
+          material: "Battery",
+          vendor: this.batteryVendor.Vendorname,
+          sustainabilityFactor: this.batteryVendor.Sustainabilityfactor,
+          regonalityFactor: this.batteryVendor.Regionalityfactor,
+          quality: this.batteryVendor.Quality,
+          amount: this.amount.battery,
+          totalCost: this.batteryVendor.Totalcost,
+        });
+      }
+      // TODO other entries
+      return lines;
+    },
     getBatteryVendorname: function() {
       return this.batteryVendor != null ? this.batteryVendor.Vendorname : "";
     },
@@ -904,8 +908,7 @@ export default {
         { text: "Regionality Factor (%)", value: "regionalityFactor" },
         { text: "Quality (%)", value: "quality" },
         { text: "Amount (PC)", value: "amount" },
-        { text: "Total Cost (EUR)", value: "totalCost" },
-        // { text: "Cumulative Stock", value: "cumulativeStock" },
+        { text: "Total Cost (EUR)", value: "totalCost" }
       ],
       dataPrevRound: [
         {

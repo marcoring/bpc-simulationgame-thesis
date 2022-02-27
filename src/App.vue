@@ -110,7 +110,7 @@ import RoundRulesDialog from './components/gamerules/RoundRulesDialog.vue';
 import TodoDialog from './dialogs/TodoDialog.vue';
 import PanicButton from './components/PanicButton/PanicButton.vue';
 import axios from 'axios';
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 
 export default {
   name: "App",
@@ -243,6 +243,7 @@ export default {
   },
   methods: {
     ...mapActions(["updateGameData"]),
+    ...mapMutations(["updateRound"]),
     toggleShowTodo() {
       this.showTodo = !this.showTodo;
     },
@@ -393,7 +394,8 @@ export default {
   async mounted() {    
     this.newRoundRules();
     await this.updateGameData();
-
+    this.updateRound(this.$store.state.gameData.Roundid);
+    console.log("App mounted", this.$store.state.gameData.Roundid, this.$store.state.round);
     axios.get(
       "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/$metadata"
     ).then(response => console.log(response));
