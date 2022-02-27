@@ -112,8 +112,6 @@
 
       <v-divider class="mt-5 mb-5"/>
 
-    <v-divider />
-
     <v-row v-if="this.$store.state.salesStep <= 4" class="pa-2" style="margin-top: 20px; margin-bottom: 40px;">
       <v-col align="left" cols="9">
         <div>

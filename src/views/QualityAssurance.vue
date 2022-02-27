@@ -165,19 +165,19 @@
       <v-container fluid>
       <v-row align="center" justify="center">
       <v-radio-group row>
-        <v-radio id="internalQA" label="Internal QA" value="radio-1"></v-radio>
-        <v-radio id="externalQA" label="External QA" value="radio-2"></v-radio>
+        <v-radio id="externalQA" label="Internal QA" value="radio-1" v-on:click="toggle"></v-radio>
+        <v-radio id="internalQA" label="External QA" value="radio-2" v-on:click="toggle"></v-radio>
       </v-radio-group>
       </v-row>
       </v-container>
       </div>
       <!-- Select Vendor -->
       <!-- Container External QA -->
-      <v-row align="start" justify="start">
+      <v-row v-if="externalQA == true" align="start" justify="start">
       <p><b>External QA</b></p>
       </v-row>
       <v-container>
-      <v-row>
+      <v-row v-if="externalQA == true">
         <v-col>
           <v-select
             :value="vendor"
@@ -233,10 +233,10 @@
       <v-divider class="mt-5 mb-5"/>
 
       <!-- Container Internal QA -->
-      <v-row align="start" justify="start">
-      <p><b>External QA</b></p>
+      <v-row v-if="internalQA == true" align="start" justify="start">
+      <p><b>Internal QA</b></p>
       </v-row>
-      <v-container>
+      <v-container v-if="internalQA == true">
         <v-col>
           <v-text-field
             label="Internal QA Company:"
@@ -368,6 +368,8 @@ export default {
   components: { CostAccountingCard, ConfirmationDialog, ErrorChagesDialog},
   data() {
     return {
+      internalQA: false,
+      externalQA: true,
       selected: null,
       videoId: 'Szjz_4QY628',
       showError: false,
@@ -426,6 +428,10 @@ export default {
     ...mapActions('qualityAssurance', ['getLastVendor']),
     ...mapActions('qualityAssurance', ['saveVendor']),
     ...mapMutations('qualityAssurance', ['updateVendor']),
+    toggle() {
+      this.internalQA = !this.internalQA;
+      this.externalQA = !this.externalQA;
+    },
     playVideo() {
       this.player.playVideo()
     },
