@@ -69,33 +69,23 @@
             </v-card-title>
             <v-card-text>
              <v-text-field
-            label="Internal/External: Yearly Costs (EUR):"
-            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+            label="Sales Price Per Bike (PC):"
+            :value="amount.pricePerBike"
             disabled
             />
             <v-text-field
-            label="Regionality Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
-            disabled
-            />
-                        <v-text-field
-            label="Sustainability Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            label="Sales Cost (EUR):"
+            :value="calculateSalesCost"
             disabled
             />
             <v-text-field
-            label="Quality (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            label="Number of Sales Persons:"
+            :value="amount.numOfSalesPersons"
             disabled
             />
             <v-text-field
-            label="Number of Employees:"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
-            disabled
-            />
-             <v-text-field
-            label="QA Capacity (PC):"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            label="Sales Capacity (PC):"
+            :value="calculateSalesCapacity"
             disabled
             />
             </v-card-text>
@@ -259,18 +249,19 @@
               filled
               disabled
             />
-          <v-col>
-            <v-text-field
-              label="New Sales Capacity + Additional Sales Activities (PC)"
-              :value="getNewCapacity"
-              filled
-              disabled
-            />
             <v-text-field
               v-model="getCalculateSalesActivitiesCost"
               :value="getCalculateSalesActivitiesCost"
               label="Development Costs for Additional Sales Activities (EUR)"
               type='number'
+              filled
+              disabled
+              :color="teamColor"
+            />
+          <v-col>
+            <v-text-field
+              label="New Sales Capacity = Sales Capacity + Development Costs"
+              :value="getNewCapacity"
               filled
               disabled
               :color="teamColor"
@@ -373,11 +364,27 @@ export default {
       }
       return devCostTemp
     },
+    calculateCapacityWithMultiplier: function(){
+			var capacity = 1;
+			if(this.Onlineshop == true){
+						capacity*=1.2;
+      }
+			if(this.Onlinemarketing == true){
+						capacity*=1.2;
+			}
+      if(this.Marketanalyzer == true){
+						capacity*=1.5;
+			}
+      if(this.Dronedelivery == true){
+						capacity*=1.3;
+			}
+			return capacity;
+		},		
     changeValue() {
       return this.numOfSalesPers != 0 ? (this.numOfSalesPers * 0): "";
     },
     getNewCapacity() {
-      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * (7000 * this.capacityMultiplier)).toFixed(2): "";
+      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * (7000 * this.calculateCapacityWithMultiplier)).toFixed(2): "";
     },
     calculateSalesCost() {
       return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 42366.00).toFixed(2) : "";
@@ -388,21 +395,6 @@ export default {
     calculateSalesCapacity() {
       return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 7000).toFixed(2) : "";
     },
-    // getActivities() {
-		// 	if(this.$store.state.round == 1){
-		// 		return this.activitiesNameRound1, this.activitiesValueRound1;
-		// 	}
-		// 	else if(this.$store.state.round == 2){
-    //     return this.activitiesNameRound2, this.activitiesValueRound2;
-		// 	}
-		// 	else if(this.$store.state.round == 3){
-    //   return this.activitiesNameRound2, this.activitiesValueRound2;
-		// 	}
-		// 	else if(this.$store.state.round >= 4){
-    //   return this.activitiesNameRound2, this.activitiesValueRound2;
-		// 	}
-    //   else return null;
-		// },
   },
   data() {
     return {
@@ -416,14 +408,7 @@ export default {
       stepText: '',
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
-      capacityMultiplier: this.calculateCapacityWithMultiplier(),
       salesTabs: null,
-      // selected: {
-      //   selectedSalesActivities: { 
-      //     label: "", 
-      //     val: 0
-      //   },
-      // },
       numOfSalesPers: 0,
       standardPrice: 0.0,
       standardProPrice: 0.0,
@@ -541,22 +526,6 @@ export default {
 			salesTypeComboBox.insertItem(item, 10);
 			return item;
 		},
-		calculateCapacityWithMultiplier: function(){
-			var capacity = 1;
-			if(this.$store.state.round >= 1){
-						capacity*=1.2;
-      }
-			else if(this.$store.state.round >= 2){
-						capacity*=1.2;
-			}
-      else if(this.$store.state.round >= 3){
-						capacity*=1.5;
-			}
-      else if(this.$store.state.round >= 4){
-						capacity*=1.3;
-			}
-			return capacity;
-		},		
   },
   mounted() {
     this.$store.state.innerGuideDone = 
