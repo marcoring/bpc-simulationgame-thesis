@@ -956,6 +956,8 @@ export default {
         await this.saveVendorBattery({
           amount: this.amount,
           quality: this.quality,
+          totalCost: this.calculatedTotalCostBattery,
+          costPerUnit: this.calculatedCostPerMaterialBattery
         });
       }
     },
@@ -1045,7 +1047,7 @@ export default {
     if(this.$store.state.purchasingStep <= 4) {
       this.nextPurchasingStep();
     }
-    
+
     await this.updateBatteryVendors();
     await this.updateEngineVendors();
     await this.updateFrameVendors();
@@ -1058,7 +1060,7 @@ export default {
         this.$store.state.purchasingStep++;
         this.nextPurchasingStep();
       }
-    }
+    },
   },
 };
 </script>

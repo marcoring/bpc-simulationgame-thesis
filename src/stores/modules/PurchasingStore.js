@@ -183,9 +183,9 @@ const actions = {
             Vendorid:getters.batteryVendor.Vendorid,
             Amount:data.amount.battery,
             Quality:String(data.quality.battery),
-            Materialid:"BAT"
-            /*Totalcost:"0.00"
-            Costperunit:"0.00"*/
+            Materialid:"BAT",
+            Totalcost:data.totalCost,
+            Costperunit:data.costPerUnit
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
