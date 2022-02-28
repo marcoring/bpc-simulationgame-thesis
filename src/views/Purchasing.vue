@@ -758,7 +758,7 @@ export default {
     console.log(Object.values(this.tempSelection))
     return Object.values(this.tempSelection)
   },
-    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor', 'tempSelection']),
+    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor', 'lastVendor']),
     vendorsSelect: function() {
       return this.vendors.map(vendor => {
         return {
@@ -806,13 +806,45 @@ export default {
           material: "Battery",
           vendor: this.batteryVendor.Vendorname,
           sustainabilityFactor: this.batteryVendor.Sustainabilityfactor,
-          regonalityFactor: this.batteryVendor.Regionalityfactor,
-          quality: this.batteryVendor.Quality,
+          regionalityFactor: this.batteryVendor.Regionalityfactor,
+          quality: this.quality.battery,
           amount: this.amount.battery,
-          totalCost: this.batteryVendor.Totalcost,
+          totalCost: this.calculatedTotalCostBattery,
         });
       }
-      // TODO other entries
+      if(this.engineVendor != null) {
+        lines.push({
+          material: "Engine",
+          vendor: this.engineVendor.Vendorname,
+          sustainabilityFactor: this.engineVendor.Sustainabilityfactor,
+          regionalityFactor: this.engineVendor.Regionalityfactor,
+          quality: this.quality.engine,
+          amount: this.amount.engine,
+          totalCost: this.calculatedTotalCostEngine,
+        });
+      }
+      if(this.frameVendor != null) {
+        lines.push({
+          material: "Frame",
+          vendor: this.frameVendor.Vendorname,
+          sustainabilityFactor: this.frameVendor.Sustainabilityfactor,
+          regionalityFactor: this.frameVendor.Regionalityfactor,
+          quality: this.quality.frame,
+          amount: this.amount.frame,
+          totalCost: this.calculatedTotalCostFrame,
+        });
+      }
+      if(this.sensorsVendor != null) {
+        lines.push({
+          material: "Sensors",
+          vendor: this.sensorsVendor.Vendorname,
+          sustainabilityFactor: this.sensorsVendor.Sustainabilityfactor,
+          regionalityFactor: this.sensorsVendor.Regionalityfactor,
+          quality: this.quality.sensors,
+          amount: this.amount.sensors,
+          totalCost: this.calculatedTotalCostSensors,
+        });
+      }
       return lines;
     },
     getBatteryVendorname: function() {
@@ -830,7 +862,6 @@ export default {
     calculatedCostPerMaterialEngine: function() {
       return this.engineVendor != null ? (this.engineVendor.Developmentcost * (1 + this.quality.engine / 100)).toFixed(2) : "";
     },
-    
     calculatedTotalCostBattery: function() {
       return this.batteryVendor != null ? (this.calculatedCostPerMaterialBattery * this.amount.battery).toFixed(2) : "";
     },
@@ -875,18 +906,7 @@ export default {
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
       showError: false,
-      // selectedVendor: {},
       stepText: '',
-      // vendors: [
-      //   {
-      //     name: "Bavaria eBike",
-      //     value: ["242", "22"],
-      //   },
-      //   {
-      //     name: "eBikesDE",
-      //     value: ["180", "14"],
-      //   },
-      // ],
       quality: { 
         battery: { label: "Battery: Quality (%)", val: 50 },
         engine: { label: "Engine: Quality (%)", val: 50 },
@@ -910,42 +930,6 @@ export default {
         { text: "Amount (PC)", value: "amount" },
         { text: "Total Cost (EUR)", value: "totalCost" }
       ],
-      dataPrevRound: [
-        {
-          material: "Battery",
-          vendor: "ElectricRider",
-          quality: "12.00",
-          amount: "3",
-          totalCost: "1192.80",
-          cumulativeStock: "53",
-        },
-        {
-          material: "Engine",
-          vendor: "ElectricRider",
-          quality: "12.00",
-          amount: "4",
-          totalCost: "470.40",
-          cumulativeStock: "44",
-        },
-      ],
-      dataCurrentRound: [
-        {
-          material: "Frame",
-          vendor: "ElectricRider",
-          quality: "21.00",
-          amount: "3",
-          totalCost: "231.90",
-          cumulativeStock: "23",
-        },
-        {
-          material: "Engine",
-          vendor: "ElectricRider",
-          quality: "8.00",
-          amount: "10",
-          totalCost: "2333.00",
-          cumulativeStock: "77",
-        },
-      ],
     };
   },
   methods: {
@@ -954,6 +938,8 @@ export default {
     ...mapActions('purchasing', ['updateEngineVendors']),
     ...mapActions('purchasing', ['updateFrameVendors']),
     ...mapActions('purchasing', ['updateSensorsVendors']),
+    ...mapActions('purchasing', ['saveVendorBattery']),
+    ...mapActions('purchasing', ['getLastVendorBattery']),
     ...mapMutations('purchasing', ['updateBatteryVendor']),
     ...mapMutations('purchasing', ['updateEngineVendor']),
     ...mapMutations('purchasing', ['updateFrameVendor']),
@@ -961,12 +947,16 @@ export default {
     toggleShowError() {
       this.showError = !this.showError;
     },
-    toggleDialog() {
+    async toggleDialog() {
       if(this.vendor === null) {
         this.toggleShowError();
       } else if(this.$store.state.purchasingStep >= 5){
-        this.updateBatteryVendors;
+        await this.updateBatteryVendors();
         this.confirmChangesDialog = !this.confirmChangesDialog;
+        await this.saveVendorBattery({
+          amount: this.amount,
+          quality: this.quality,
+        });
       }
     },
     toNextStep() {
@@ -1039,7 +1029,7 @@ export default {
       this.$refs[name].style.opacity = value;
     }
   },
-  mounted() {
+  async mounted() {
     this.$store.state.innerGuideDone = 
                this.$store.state.purchasingStep >= 5 || 
                this.$store.state.logisticStep >= 5 || 
@@ -1056,11 +1046,11 @@ export default {
       this.nextPurchasingStep();
     }
     
-    this.updateBatteryVendors();
-    this.updateEngineVendors();
-    this.updateFrameVendors();
-    this.updateSensorsVendors();
-    console.log(this.tempSelection);
+    await this.updateBatteryVendors();
+    await this.updateEngineVendors();
+    await this.updateFrameVendors();
+    await this.updateSensorsVendors();
+    await this.getLastVendorBattery();
   },
   watch: {
     '$store.state.purchasingStep': function() {
