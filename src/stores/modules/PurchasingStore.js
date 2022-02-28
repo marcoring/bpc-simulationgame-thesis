@@ -225,6 +225,159 @@ const actions = {
               }
               console.log(error.config);
         }
+    },
+    async saveVendorEngine({ commit, dispatch, getters, rootGetters }, data) {
+      const payload = JSON.stringify({                       
+            Guid:rootGetters.gameData.Guid,    
+            Roundid:rootGetters.gameData.Roundid,  
+            Userid:rootGetters.gameData.Userid, 
+            Vendorid:getters.engineVendor.Vendorid,
+            Amount:data.amount.engine,
+            Quality:String(data.quality.engine),
+            Materialid:"ENG",
+            Totalcost:data.totalCost,
+            Costperunit:data.costPerUnit
+      });
+      // this function return backslashes from JSON String
+      const payload_without_bs = JSON.parse(payload);
+      const axiosConfig = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+        }
+    };
+        try {
+        var response = await axios.put(
+            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Materialid='ENG',Userid='${rootGetters.gameData.Userid}')`,
+                payload_without_bs,
+                console.log('PAYLOAD', payload_without_bs),
+              {
+                axiosConfig
+              },
+            );
+        var vendors = response.data.d.results;
+        commit('saveVendor', vendors);
+        await dispatch('updateGameData', {}, { root: true });
+        } catch (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+              }
+              console.log(error.config);
+        }
+    },
+    async saveVendorFrame({ commit, dispatch, getters, rootGetters }, data) {
+      const payload = JSON.stringify({                       
+            Guid:rootGetters.gameData.Guid,    
+            Roundid:rootGetters.gameData.Roundid,  
+            Userid:rootGetters.gameData.Userid, 
+            Vendorid:getters.frameVendor.Vendorid,
+            Amount:data.amount.frame,
+            Quality:String(data.quality.frame),
+            Materialid:"FR",
+            Totalcost:data.totalCost,
+            Costperunit:data.costPerUnit
+      });
+      // this function return backslashes from JSON String
+      const payload_without_bs = JSON.parse(payload);
+      const axiosConfig = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+        }
+    };
+        try {
+        var response = await axios.put(
+            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Materialid='FR',Userid='${rootGetters.gameData.Userid}')`,
+                payload_without_bs,
+                console.log('PAYLOAD', payload_without_bs),
+              {
+                axiosConfig
+              },
+            );
+        var vendors = response.data.d.results;
+        commit('saveVendor', vendors);
+        await dispatch('updateGameData', {}, { root: true });
+        } catch (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+              }
+              console.log(error.config);
+        }
+    },
+    async saveVendorSensors({ commit, dispatch, getters, rootGetters }, data) {
+      const payload = JSON.stringify({                       
+            Guid:rootGetters.gameData.Guid,    
+            Roundid:rootGetters.gameData.Roundid,  
+            Userid:rootGetters.gameData.Userid, 
+            Vendorid:getters.sensorsVendor.Vendorid,
+            Amount:data.amount.sensors,
+            Quality:String(data.quality.sensors),
+            Materialid:"SEN",
+            Totalcost:data.totalCost,
+            Costperunit:data.costPerUnit
+      });
+      // this function return backslashes from JSON String
+      const payload_without_bs = JSON.parse(payload);
+      const axiosConfig = {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+        }
+    };
+        try {
+        var response = await axios.put(
+            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Materialid='SEN',Userid='${rootGetters.gameData.Userid}')`,
+                payload_without_bs,
+                console.log('PAYLOAD', payload_without_bs),
+              {
+                axiosConfig
+              },
+            );
+        var vendors = response.data.d.results;
+        commit('saveVendor', vendors);
+        await dispatch('updateGameData', {}, { root: true });
+        } catch (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+              }
+              console.log(error.config);
+        }
     }
 }
 

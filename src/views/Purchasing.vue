@@ -939,6 +939,9 @@ export default {
     ...mapActions('purchasing', ['updateFrameVendors']),
     ...mapActions('purchasing', ['updateSensorsVendors']),
     ...mapActions('purchasing', ['saveVendorBattery']),
+    ...mapActions('purchasing', ['saveVendorEngine']),
+    ...mapActions('purchasing', ['saveVendorFrame']),
+    ...mapActions('purchasing', ['saveVendorSensors']),
     ...mapActions('purchasing', ['getLastVendorBattery']),
     ...mapMutations('purchasing', ['updateBatteryVendor']),
     ...mapMutations('purchasing', ['updateEngineVendor']),
@@ -952,12 +955,33 @@ export default {
         this.toggleShowError();
       } else if(this.$store.state.purchasingStep >= 5){
         await this.updateBatteryVendors();
+        await this.updateEngineVendors();
+        await this.updateFrameVendors();
+        await this.updateSensorsVendors();
         this.confirmChangesDialog = !this.confirmChangesDialog;
         await this.saveVendorBattery({
           amount: this.amount,
           quality: this.quality,
           totalCost: this.calculatedTotalCostBattery,
           costPerUnit: this.calculatedCostPerMaterialBattery
+        });
+        await this.saveVendorEngine({
+          amount: this.amount,
+          quality: this.quality,
+          totalCost: this.calculatedTotalCostEngine,
+          costPerUnit: this.calculatedCostPerMaterialEngine
+        });
+        await this.saveVendorFrame({
+          amount: this.amount,
+          quality: this.quality,
+          totalCost: this.calculatedTotalCostFrame,
+          costPerUnit: this.calculatedCostPerMaterialFrame
+        });
+        await this.saveVendorSensors({
+          amount: this.amount,
+          quality: this.quality,
+          totalCost: this.calculatedTotalCostSensors,
+          costPerUnit: this.calculatedCostPerMaterialSensors
         });
       }
     },
