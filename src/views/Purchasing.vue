@@ -754,7 +754,7 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Purchasing",
   computed: {
-    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor', 'lastVendorBattery', 'lastVendorEngine', 'lastVendorFrame', 'lastVendorSensors']),
+    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor', 'lastVendorBattery', 'lastVendorBatteryM', 'lastVendorEngine', 'lastVendorEngineM', 'lastVendorFrame', 'lastVendorFrameM', 'lastVendorSensors', 'lastVendorSensorsM']),
     vendorsSelect: function() {
       return this.vendors.map(vendor => {
         return {
@@ -845,49 +845,47 @@ export default {
     },
       prevRoundTableData: function() {
       const lines = [];
-      if(this.lastVendorBattery != null) {
-        console.log('LASTVENDOR-Battery', this.lastVendorBattery),
+      if(this.lastVendorBattery != null && this.lastVendorBatteryM != null) {
+        /*console.log('LASTVENDOR-Battery', this.lastVendorBattery),
+        console.log('LASTVENDOR-BatteryM', this.lastVendorBatteryM),*/
         lines.push({
           material: "Battery",
-          vendor: this.lastVendorBattery.Vendorname,
-          sustainabilityFactor: this.lastVendorBattery.Sustainabilityfactor,
-          regionalityFactor: this.lastVendorBattery.Regionalityfactor,
+          vendor: this.lastVendorBatteryM.Vendorname,
+          sustainabilityFactor: this.lastVendorBatteryM.Sustainabilityfactor,
+          regionalityFactor: this.lastVendorBatteryM.Regionalityfactor,
           quality: this.lastVendorBattery.Quality,
           amount: this.lastVendorBattery.Amount,
           totalCost: this.lastVendorBattery.Totalcost,
         });
       }
-      if(this.lastVendorEngine != null) {
-        console.log('LASTVENDOR-Engine', this.lastVendorEngine),
+      if(this.lastVendorEngine != null && this.lastVendorEngineM != null) {
         lines.push({
           material: "Engine",
-          vendor: this.lastVendorEngine.Vendorname,
-          sustainabilityFactor: this.lastVendorEngine.Sustainabilityfactor,
-          regionalityFactor: this.lastVendorEngine.Regionalityfactor,
+          vendor: this.lastVendorEngineM.Vendorname,
+          sustainabilityFactor: this.lastVendorEngineM.Sustainabilityfactor,
+          regionalityFactor: this.lastVendorEngineM.Regionalityfactor,
           quality: this.lastVendorEngine.Quality,
           amount: this.lastVendorEngine.Amount,
           totalCost: this.lastVendorEngine.Totalcost,
         });
       }
-      if(this.lastVendorFrame != null) {
-        console.log('LASTVENDOR-Frame', this.lastVendorFrame),
+      if(this.lastVendorFrame != null && this.lastVendorFrameM != null) {
         lines.push({
           material: "Frame",
-          vendor: this.lastVendorFrame.Vendorname,
-          sustainabilityFactor: this.lastVendorFrame.Sustainabilityfactor,
-          regionalityFactor: this.lastVendorFrame.Regionalityfactor,
+          vendor: this.lastVendorFrameM.Vendorname,
+          sustainabilityFactor: this.lastVendorFrameM.Sustainabilityfactor,
+          regionalityFactor: this.lastVendorFrameM.Regionalityfactor,
           quality: this.lastVendorFrame.Quality,
           amount: this.lastVendorFrame.Amount,
           totalCost: this.lastVendorFrame.Totalcost,
         });
       }
-      if(this.lastVendorSensors != null) {
-        console.log('LASTVENDOR-Sensors', this.lastVendorSensors),
+      if(this.lastVendorSensors != null && this.lastVendorSensorsM != null) {
         lines.push({
           material: "Sensors",
-          vendor: this.lastVendorSensors.Vendorname,
-          sustainabilityFactor: this.lastVendorSensors.Sustainabilityfactor,
-          regionalityFactor: this.lastVendorSensors.Regionalityfactor,
+          vendor: this.lastVendorSensorsM.Vendorname,
+          sustainabilityFactor: this.lastVendorSensorsM.Sustainabilityfactor,
+          regionalityFactor: this.lastVendorSensorsM.Regionalityfactor,
           quality: this.lastVendorSensors.Quality,
           amount: this.lastVendorSensors.Amount,
           totalCost: this.lastVendorSensors.Totalcost,
@@ -991,9 +989,13 @@ export default {
     ...mapActions('purchasing', ['saveVendorFrame']),
     ...mapActions('purchasing', ['saveVendorSensors']),
     ...mapActions('purchasing', ['getLastVendorBattery']),
+    ...mapActions('purchasing', ['getLastVendorBatteryM']),
     ...mapActions('purchasing', ['getLastVendorEngine']),
+    ...mapActions('purchasing', ['getLastVendorEngineM']),
     ...mapActions('purchasing', ['getLastVendorFrame']),
+    ...mapActions('purchasing', ['getLastVendorFrameM']),
     ...mapActions('purchasing', ['getLastVendorSensors']),
+    ...mapActions('purchasing', ['getLastVendorSensorsM']),
     ...mapMutations('purchasing', ['updateBatteryVendor']),
     ...mapMutations('purchasing', ['updateEngineVendor']),
     ...mapMutations('purchasing', ['updateFrameVendor']),
@@ -1128,9 +1130,13 @@ export default {
     await this.updateFrameVendors();
     await this.updateSensorsVendors();
     await this.getLastVendorBattery();
+    await this.getLastVendorBatteryM();
     await this.getLastVendorEngine();
+    await this.getLastVendorEngineM();
     await this.getLastVendorFrame();
+    await this.getLastVendorFrameM();
     await this.getLastVendorSensors();
+    await this.getLastVendorSensorsM();
   },
   watch: {
     '$store.state.purchasingStep': function() {

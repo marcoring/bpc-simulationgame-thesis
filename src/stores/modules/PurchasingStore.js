@@ -10,9 +10,13 @@ const state = {
     sensorsVendors: [],
     sensorsVendor: null,
     lastVendorBattery: null,
+    lastVendorBatteryM: null,
     lastVendorEngine: null,
+    lastVendorEngineM: null,
     lastVendorFrame: null,
+    lastVendorFrameM: null,
     lastVendorSensors: null,
+    lastVendorSensorsM: null,
     types: [],
     type: null,
     quality: [],
@@ -35,13 +39,17 @@ const getters = {
     quality: state => state.quality,
     amount: state => state.amount,
     lastVendorBattery: state => state.lastVendorBattery,
-    lastVendorEngine: state => state.lastVendorBattery,
-    lastVendorFrame: state => state.lastVendorBattery,
-    lastVendorSensors: state => state.lastVendorBattery
+    lastVendorBatteryM: state => state.lastVendorBatteryM,
+    lastVendorEngine: state => state.lastVendorEngine,
+    lastVendorEngineM: state => state.lastVendorEngineM,
+    lastVendorFrame: state => state.lastVendorFrame,
+    lastVendorFrameM: state => state.lastVendorFrameM,
+    lastVendorSensors: state => state.lastVendorSensors,
+    lastVendorSensorsM: state => state.lastVendorSensorsM
 }
 
 const actions = {
-  async getLastVendorBattery({getters, commit, rootGetters}) {
+  async getLastVendorBattery({commit, rootGetters}) {
     if(rootGetters.gameData.Roundid == 1) {
       return null;
     }
@@ -49,7 +57,10 @@ const actions = {
     var response = await axios.get(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='BAT',Userid='${rootGetters.gameData.Userid}')?$format=json`
       );
-    commit('updateLastVendorBattery', getters.batteryVendors.filter((v => v.Vendorid == response.data.d.Vendorid && v.Materialid == 'BAT')));
+    commit('updateLastVendorBattery', response.data.d);
+    /*for (const property in response.data.d) {
+      console.log(`${property}: ${response.data.d[property]}`);
+    }*/
   } catch (error) {
     if (error.response) {
         // The request was made and the server responded with a status code
@@ -69,7 +80,38 @@ const actions = {
       console.log(error.config);
 }
   },
-  async getLastVendorEngine({getters, commit, rootGetters}) {
+  async getLastVendorBatteryM({getters, commit, rootGetters}) {
+    if(rootGetters.gameData.Roundid == 1) {
+      return null;
+    }
+    try {
+    var response = await axios.get(
+        `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='BAT',Userid='${rootGetters.gameData.Userid}')?$format=json`
+      );
+    commit('updateLastVendorBatteryM', getters.batteryVendors.find(v => v.Vendorid == response.data.d.Vendorid));
+    /*for (const property in response.data.d) {
+      console.log(`${property}: ${response.data.d[property]}`);
+    }*/
+    } catch (error) {
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+  }
+  },
+  async getLastVendorEngine({ commit, rootGetters}) {
     if(rootGetters.gameData.Roundid == 1) {
       return null;
     }
@@ -77,7 +119,8 @@ const actions = {
     var response = await axios.get(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='ENG',Userid='${rootGetters.gameData.Userid}')?$format=json`
       );
-    commit('updateLastVendorEngine', getters.engineVendors.find(v => v.Vendorid == response.data.d.Vendorid));
+    
+      commit('updateLastVendorEngine', response.data.d);  
 } catch (error) {
     if (error.response) {
         // The request was made and the server responded with a status code
@@ -97,7 +140,38 @@ const actions = {
       console.log(error.config);
 }
   },
-  async getLastVendorFrame({getters, commit, rootGetters}) {
+  async getLastVendorEngineM({getters, commit, rootGetters}) {
+    if(rootGetters.gameData.Roundid == 1) {
+      return null;
+    }
+    try {
+    var response = await axios.get(
+        `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='ENG',Userid='${rootGetters.gameData.Userid}')?$format=json`
+      );
+    commit('updateLastVendorEngineM', getters.engineVendors.find(v => v.Vendorid == response.data.d.Vendorid));
+    /*for (const property in response.data.d) {
+      console.log(`${property}: ${response.data.d[property]}`);
+    }*/
+    } catch (error) {
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+  }
+  },
+  async getLastVendorFrame({ commit, rootGetters}) {
     if(rootGetters.gameData.Roundid == 1) {
       return null;
     }
@@ -105,27 +179,55 @@ const actions = {
     var response = await axios.get(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='FR',Userid='${rootGetters.gameData.Userid}')?$format=json`
       );
-    commit('updateLastVendorFrame', getters.frameVendors.find(v => v.Vendorid == response.data.d.Vendorid));
-} catch (error) {
-    if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-      console.log(error.config);
-}
+    commit('updateLastVendorFrame', response.data.d);
+  } catch (error) {
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+  }
   },
-  async getLastVendorSensors({getters, commit, rootGetters}) {
+  async getLastVendorFrameM({getters, commit, rootGetters}) {
+    if(rootGetters.gameData.Roundid == 1) {
+      return null;
+    }
+    try {
+    var response = await axios.get(
+        `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='FR',Userid='${rootGetters.gameData.Userid}')?$format=json`
+      );
+    commit('updateLastVendorFrameM', getters.frameVendors.find(v => v.Vendorid == response.data.d.Vendorid));
+  } catch (error) {
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+  }
+  },
+  async getLastVendorSensors({commit, rootGetters}) {
     if(rootGetters.gameData.Roundid == 1) {
       return null;
     }
@@ -133,25 +235,53 @@ const actions = {
     var response = await axios.get(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='SEN',Userid='${rootGetters.gameData.Userid}')?$format=json`
       );
-    commit('updateLastVendorSensors', getters.sensorsVendors.find(v => v.Vendorid == response.data.d.Vendorid));
-} catch (error) {
-    if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(error.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-      }
-      console.log(error.config);
-}
+      commit('updateLastVendorSensors', response.data.d);
+  } catch (error) {
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+  }
+  },
+  async getLastVendorSensorsM({getters, commit, rootGetters}) {
+    if(rootGetters.gameData.Roundid == 1) {
+      return null;
+    }
+    try {
+    var response = await axios.get(
+        `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='SEN',Userid='${rootGetters.gameData.Userid}')?$format=json`
+      );
+      commit('updateLastVendorSensorsM', getters.sensorsVendors.find(v => v.Vendorid == response.data.d.Vendorid));
+  } catch (error) {
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
+  }
   },
   async updateBatteryVendors({ commit }) {
         try {
@@ -464,7 +594,6 @@ const actions = {
 }
 
 const mutations = {
-    // Hier könnte ich noch checks einbauen, ob Vendors so stimmt z.b., bevor ich sie setze
     updateBatteryVendors: (state, batteryVendors) => state.batteryVendors = batteryVendors,
     updateBatteryVendor: (state, batteryVendor) => state.batteryVendor = batteryVendor,
     updateEngineVendors: (state, engineVendors) => state.engineVendors = engineVendors,
@@ -479,10 +608,14 @@ const mutations = {
     updateType: (state, type) => state.type = type,
     updateQuality: (state, quality) => state.quality = quality,
     updateAmount: (state, amount) => state.amount = amount,
-    updateLastVendorBattery: (state, vendor) => state.lastVendorBattery = vendor,
-    updateLastVendorEngine: (state, vendor) => state.lastVendorBattery = vendor,
-    updateLastVendorFrame: (state, vendor) => state.lastVendorBattery = vendor,
-    updateLastVendorSensors: (state, vendor) => state.lastVendorBattery = vendor
+    updateLastVendorBattery: (state, lastVendorBattery) => state.lastVendorBattery = lastVendorBattery,
+    updateLastVendorBatteryM: (state, lastVendorBatteryM) => state.lastVendorBatteryM = lastVendorBatteryM,
+    updateLastVendorEngine: (state, lastVendorEngine) => state.lastVendorEngine = lastVendorEngine,
+    updateLastVendorEngineM: (state, lastVendorEngineM) => state.lastVendorEngineM = lastVendorEngineM,
+    updateLastVendorFrame: (state, lastVendorFrame) => state.lastVendorFrame = lastVendorFrame,
+    updateLastVendorFrameM: (state, lastVendorFrameM) => state.lastVendorFrameM = lastVendorFrameM,
+    updateLastVendorSensors: (state, lastVendorSensors) => state.lastVendorSensors = lastVendorSensors,
+    updateLastVendorSensorsM: (state, lastVendorSensorsM) => state.lastVendorSensorsM = lastVendorSensorsM
 }
 
 export default {
