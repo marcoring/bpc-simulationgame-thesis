@@ -1,5 +1,22 @@
 <template>
   <v-container id="purchasing">
+
+    <!-- Header with icon -->
+    <v-container align="left">
+      <v-row align="start"
+            justify="start"
+            class="mb-6 ml-6">
+        <v-btn :color="teamColor" fab x-large>
+        <v-icon color="white" x-large>mdi-shopping</v-icon>
+        </v-btn>
+        <v-col align="start"
+            justify="start"
+            class="mb-6 ml-4">
+        <h1 class="font-weight-black">Purchasing</h1>  
+        </v-col>   
+      </v-row>
+    </v-container>
+
     <!-- Statistic about current and previous round -->
     <v-row ref="round-data">
       <v-col>
