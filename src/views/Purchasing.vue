@@ -21,8 +21,8 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
-            :headers="headersRound"
-            :items="dataPrevRound"
+            :headers="headersRoundPrev"
+            :items="prevRoundTableData"
             :search="searchPrevRound"
           />
         </v-card>
@@ -754,11 +754,7 @@ export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Purchasing",
   computed: {
-  vendorSelection: function() {
-    console.log(Object.values(this.tempSelection))
-    return Object.values(this.tempSelection)
-  },
-    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor', 'lastVendor']),
+    ...mapGetters('purchasing', ['vendors', 'vendor', 'batteryVendors', 'batteryVendor', 'engineVendors', 'engineVendor', 'frameVendors', 'frameVendor', 'sensorsVendors', 'sensorsVendor', 'lastVendorBattery', 'lastVendorEngine', 'lastVendorFrame', 'lastVendorSensors']),
     vendorsSelect: function() {
       return this.vendors.map(vendor => {
         return {
@@ -847,6 +843,54 @@ export default {
       }
       return lines;
     },
+      prevRoundTableData: function() {
+      const lines = [];
+      if(this.lastVendorBattery != null) {
+        console.log('LASTVENDOR-Battery', this.lastVendorBattery),
+        lines.push({
+          material: "Battery",
+          vendor: this.lastVendorBattery.Vendorname,
+          sustainabilityFactor: this.lastVendorBattery.Sustainabilityfactor,
+          regionalityFactor: this.lastVendorBattery.Regionalityfactor,
+          developmentquality: this.lastVendorBattery.Developmentquality,
+          developmentcost: this.lastVendorBattery.Developmentcost
+        });
+      }
+      if(this.lastVendorEngine != null) {
+        console.log('LASTVENDOR-Engine', this.lastVendorEngine),
+        lines.push({
+          material: "Engine",
+          vendor: this.lastVendorEngine.Vendorname,
+          sustainabilityFactor: this.lastVendorEngine.Sustainabilityfactor,
+          regionalityFactor: this.lastVendorEngine.Regionalityfactor,
+          developmentquality: this.lastVendorEngine.Developmentquality,
+          developmentcost: this.lastVendorEngine.Developmentcost
+        });
+      }
+      if(this.lastVendorFrame != null) {
+        console.log('LASTVENDOR-Frame', this.lastVendorFrame),
+        lines.push({
+          material: "Frame",
+          vendor: this.lastVendorFrame.Vendorname,
+          sustainabilityFactor: this.lastVendorFrame.Sustainabilityfactor,
+          regionalityFactor: this.lastVendorFrame.Regionalityfactor,
+          developmentquality: this.lastVendorFrame.Developmentquality,
+          developmentcost: this.lastVendorFrame.Developmentcost
+        });
+      }
+      if(this.lastVendorSensors != null) {
+        console.log('LASTVENDOR-Sensors', this.lastVendorSensors),
+        lines.push({
+          material: "Sensors",
+          vendor: this.lastVendorSensors.Vendorname,
+          sustainabilityFactor: this.lastVendorSensors.Sustainabilityfactor,
+          regionalityFactor: this.lastVendorSensors.Regionalityfactor,
+          developmentquality: this.lastVendorSensors.Developmentquality,
+          developmentcost: this.lastVendorSensors.Developmentcost
+        });
+      }
+      return lines;
+    },
     getBatteryVendorname: function() {
       return this.batteryVendor != null ? this.batteryVendor.Vendorname : "";
     },
@@ -921,6 +965,14 @@ export default {
       },
       searchPrevRound: "",
       searchCurRound: "",
+      headersRoundPrev: [
+        { text: "Material", value: "material" },
+        { text: "Vendor", value: "vendor" },
+        { text: "Sustainability Factor (%)", value: "sustainabilityFactor" },
+        { text: "Regionality Factor (%)", value: "regionalityFactor" },
+        { text: "Developmentquality (%)", value: "developmentquality" },
+        { text: "Developmentcost (EUR)", value: "developmentcost" }
+      ],
       headersRound: [
         { text: "Material", value: "material" },
         { text: "Vendor", value: "vendor" },
@@ -943,6 +995,9 @@ export default {
     ...mapActions('purchasing', ['saveVendorFrame']),
     ...mapActions('purchasing', ['saveVendorSensors']),
     ...mapActions('purchasing', ['getLastVendorBattery']),
+    ...mapActions('purchasing', ['getLastVendorEngine']),
+    ...mapActions('purchasing', ['getLastVendorFrame']),
+    ...mapActions('purchasing', ['getLastVendorSensors']),
     ...mapMutations('purchasing', ['updateBatteryVendor']),
     ...mapMutations('purchasing', ['updateEngineVendor']),
     ...mapMutations('purchasing', ['updateFrameVendor']),
@@ -1077,6 +1132,9 @@ export default {
     await this.updateFrameVendors();
     await this.updateSensorsVendors();
     await this.getLastVendorBattery();
+    await this.getLastVendorEngine();
+    await this.getLastVendorFrame();
+    await this.getLastVendorSensors();
   },
   watch: {
     '$store.state.purchasingStep': function() {

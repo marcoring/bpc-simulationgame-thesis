@@ -9,16 +9,14 @@ const state = {
     frameVendor: null,
     sensorsVendors: [],
     sensorsVendor: null,
+    lastVendorBattery: null,
+    lastVendorEngine: null,
+    lastVendorFrame: null,
+    lastVendorSensors: null,
     types: [],
     type: null,
     quality: [],
     amount: [],
-    tempSelection: {
-      batteryVendor: {},
-      engineVendor: {},
-      frameVendor: {},
-      sensorsVendor: {}
-    }
 }
 
 const getters = {
@@ -36,8 +34,10 @@ const getters = {
     type: state => state.type,
     quality: state => state.quality,
     amount: state => state.amount,
-    tempSelection: state => state.tempSelection,
-    lastVendor: state => state.lastVendor
+    lastVendorBattery: state => state.lastVendorBattery,
+    lastVendorEngine: state => state.lastVendorBattery,
+    lastVendorFrame: state => state.lastVendorBattery,
+    lastVendorSensors: state => state.lastVendorBattery
 }
 
 const actions = {
@@ -49,9 +49,7 @@ const actions = {
     var response = await axios.get(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='BAT',Userid='${rootGetters.gameData.Userid}')?$format=json`
       );
-      
-    console.log("LASTVENDORID", response.data.d, getters.vendors);
-    commit('updateLastVendor',  getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid));
+    commit('updateLastVendorBattery', getters.batteryVendors.find(v => v.Vendorid == response.data.d.Vendorid));
 } catch (error) {
     if (error.response) {
         // The request was made and the server responded with a status code
@@ -71,7 +69,91 @@ const actions = {
       console.log(error.config);
 }
   },
-    async updateBatteryVendors({ commit }) {
+  async getLastVendorEngine({getters, commit, rootGetters}) {
+    if(rootGetters.gameData.Roundid == 1) {
+      return null;
+    }
+    try {
+    var response = await axios.get(
+        `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='ENG',Userid='${rootGetters.gameData.Userid}')?$format=json`
+      );
+    commit('updateLastVendorEngine', getters.engineVendors.find(v => v.Vendorid == response.data.d.Vendorid));
+} catch (error) {
+    if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+}
+  },
+  async getLastVendorFrame({getters, commit, rootGetters}) {
+    if(rootGetters.gameData.Roundid == 1) {
+      return null;
+    }
+    try {
+    var response = await axios.get(
+        `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='FR',Userid='${rootGetters.gameData.Userid}')?$format=json`
+      );
+    commit('updateLastVendorFrame', getters.frameVendors.find(v => v.Vendorid == response.data.d.Vendorid));
+} catch (error) {
+    if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+}
+  },
+  async getLastVendorSensors({getters, commit, rootGetters}) {
+    if(rootGetters.gameData.Roundid == 1) {
+      return null;
+    }
+    try {
+    var response = await axios.get(
+        `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='SEN',Userid='${rootGetters.gameData.Userid}')?$format=json`
+      );
+    commit('updateLastVendorSensors', getters.sensorsVendors.find(v => v.Vendorid == response.data.d.Vendorid));
+} catch (error) {
+    if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+}
+  },
+  async updateBatteryVendors({ commit }) {
         try {
             var response = await axios.get(
                 "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/AppDevVendorSet/?$format=json"
@@ -384,32 +466,23 @@ const actions = {
 const mutations = {
     // Hier könnte ich noch checks einbauen, ob Vendors so stimmt z.b., bevor ich sie setze
     updateBatteryVendors: (state, batteryVendors) => state.batteryVendors = batteryVendors,
-    updateBatteryVendor: (state, batteryVendor) => {
-      state.batteryVendor = batteryVendor
-      state.tempSelection.batteryVendor = batteryVendor
-    },
+    updateBatteryVendor: (state, batteryVendor) => state.batteryVendor = batteryVendor,
     updateEngineVendors: (state, engineVendors) => state.engineVendors = engineVendors,
-    updateEngineVendor: (state, engineVendor) => {
-      state.engineVendor = engineVendor
-      state.tempSelection.engineVendor = engineVendor
-    },
+    updateEngineVendor: (state, engineVendor) => state.engineVendor = engineVendor,
     updateFrameVendors: (state, frameVendors) => state.frameVendors = frameVendors,
-    updateFrameVendor: (state, frameVendor) => {
-      state.frameVendor = frameVendor
-      state.tempSelection.frameVendor = frameVendor
-    },
+    updateFrameVendor: (state, frameVendor) => state.frameVendor = frameVendor,
     updateSensorsVendors: (state, sensorsVendors) => state.sensorsVendors = sensorsVendors,
-    updateSensorsVendor: (state, sensorsVendor) => {
-      state.sensorsVendor = sensorsVendor
-      state.tempSelection.sensorsVendor = sensorsVendor
-    },
+    updateSensorsVendor: (state, sensorsVendor) => state.sensorsVendor = sensorsVendor,
     updateVendors: (state, vendors) => state.vendors = vendors,
     updateVendor: (state, vendor) => state.vendor = vendor,
     updateTypes: (state, types) => state.types = types,
     updateType: (state, type) => state.type = type,
     updateQuality: (state, quality) => state.quality = quality,
     updateAmount: (state, amount) => state.amount = amount,
-    updateLastVendor: (state, vendor) => state.lastVendor = vendor
+    updateLastVendorBattery: (state, vendor) => state.lastVendorBattery = vendor,
+    updateLastVendorEngine: (state, vendor) => state.lastVendorBattery = vendor,
+    updateLastVendorFrame: (state, vendor) => state.lastVendorBattery = vendor,
+    updateLastVendorSensors: (state, vendor) => state.lastVendorBattery = vendor
 }
 
 export default {
