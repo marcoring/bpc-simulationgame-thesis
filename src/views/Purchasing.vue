@@ -21,7 +21,7 @@
             ></v-text-field>
           </v-card-title>
           <v-data-table
-            :headers="headersRoundPrev"
+            :headers="headersRound"
             :items="prevRoundTableData"
             :search="searchPrevRound"
           />
@@ -852,8 +852,9 @@ export default {
           vendor: this.lastVendorBattery.Vendorname,
           sustainabilityFactor: this.lastVendorBattery.Sustainabilityfactor,
           regionalityFactor: this.lastVendorBattery.Regionalityfactor,
-          developmentquality: this.lastVendorBattery.Developmentquality,
-          developmentcost: this.lastVendorBattery.Developmentcost
+          quality: this.lastVendorBattery.Quality,
+          amount: this.lastVendorBattery.Amount,
+          totalCost: this.lastVendorBattery.Totalcost,
         });
       }
       if(this.lastVendorEngine != null) {
@@ -863,8 +864,9 @@ export default {
           vendor: this.lastVendorEngine.Vendorname,
           sustainabilityFactor: this.lastVendorEngine.Sustainabilityfactor,
           regionalityFactor: this.lastVendorEngine.Regionalityfactor,
-          developmentquality: this.lastVendorEngine.Developmentquality,
-          developmentcost: this.lastVendorEngine.Developmentcost
+          quality: this.lastVendorEngine.Quality,
+          amount: this.lastVendorEngine.Amount,
+          totalCost: this.lastVendorEngine.Totalcost,
         });
       }
       if(this.lastVendorFrame != null) {
@@ -874,8 +876,9 @@ export default {
           vendor: this.lastVendorFrame.Vendorname,
           sustainabilityFactor: this.lastVendorFrame.Sustainabilityfactor,
           regionalityFactor: this.lastVendorFrame.Regionalityfactor,
-          developmentquality: this.lastVendorFrame.Developmentquality,
-          developmentcost: this.lastVendorFrame.Developmentcost
+          quality: this.lastVendorFrame.Quality,
+          amount: this.lastVendorFrame.Amount,
+          totalCost: this.lastVendorFrame.Totalcost,
         });
       }
       if(this.lastVendorSensors != null) {
@@ -885,8 +888,9 @@ export default {
           vendor: this.lastVendorSensors.Vendorname,
           sustainabilityFactor: this.lastVendorSensors.Sustainabilityfactor,
           regionalityFactor: this.lastVendorSensors.Regionalityfactor,
-          developmentquality: this.lastVendorSensors.Developmentquality,
-          developmentcost: this.lastVendorSensors.Developmentcost
+          quality: this.lastVendorSensors.Quality,
+          amount: this.lastVendorSensors.Amount,
+          totalCost: this.lastVendorSensors.Totalcost,
         });
       }
       return lines;
@@ -965,14 +969,6 @@ export default {
       },
       searchPrevRound: "",
       searchCurRound: "",
-      headersRoundPrev: [
-        { text: "Material", value: "material" },
-        { text: "Vendor", value: "vendor" },
-        { text: "Sustainability Factor (%)", value: "sustainabilityFactor" },
-        { text: "Regionality Factor (%)", value: "regionalityFactor" },
-        { text: "Developmentquality (%)", value: "developmentquality" },
-        { text: "Developmentcost (EUR)", value: "developmentcost" }
-      ],
       headersRound: [
         { text: "Material", value: "material" },
         { text: "Vendor", value: "vendor" },

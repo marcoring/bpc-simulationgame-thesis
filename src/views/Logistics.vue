@@ -92,9 +92,9 @@
       </v-col>
       </v-row>
 
+       <!-- Cost Accounting 
       <v-row>
       <v-col>
-        <!-- Cost Accounting -->
         <cost-accounting-card
           style="height:100%"
           :budget="10.0"
@@ -105,7 +105,7 @@
           :overDemand="40000.0"
         />
       </v-col>
-    </v-row>
+    </v-row>-->
 
     <v-divider class="mt-5 mb-5"/>
 
@@ -231,7 +231,7 @@
 
 <script>
 // import axios from 'axios';
-import CostAccountingCard from "../components/CostAccountingCard.vue";
+// import CostAccountingCard from "../components/CostAccountingCard.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -239,7 +239,7 @@ import { mapGetters, mapActions, mapMutations } from 'vuex';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "logistics",
-  components: { CostAccountingCard, ConfirmationDialog, ErrorChagesDialog },
+  components: { /*CostAccountingCard,*/ ConfirmationDialog, ErrorChagesDialog },
   computed: {
       // erster Parameter entspricht Module, aus welchen wir Parameter holen
     ...mapGetters('logistics', ['vendors', 'vendor', 'lastVendor']),

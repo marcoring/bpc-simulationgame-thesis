@@ -49,8 +49,8 @@ const actions = {
     var response = await axios.get(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='BAT',Userid='${rootGetters.gameData.Userid}')?$format=json`
       );
-    commit('updateLastVendorBattery', getters.batteryVendors.find(v => v.Vendorid == response.data.d.Vendorid));
-} catch (error) {
+    commit('updateLastVendorBattery', getters.batteryVendors.filter((v => v.Vendorid == response.data.d.Vendorid && v.Materialid == 'BAT')));
+  } catch (error) {
     if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
