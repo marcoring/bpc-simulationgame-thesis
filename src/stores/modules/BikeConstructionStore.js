@@ -13,11 +13,12 @@ const state = {
     amount: [],
     workload: null,
     alnumber: null,
-    safety: null
-}
-
-//to handle state
-const getters = {
+    safety: null,
+    lastVendor: null
+  }
+  
+  //to handle state
+  const getters = {
     vendors: state => state.vendors,
     vendor: state => state.vendor,
     types: state => state.types,
@@ -26,21 +27,21 @@ const getters = {
     amount: state => state.amount,
     alnumber: state => state.alnumber,
     workload: state => state.workload,
-    safety: state => state.safety
-}
-
-//to handle actions
-const actions = {
-    async getLastVendor({getters, rootGetters}) {
+    safety: state => state.safety,
+    lastVendor: state => state.lastVendor
+  }
+  
+  //to handle actions
+  const actions = {
+    async getLastVendor({commit, rootGetters}) {
       if(rootGetters.gameData.Roundid == 1) {
         return null;
       }
       try {
       var response = await axios.get(
-          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/ProdProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
+          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/ProdProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='CON',Userid='${rootGetters.gameData.Userid}')?$format=json`
         );
-        console.log("TEST", response.data.d, getters.vendors)
-      return getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid);
+      commit('updateLastVendor',  response.data.d);
   } catch (error) {
       if (error.response) {
           // The request was made and the server responded with a status code
@@ -86,21 +87,21 @@ const actions = {
               console.log(error.config);
         }
     },
-    async saveVendor({ commit, dispatch, getters, rootGetters }) {
+    async saveVendor({ commit, dispatch, getters, rootGetters }, data) {
+        console.log('saveVendor', getters.vendor)
       const payload = JSON.stringify({                       
-            Guid:rootGetters.gameData.Guid,    
+            Guid:String(rootGetters.gameData.Guid),    
             Roundid:rootGetters.gameData.Roundid,  
-            Userid:rootGetters.gameData.Userid,
-            Materialid:getters.vendor.Materialid,   
-            Assemblylineid:getters.vendor.Assemblylineid,
-            Totalacquisitioncost:getters.vendor.Acqusitioncost,
-            Prodcapacity:getters.vendor.Maxcapacity,
-            Prodcost:getters.vendor.Baseprodcost,
-            // TODO: Amount input below not working
-            Quality:getters.amount.quality,
-            Workload:getters.amount.workload,
-            Safety:getters.amount.safety,
-            Alnumber:getters.amount.assemblyLines,
+            Userid:String(rootGetters.gameData.Userid),
+            Materialid:"BAT",
+            Assemblylineid:String(getters.vendor.Assemblylineid),
+            Totalacquisitioncost:String(getters.vendor.Acqusitioncost),
+            Prodcapacity:String(getters.vendor.Maxcapacity),
+            Prodcost:String(getters.vendor.Baseprodcost),
+            Quality:String(data.amount.quality.val),
+            Workload:String(data.amount.workload.val),
+            Safety:String(data.amount.safety.val),
+            Alnumber:Number(data.amount.assemblyLines.val)
       });
       // this function removes backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -142,21 +143,22 @@ const actions = {
               console.log(error.config);
         }
     }
-}
-
-//to handle mutations
-const mutations = {
-    // Hier könnte ich noch checks einbauen, ob Vendors so stimmt z.b., bevor ich sie setze
-    updateVendors: (state, vendors) => state.vendors = vendors,
-    updateVendor: (state, vendor) => state.vendor = vendor,
-    updateTypes: (state, types) => state.types = types,
-    updateType: (state, type) => state.type = type,
-    updateWorkload: (state, workload) => state.workload = workload,
-    updateQuality: (state, quality) => state.quality = quality,
-    updateAmount: (state, amount) => state.amount = amount,
-    updateSafety: (state, safety) => state.safety = safety,
-    updateAlnumber: (state, alnumber) => state.alnumber = alnumber
-}
+  }
+  
+  //to handle mutations
+  const mutations = {
+      // Hier könnte ich noch checks einbauen, ob Vendors so stimmt z.b., bevor ich sie setze
+      updateVendors: (state, vendors) => state.vendors = vendors,
+      updateVendor: (state, vendor) => state.vendor = vendor,
+      updateTypes: (state, types) => state.types = types,
+      updateType: (state, type) => state.type = type,
+      updateWorkload: (state, workload) => state.workload = workload,
+      updateQuality: (state, quality) => state.quality = quality,
+      updateAmount: (state, amount) => state.amount = amount,
+      updateSafety: (state, safety) => state.safety = safety,
+      updateAlnumber: (state, alnumber) => state.alnumber = alnumber,
+      updateLastVendor: (state, lastVendor) => state.lastVendor = lastVendor
+  }
 
 //export store module
 export default {
