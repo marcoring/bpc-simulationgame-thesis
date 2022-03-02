@@ -285,7 +285,7 @@ export default {
       stepText: '',
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
-      prevTranspComp: "Ebike GmBh",
+      /*prevTranspComp: "Ebike GmBh",
       prevDelCosts: 0.0,
       prevQualDel: 0.0,
       curTranspComp: "Ebike GmBh",
@@ -296,7 +296,7 @@ export default {
       avgProdCostBike: "Incomplete",
       estimatedQual: 0.0,
       maxProdCapac: "Incomplete",
-      overDemand: 40000.0,
+      overDemand: 40000.0,*/
     };
   },
   methods: {

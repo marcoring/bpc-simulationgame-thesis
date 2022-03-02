@@ -13,7 +13,8 @@ const state = {
     amount: [],
     workload: null,
     alnumber: null,
-    safety: null
+    safety: null,
+    lastVendor: null
 }
 
 //to handle state
@@ -26,40 +27,40 @@ const getters = {
     amount: state => state.amount,
     alnumber: state => state.alnumber,
     workload: state => state.workload,
-    safety: state => state.safety
+    safety: state => state.safety,
+    lastVendor: state => state.lastVendor
 }
 
 //to handle actions
 const actions = {
-    async getLastVendor({getters, rootGetters}) {
-      if(rootGetters.gameData.Roundid == 1) {
-        return null;
-      }
-      try {
-      var response = await axios.get(
-          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/ProdProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
-        );
-        console.log("TEST", response.data.d, getters.vendors)
-      return getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid);
-  } catch (error) {
-      if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
+    async getLastVendor({commit, rootGetters}) {
+        if(rootGetters.gameData.Roundid == 1) {
+          return null;
         }
-        console.log(error.config);
-  }
-    },
+        try {
+        var response = await axios.get(
+            `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/ProdProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Materialid='FR',Userid='${rootGetters.gameData.Userid}')?$format=json`
+          );
+        commit('updateLastVendor',  response.data.d);
+    } catch (error) {
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+    }
+      },
     async updateVendors({ commit }) {
         try {
             var response = await axios.get(
@@ -86,21 +87,22 @@ const actions = {
               console.log(error.config);
         }
     },
-    async saveVendor({ commit, dispatch, getters, rootGetters }) {
+    async saveVendor({ commit, dispatch, getters, rootGetters }, data) {
+        console.log('saveVendor', getters.vendor)
       const payload = JSON.stringify({                       
             Guid:rootGetters.gameData.Guid,    
             Roundid:rootGetters.gameData.Roundid,  
             Userid:rootGetters.gameData.Userid,
-            Materialid:getters.vendor.Materialid,   
-            Assemblylineid:getters.vendor.Assemblylineid,
-            Totalacquisitioncost:getters.vendor.Acqusitioncost,
-            Prodcapacity:getters.vendor.Maxcapacity,
-            Prodcost:getters.vendor.Baseprodcost,
-            // TODO: Amount input below not working
-            Quality:getters.amount.quality,
-            Workload:getters.amount.workload,
-            Safety:getters.amount.safety,
-            Alnumber:getters.amount.assemblyLines,
+            Materialid:"FR",
+            Assemblylineid:String(getters.vendor.Assemblylineid),
+            Totalacquisitioncost:String(getters.vendor.Acqusitioncost),
+            Prodcapacity:String(getters.vendor.Maxcapacity),
+            Prodcost:String(getters.vendor.Baseprodcost),
+            Productcustomization:data.selectedCustomization,
+            Quality:String(data.amount.quality.val),
+            Workload:String(data.amount.workload.val),
+            Safety:String(data.amount.safety.val),
+            Alnumber:data.amount.assemblyLines.val
       });
       // this function removes backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -155,7 +157,8 @@ const mutations = {
     updateQuality: (state, quality) => state.quality = quality,
     updateAmount: (state, amount) => state.amount = amount,
     updateSafety: (state, safety) => state.safety = safety,
-    updateAlnumber: (state, alnumber) => state.alnumber = alnumber
+    updateAlnumber: (state, alnumber) => state.alnumber = alnumber,
+    updateLastVendor: (state, lastVendor) => state.lastVendor = lastVendor
 }
 
 //export store module

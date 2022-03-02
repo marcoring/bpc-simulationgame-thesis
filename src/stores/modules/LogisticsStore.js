@@ -140,7 +140,7 @@ const mutations = {
     updateType: (state, type) => state.type = type,
     updateQuality: (state, quality) => state.quality = quality,
     updateAmount: (state, amount) => state.amount = amount,
-    updateLastVendor: (state, vendor) => state.lastVendor = vendor
+    updateLastVendor: (state, lastVendor) => state.lastVendor = lastVendor
 }
 
 //export store module
