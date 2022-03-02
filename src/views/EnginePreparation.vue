@@ -17,67 +17,118 @@
       </v-row>
     </v-container>
 
-     <!-- Statistic about current, previous round and cost accounting -->
-      <v-row ref="round-data">
-      <v-col>
+    <v-row ref="round-data">
+        <v-col>
          <!-- Previous Round Status -->
         <v-card style="height:100%">
           <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
             Previous Round
           </v-card-title>
+          <v-card-text>
+            <v-text-field
+            label="Production Line:"
+            :value="lastAssemblylineid  != null ? lastAssemblylineid : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Productcustomization (True/False):"
+            :value="lastProductcustomization != null ? lastProductcustomization : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Total Acquisition Costs (EUR):"
+            :value="lastTotalacquisitioncost != null ? lastTotalacquisitioncost : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Number of Proudction Lines:"
+            :value="lastAlnumber != null ? lastAlnumber : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Production Costs (EUR):"
+            :value="lastProdcost != null ? lastProdcost : 'No Data'"
+            disabled
+            />
+            <v-text-field
+            label="Quality (%):"
+            :value="lastQuality != null ? lastQuality : 'No Data'"
+            disabled
+            />
+             <v-text-field
+            label="Workload (%):"
+            :value="lastWorkload != null ? lastWorkload: 'No Data'"
+            disabled
+            />
+             <v-text-field
+            label="Safety (%):"
+            :value="lastSafety != null ? lastSafety : 'No Data'"
+            disabled
+            />
+          </v-card-text>
         </v-card>
-      </v-col>
+        </v-col>
 
-    <v-col>
+        <v-col>
         <!-- Current Round Status -->
         <v-card style="height:100%">
           <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
             Current Round
           </v-card-title>
           <v-card-text>
-             <v-text-field
-            label="Assembly Line Name:"
-            :value="this.assemblyLineName != null ? this.assemblyLineName : 'No Data'"
+            <v-text-field
+            label="Production Line:"
+            :value="getProductionline"
             disabled
             />
             <v-text-field
-            label="Assembly Line Costs (EUR):"
-            :value="this.assemblyLineCosts != null ? this.assemblyLineCosts : 'No Data'"
+            label="Productcustomization (True/False):"
+            :value="getProductcustomization"
             disabled
             />
             <v-text-field
-            label="Number of Assembly Lines:"
-            :value="this.assemblyNumberLines != null ? this.assemblyNumberLines : 'No Data'"
+            label="Total Acquisition Costs (EUR):"
+            :value="getTotalacquisitioncost"
             disabled
             />
             <v-text-field
-            label="Base Production Costs (EUR):"
-            :value="this.assemblyProductionCosts != null ? this.assemblyProductionCosts : 'No Data'"
+            label="Number of Proudction Lines:"
+            :value="getAlnumber"
             disabled
             />
             <v-text-field
-            label="Production Capacity (%):"
-            :value="this.assemblyProductionCapacity != null ? this.assemblyProductionCapacity : 'No Data'"
-            disabled
-            />
-            <v-text-field
-            label="Environmental Factor (%):"
-            :value="this.assemblyEnvironmentalFactor != null ? this.assemblyEnvironmentalFactor : 'No Data'"
+            label="Production Costs (EUR):"
+            :value="getProdcost"
             disabled
             />
             <v-text-field
             label="Quality (%):"
-            :value=" this.assemblyQuality != null ? this.assemblyQuality : 'No Data'"
+            :value="getQuality"
             disabled
             />
-            <v-text-field
+             <v-text-field
             label="Workload (%):"
-            :value="this.assemblyWorkload != null ? this.assemblyWorkload : 'No Data'"
+            :value="getWorkload"
             disabled
             />
-            <v-text-field
+             <v-text-field
             label="Safety (%):"
-            :value=" this.assemblySafety != null ? this.assemblySafety : 'No Data'"
+            :value="getSafety"
+            disabled
+            />
+                        <v-text-field
+            label="Production Costs (%):"
+            :value="getProductionCosts"
+            disabled
+            />
+             <v-text-field
+            label="Production Capacity (%):"
+            :value="getProductionCapacity"
+            disabled
+            />
+             <v-text-field
+            label="Environmental Factor (%):"
+            :value="getEnvironmentalFactor"
             disabled
             />
           </v-card-text>
@@ -325,15 +376,15 @@ export default {
       numOfLines: 1,
       selectedCustomization: false,
       amount: {
-        assemblyLines: { label: "Number of Assembly Lines", val: 0 },
-        quality: { label: "Quality (%)", val: 0, color: "primary" },
-        workload: { label: "Workload (%)", val: 0, color: "primary" },
-        safety: { label: "Safety (%)", val: 0, color: "primary" },
+        assemblyLines: { label: "Number of Assembly Lines", val: 1 },
+        quality: { label: "Quality (%)", val: 1, color: "primary" },
+        workload: { label: "Workload (%)", val: 1, color: "primary" },
+        safety: { label: "Safety (%)", val:1, color: "primary" },
       },
     };
   },
   computed: {
-  ...mapGetters('enginePreparation', ['vendors', 'vendor']),
+  ...mapGetters('framePreparation', ['vendors', 'vendor', 'lastVendor']),
   vendorsSelect: function() {
     return this.vendors ? this.vendors.map(vendor => {
       if (vendor.Materialid == 'ENG') {
@@ -375,14 +426,80 @@ export default {
     },
     assemblyNumberLines() {
       return this.amount.assemblyLines != null ? this.amount.assemblyLines.val : 'No Data' ;
-    }
-
+    },
+    lastProductionline: function() {
+      return this.lastvendor != null ? this.lastVendor.Alname : "No Data";
+    },
+    lastProductcustomization: function() {
+      return this.lastVendor != null ? this.lastVendor.Productcustomization : "No Data";
+    },
+    lastTotalacquisitioncost: function(){
+      return this.lastVendor != null ? this.lastVendor.Totalacquisitioncost : "No Data"
+    },
+    lastAlnumber: function() {
+      return this.lastVendor != null ? this.lastVendor.Alnumber : "No Data";
+    },
+    lastProdcost: function() {
+      return this.lastVendor != null ? this.lastVendor.Prodcost : "No Data";
+    },
+    lastProdcapacity: function() {
+      return this.lastVendor != null ? this.lastVendor.Prodcapacity : "No Data";
+    },
+    lastQuality: function() {
+      return this.lastVendor != null ? this.lastVendor.Quality : "No Data";
+    },
+    lastWorkload: function() {
+      return this.lastVendor != null ? this.lastVendor.Workload : "No Data";
+    },
+    lastSafety: function() {
+      return this.lastVendor != null ? this.lastVendor.Safety : "No Data";
+    },
+    getProductionline: function() {
+      return this.vendor != null ? this.vendor.Alname : '';
+    },
+    getProductcustomization: function() {
+      return this.selectedCustomization != null ? this.selectedCustomization : "No Data";
+    },
+    getTotalacquisitioncost: function(){
+      if (this.selectedCustomization) {
+        return this.vendor != null ? (this.vendor.Acqusitioncost * 1.2) : '';
+      } else {
+      return this.vendor != null ? this.vendor.Acqusitioncost : '';
+      }
+    },
+    getAlnumber: function() {
+      return this.amount.assemblyLines != null ? this.amount.assemblyLines.val : "No Data";
+    },
+    getProdcost: function() {
+        return this.vendor != null ? this.vendor.Baseprodcost : 'No Data';
+    },
+    getProdcapacity: function() {
+      return this.vendor != null ? this.vendor.Maxcapacity : "No Data";
+    },
+    getQuality: function() {
+      return this.amount.quality != null ? this.amount.quality.val : "No Data";
+    },
+    getWorkload: function() {
+      return this.amount.workload != null ? this.amount.workload.val : "No Data";
+    },
+    getSafety: function() {
+      return this.amount.safety != null ? this.amount.safety.val : "No Data";
+    },
+    getProductionCosts() {
+      return this.vendor != null ? this.vendor.Baseprodcost : 'No Data';
+    },
+    getProductionCapacity() {
+      return this.vendor != null ? this.vendor.Maxcapacity : 'No Data';
+    },
+    getEnvironmentalFactor() {
+      return this.vendor != null ? this.vendor.Environmentalfactor : 'No Data';
+    },
   },
   methods: {
-    ...mapActions('enginePreparation', ['updateVendors']),
-    ...mapActions('enginePreparation', ['getLastVendor']),
-    ...mapActions('enginePreparation', ['saveVendor']),
-    ...mapMutations('enginePreparation', ['updateVendor']),
+    ...mapActions('framePreparation', ['updateVendors']),
+    ...mapActions('framePreparation', ['getLastVendor']),
+    ...mapActions('framePreparation', ['saveVendor']),
+    ...mapMutations('framePreparation', ['updateVendor']),
      toggleShowError() {
       this.showError = !this.showError;
     },
@@ -392,8 +509,10 @@ export default {
       } else {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.confirmChangesDialog = !this.confirmChangesDialog;
-        await this.saveVendor();
-        //return this.$store.modules.logistics ;
+        await this.saveVendor({
+          amount: this.amount,
+          selectedCustomization: this.selectedCustomization
+        });
       } 
     },
     updateProgress() {
@@ -424,8 +543,10 @@ export default {
        this.$router.push({ path: "/sensorsPreparation" });
     }
   },
-  mounted() {
-    this.updateVendors();
+  async mounted() {
+    await this.updateVendors();
+    await this.getLastVendor();
+
   },
   props: {},
 };

@@ -386,6 +386,33 @@ export default {
         }}
       }) : []
     },
+    assemblyLineCosts() {
+      if (this.selectedCustomization) {
+        return this. vendor != null ? (this.vendor.Acqusitioncost * 1.2) : '';
+      } else {
+      return this.vendor != null ? this.vendor.Acqusitioncost : '';
+    }},
+    assemblyProductionCosts() {
+      return this.vendor != null ? this.vendor.Baseprodcost : '';
+    },
+    assemblyProductionCapacity() {
+      return this.vendor != null ? this.vendor.Maxcapacity : '';
+    },
+    assemblyEnvironmentalFactor() {
+      return this.vendor != null ? this.vendor.Environmentalfactor : '';
+    },
+    assemblyQuality() {
+      return this.amount.quality != null ? this.amount.quality.val : 'No Data';
+    },
+    assemblyWorkload() {
+      return this.amount.workload != null ? this.amount.workload.val : 'No Data';
+    },
+    assemblySafety() {
+      return this.amount.safety != null ? this.amount.safety.val : 'No Data';
+    },
+    assemblyNumberLines() {
+      return this.amount.assemblyLines != null ? this.amount.assemblyLines.val : 'No Data' ;
+    },
     lastProductionline: function() {
       return this.lastvendor != null ? this.lastVendor.Alname : "No Data";
     },
@@ -430,7 +457,7 @@ export default {
       return this.amount.assemblyLines != null ? this.amount.assemblyLines.val : "No Data";
     },
     getProdcost: function() {
-        return this.vendor != null ? this.vendor.Prodcost : "No Data";
+       return this.vendor != null ? this.vendor.Baseprodcost : 'No Data';
     },
     getProdcapacity: function() {
       return this.vendor != null ? this.vendor.Maxcapacity : "No Data";
@@ -497,7 +524,6 @@ export default {
           amount: this.amount,
           selectedCustomization: this.selectedCustomization
         });
-        //return this.$store.modules.logistics ;
       } 
     },
     updateProgress() {
