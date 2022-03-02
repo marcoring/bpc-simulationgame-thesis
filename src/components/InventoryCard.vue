@@ -26,13 +26,15 @@
 
     <v-simple-table>
     <template v-slot:default>
+      <v-row class="ml-5 mt-3">
+        <h2 class="ml-2">Purchased Material</h2>
+      </v-row>
       <v-row>
-      <v-col class="ml-5 mb-5 mt-5">
-      <h3 class="ml-2">Purchased Material</h3>
+      <v-col class="ml-16 mb-5 mt-5">
       <tbody>
         <h4 class="ml-8">Standard</h4>
         <tr>
-          <td class="ml-8 mt-2">Battery (PC)
+          <td class="ml-8 mt-2 mr-2">Battery (PC):
           </td>
           <td class="ml-8 mt-2">
             {{ getBattery }}
@@ -40,7 +42,7 @@
         </tr>
         <!-- Row Engine -->
         <tr>
-          <td class="ml-8 mt-2">Engine (PC)
+          <td class="ml-8 mt-2 mr-2">Engine (PC):
           </td>
           <td class="ml-8 mt-2">
             {{ getEngine}}
@@ -48,7 +50,7 @@
         </tr>
         <!-- Row Frame -->
         <tr>
-          <td class="ml-8 mt-2">Frame (PC)
+          <td class="ml-8 mt-2 mr-2">Frame (PC):
           </td>
           <td class="ml-8 mt-2">
             {{ getFrame }}
@@ -56,7 +58,7 @@
         </tr>
         <!-- Row Sensors -->
         <tr>
-          <td class="ml-8 mt-2">Sensors (PC)
+          <td class="ml-8 mt-2 mr-2">Sensors (PC):
           </td>
           <td class="ml-8 mt-2">
             {{ getSensors }}
@@ -66,36 +68,36 @@
         </tbody>
         </v-col>
 
-        <v-col class="ml-5 mb-5 mt-5 mr-5">
+        <v-col class="mb-5 mt-5 mr-10">
         <tbody>
-        <h4 class="ml-10 mt-4">Granulate</h4>
-        <tr class="ml-8 mt-2">
-          <td class="ml-8 mt-2">Battery (PC):
+        <h4>Granulate</h4>
+        <tr class="mt-2">
+          <td class="mt-2 mr-2">Battery (PC):
           </td>
-          <td>
+          <td class="mt-2 ml-2">
             {{ getBatteryGranulate }}
           </td>
         </tr>
         <!-- Row Engine -->
-        <tr class="ml-8 mt-2">
-          <td class="ml-8 mt-2">Engine (PC):
+        <tr class="mt-2">
+          <td class="mt-2 mr-2">Engine (PC):
           </td>
-          <td>
+          <td class="mt-2 ml-2">
             {{ getEngineGranulate}}
           </td>
         </tr>
         <!-- Row Frame -->
-        <tr class="ml-8 mt-2">
-          <td class="ml-8cmt-2">Frame (PC):
+        <tr class="mt-2">
+          <td class="mt-2 mr-2">Frame (PC):
           </td>
           <td>
             {{ getFrameGranulate }}
           </td>
         </tr>
-        <tr class="ml-8 mt-2">
-          <td class="ml-8 mt-2">Sensors (PC):
+        <tr class="mt-2">
+          <td class="mt-2 mr-2">Sensors (PC):
           </td>
-          <td class="ml-8 mt-2">
+          <td class="mt-2">
             {{ getSensorsGranulate }}
           </td>
         </tr>
@@ -106,11 +108,11 @@
         <div></div>
 
         <v-row>
-        <v-col class="mb-5 ml-8 mt-5 mr-5">
+        <v-col class="ml-16 mb-5 mt-5">
           <tbody>
          <h4 class="ml-8 mt-2">Prepared</h4>
         <tr>
-          <td class="ml-8 mt-2">Battery (PC):
+          <td class="ml-8 mt-2 mr-2">Battery (PC):
           </td>
           <td class="ml-8 mt-2">
             {{ getBatteryPrepared }}
@@ -118,7 +120,7 @@
         </tr>
         <!-- Row Engine -->
         <tr>
-          <td class="ml-8 mt-2">Engine (PC):
+          <td class="ml-8 mt-2 mr-2">Engine (PC):
           </td>
           <td class="ml-8 mt-2">
             {{ getEnginePrepared}}
@@ -126,14 +128,14 @@
         </tr>
         <!-- Row Frame -->
         <tr>
-          <td class="ml-8 mt-2">Frame (PC):
+          <td class="ml-8 mt-2 mr-2">Frame (PC):
           </td>
           <td class="ml-8 mt-2">
             {{ getFramePrepared }}
           </td>
         </tr>
         <tr>
-          <td class="ml-8 mt-2 mb-2">Sensors (PC):
+          <td class="ml-8 mt-2 mb-2 mr-2">Sensors (PC):
           </td>
           <td class="ml-8 mt-2 mb-2">
             {{ getSensorsPrepared }}
@@ -142,27 +144,27 @@
         </tbody>
         </v-col>
 
-        <v-col class="ml-5 mb-5 mt-5 mr-5">
+        <v-col class="mb-5 mt-5 mr-10">
         <tbody>
-        <h4 class="ml-2 mt-2 mr-2"> More Information</h4>
+        <h4 class="mt-2 mr-2"> More Information</h4>
         <tr>
-          <td class="ml-2 mt-2 mr-2">Bikes before Quality Assurance (PC):
+          <td class="mt-2 mr-2 mr-2">Bikes before Quality Assurance (PC):
           </td>
-          <td mt-2>
+          <td class="mt-2 ml-2">
             {{ getBikesBeforeQA }}
           </td>
         </tr>
         <tr>
-          <td class="ml-2 mt-2 mr-2">Bikes after Quality Assurance (PC):
+          <td class="mt-2 mr-2 mr-2">Bikes after Quality Assurance (PC):
           </td>
-          <td mt-2>
+          <td class="mt-2 ml-2">
             {{ getBikesAfterQA}}
           </td>
         </tr>
         <tr>
-          <td class="ml-2 mt-2 mb-2 mr-2">Warehousing Cost (PC):
+          <td class="mt-2 mb-2 mr-2">Warehousing Cost (PC):
           </td>
-          <td mt-2>
+          <td class="mt-2 ml-2">
             {{ getWarehousingCost }}
           </td>
         </tr>
