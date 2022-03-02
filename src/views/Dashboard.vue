@@ -21,9 +21,10 @@
             <v-icon color="white" @click="reloadPage">refresh</v-icon>
         </v-btn>
         <br><br>
+        <!-- Close Overlay Button
         <v-btn @click="overlay = false" >
           Close Overlay (only for Development)
-        </v-btn>
+        </v-btn>-->
     </v-overlay>
 
     <v-row v-if="this.$store.state.blockGame">
@@ -102,10 +103,17 @@
       </v-col>
     </v-row>
 
-    <!-- Cards -->
+    <!-- Cost Accounting -->
     <v-row class="pa-6 text-left" ref="cards">
       <v-col>
         <cost-accounting-card style="height:100%"/>
+      </v-col>
+    </v-row>
+
+    <!-- Inventory -->
+    <v-row class="pa-6 text-left">
+      <v-col>
+        <inventory-card style="height:100%"/>
       </v-col>
     </v-row>
 
@@ -121,10 +129,11 @@
 <script>
 import TeamsLeaderboard from "../components/TeamsLeaderboard.vue";
 import CostAccountingCard from "../components/CostAccountingCard.vue";
+import InventoryCard from "../components/InventoryCard.vue"
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  components: {CostAccountingCard, TeamsLeaderboard},
+  components: {CostAccountingCard, TeamsLeaderboard, InventoryCard},
   data() {
     return {
       overlay: true,
@@ -155,6 +164,7 @@ export default {
   },
   methods: {
     ...mapActions(['updateGameData']),
+    ...mapActions(['updateGameDataInventory']),
     reloadPage(){
 
     // DO NOT DO THIS window.location.href = 'http://z40lp1.informatik.tu-muenchen.de:8000/sap/bc/ui5_ui5/sap/z_v3_bpc_game/';
@@ -238,7 +248,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['gameData']),
+    ...mapGetters(['gameData', 'gameDataInventory']),
     showOverlay() {
       return this.gameData.Roundid != this.$store.state.round && this.overlay
     },
@@ -288,10 +298,13 @@ export default {
     },
   },
   props: {progressElements: Array,teamName: String,},
-  mounted() {
+  async mounted() {
     if(this.$store.state.dashboardStep <= 3) {
       this.nextDashboardStep();
-    }    
+    } 
+    
+    await this.updateGameData(),
+    await this.updateGameDataInventory()
   }
 };
 </script>

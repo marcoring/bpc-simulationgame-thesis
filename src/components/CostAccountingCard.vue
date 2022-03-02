@@ -150,15 +150,6 @@ export default {
       showDialog: false,
       currentItemValue: '',
       expanded: [],
-      // items: [
-      //   {name: 'Cash', value: 10.00, desc: 'This is your whole budget.'},
-      //   {name: 'Estimated variable costs', value: 0.00, desc: 'Running costs are needed for every day decisions.'},
-      //   {name: 'Estimated average production cost per bike', value: 0.00, desc: 'This can help you to understand what price do you need to be profitable'},
-      //   {name: 'Estimated total quality', value: 0.00, desc: 'This value influences how many bicycles are broken.'},
-      //   {name: 'Maximum production capability', value: 0.00, desc: 'You cannot produce not more bikes than this value'},
-      //   {name: 'Overall market demand', value: 60000, desc: 'Oversupply is an excessive amount of a product. Oversupply results when demand is lower than supply, resulting in a surplus. Simply put, an oversupply is when there is more product for sale than people are prepared to buy.'},
-      //   {name: 'Estimated customer satisfaction', value: 'Incomplete', desc: 'Due to the choosen decisions this value reflects the estimated customer satisfaction.'},
-      // ]
    }
   },
   methods: {
