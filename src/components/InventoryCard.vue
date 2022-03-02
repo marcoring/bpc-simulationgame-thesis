@@ -70,11 +70,11 @@
 
         <v-col class="mb-5 mt-5 mr-10">
         <tbody>
-        <h4>Granulate</h4>
+        <h4 class="ml-8">Granulate</h4>
         <tr class="mt-2">
-          <td class="mt-2 mr-2">Battery (PC):
+          <td class="mt-2 mr-2 mr-2">Battery (PC):
           </td>
-          <td class="mt-2 ml-2">
+          <td class="mt-2 ml-2 mr-2">
             {{ getBatteryGranulate }}
           </td>
         </tr>
@@ -146,7 +146,7 @@
 
         <v-col class="mb-5 mt-5 mr-10">
         <tbody>
-        <h4 class="mt-2 mr-2"> More Information</h4>
+        <h4 class="ml-8"> More Information</h4>
         <tr>
           <td class="mt-2 mr-2 mr-2">Bikes before Quality Assurance (PC):
           </td>

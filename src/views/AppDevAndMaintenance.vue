@@ -27,25 +27,30 @@
           </v-card-title>
           <v-card-text>
              <v-text-field
-            label="Outsourcing Company: Development Cost (EUR):"
-            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+            label="Outsourcing Company:"
+            :value="lastOutsourcingCompany"
             disabled
             />
-            <v-text-field
-            label="Sustainability Factor (%):"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+          <v-text-field
+            label="Sustainability factor(%):"
+            :value="lastSustainabilityfactor"
             disabled
-            />
-            <v-text-field
+          />
+          <v-text-field
             label="Regionality Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            :value="lastRegionalityfactor"
             disabled
-            />
-            <v-text-field
+          />
+          <v-text-field
             label="Application Quality (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            :value="lastDevelopmentQuality"
             disabled
-            />
+          />
+          <v-text-field
+            label="Development Cost (EUR):"
+            :value="lastDevelopmentcost"
+            disabled
+          />
           </v-card-text>
         </v-card>
         </v-col>
@@ -57,46 +62,35 @@
             Current Round
           </v-card-title>
           <v-card-text>
-             <v-text-field
-            label="Outsourcing Company: Development Cost (EUR):"
-            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+          <v-text-field
+            label="Outsourcing Company:"
+            :value="getOutsourcingCompany"
             disabled
-            />
-            <v-text-field
-            label="Sustainability Factor (%):"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+          />
+          <v-text-field
+            label="Sustainability factor(%):"
+            :value="getSustainabilityfactor"
             disabled
-            />
-            <v-text-field
+          />
+          <v-text-field
             label="Regionality Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            :value="getRegionalityfactor"
             disabled
-            />
-            <v-text-field
+          />
+          <v-text-field
             label="Application Quality (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            :value="getDevelopmentQuality"
             disabled
-            />
+          />
+          <v-text-field
+            label="Development Cost (EUR):"
+            :value="getDevelopmentcost"
+            disabled
+          />
           </v-card-text>
         </v-card>
         </v-col>
         </v-row>
-
-        <v-row>
-        <v-col>
-          <!-- Cost Accounting -->
-          <cost-accounting-card
-            align="center"
-            max-height="100%"
-            :budget="10.0"
-            :runningCosts="222.222"
-            :avgProdCostBike="'Incomplete'"
-            :estimatedQual="21.29"
-            :maxProdCapac="'Incomplete'"
-            :overDemand="40000.0"
-          />
-        </v-col>
-      </v-row>
 
       <v-divider class="mt-5 mb-5"/>
 
@@ -135,10 +129,11 @@
       <v-row>
         <v-col>
           <v-select
-            v-model="selectedCompany"
-            :items="outsourcCompany"
-            label="Choose outsourcing company ..."
+            :value="vendor"
+            @input="updateVendor"
+            :items="vendorsSelect"
             :color="teamColor"
+            label="Choose Outsourcing Company..."
             item-text="name"
           />
         </v-col>
@@ -146,31 +141,31 @@
         <v-col>
           <v-text-field
             label="Outsourcing Company"
-            v-model="selectedCompany[0]"
+            :value="getOutsourcingCompany"
             filled
             disabled
           />
           <v-text-field
-            label="Sustainability Factor (%)"
-            v-model="selectedCompany[1]"
+            label="Sustainability factor"
+            :value="getSustainabilityfactor"
             filled
             disabled
           />
           <v-text-field
-            label="Regionality Factor (%)"
-            v-model="selectedCompany[2]"
+            label="Regionality factor"
+            :value="getRegionalityfactor"
             filled
             disabled
           />
           <v-text-field
-            label="Quality (%)"
-            v-model="selectedCompany[3]"
+            label="Application Quality (%)"
+            :value="getDevelopmentQuality"
             filled
             disabled
           />
           <v-text-field
-            label="Application Costs (EUR)"
-            v-model="selectedCompany[4]"
+            label="Development Cost"
+            :value="getDevelopmentcost"
             filled
             disabled
           />
@@ -199,12 +194,12 @@
           </v-btn>
         </v-col>
     </v-row>
-      <confirmation-dialog 
-        v-if="confirmChangesDialog"
-        @closeDialog="toggleDialog"
-        @updateProgress="updateProgress"
-      ></confirmation-dialog>
-      <error-chages-dialog
+    <confirmation-dialog 
+      v-if="confirmChangesDialog"
+      @closeDialog="toggleDialog"
+      @updateProgress="updateProgress"
+    ></confirmation-dialog>
+    <error-chages-dialog
       v-if="showError"
       @closeError="toggleShowError"
     ></error-chages-dialog>
@@ -217,42 +212,81 @@
 </template>
 
 <script>
-import CostAccountingCard from "../components/CostAccountingCard.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 
 export default {
   name: "AppDevAndMaintanance",
-  components: { CostAccountingCard, ConfirmationDialog, ErrorChagesDialog },
+  components: { ConfirmationDialog, ErrorChagesDialog },
+    computed: {
+    ...mapGetters('appDevAndMaintenance', ['vendors', 'vendor', 'lastVendor']),
+    vendorsSelect: function() {
+      return this.vendors ? this.vendors.map(vendor => {
+        return {
+          name: vendor.Vendorname,
+          value: vendor
+        }
+      }) : []
+    },
+    lastOutsourcingCompany: function() {
+      return this.lastVendor != null ? this.lastVendor.Vendorname : "No Data";
+    },
+    lastDevelopmentQuality: function(){
+      return this.lastVendor != null ? this.lastVendor.Developmentquality : "No Data"
+    },
+    lastSustainabilityfactor: function() {
+      return this.lastVendor != null ? this.lastVendor.Sustainabilityfactor : "No Data";
+    },
+    lastRegionalityfactor: function() {
+      return this.lastVendor != null ? this.lastVendor.Regionalityfactor : "No Data";
+    },
+    lastDevelopmentcost() {
+      return this.lastVendor != null ? this.lastVendor.Developmentcost : "No Data";
+    },
+    getOutsourcingCompany: function() {
+      console.log('Vendor', this.vendor);
+      console.log('lastVendor', this.lastVendor)
+      return this.vendor != null ? this.vendor.Vendorname : "";
+    },
+    getDevelopmentQuality: function(){
+      return this.vendor != null ? this.vendor.Developmentquality : ""
+    },
+    getSustainabilityfactor: function() {
+      return this.vendor != null ? this.vendor.Sustainabilityfactor : "";
+    },
+    getRegionalityfactor: function() {
+      return this.vendor != null ? this.vendor.Regionalityfactor : "";
+    },
+    getDevelopmentcost() {
+      return this.vendor != null ? this.vendor.Developmentcost : "";
+    },
+  },
   data() {
     return {
       showError: false,
       confirmChangesDialog: false,
       selectedCompany: "",
-      outsourcCompany: [
-        {
-          name: "Company 1",
-          value: ["450", "80"],
-        },
-        {
-          name: "Company 2",
-          value: ["580", "95"],
-        },
-      ],
       teamColor: this.$store.state.color,
       round: this.$store.state.round,
     };
   },
   methods: {
+    ...mapActions('appDevAndMaintenance', ['updateVendors']),
+    ...mapActions('appDevAndMaintenance', ['getLastVendor']),
+    ...mapActions('appDevAndMaintenance', ['saveVendor']),
+    ...mapMutations('appDevAndMaintenance', ['updateVendor']),
+    async toggleDialog() {
+      if(this.vendor === null) {
+        return this.toggleShowError();
+      } else {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.confirmChangesDialog = !this.confirmChangesDialog;
+        await this.saveVendor();
+      } 
+    },
     toggleShowError() {
       this.showError = !this.showError;
-    },
-    toggleDialog() {
-      if(this.selectedCompany === "") {
-        this.toggleShowError();
-      } else {
-        this.confirmChangesDialog = !this.confirmChangesDialog;
-      }
     },
     updateProgress() {
       this.$emit("updateProgress", "appDevAndMaintenance", 100);
@@ -315,6 +349,10 @@ export default {
       type: Number,
       default: 0.0,
     },
+  },
+  async mounted() {
+    await this.updateVendors();
+    await this.getLastVendor();
   },
 };
 </script>

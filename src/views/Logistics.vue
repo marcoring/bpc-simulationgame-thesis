@@ -91,22 +91,6 @@
         </v-card>
       </v-col>
       </v-row>
-
-       <!-- Cost Accounting 
-      <v-row>
-      <v-col>
-        <cost-accounting-card
-          style="height:100%"
-          :budget="10.0"
-          :runningCosts="222.222"
-          :avgProdCostBike="'Incomplete'"
-          :estimatedQual="21.29"
-          :maxProdCapac="'Incomplete'"
-          :overDemand="40000.0"
-        />
-      </v-col>
-    </v-row>-->
-
     <v-divider class="mt-5 mb-5"/>
 
     <v-row v-if="this.$store.state.logisticStep <= 4" class="pa-2" style="margin-top: 20px; margin-bottom: 40px;">
@@ -285,18 +269,6 @@ export default {
       stepText: '',
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
-      /*prevTranspComp: "Ebike GmBh",
-      prevDelCosts: 0.0,
-      prevQualDel: 0.0,
-      curTranspComp: "Ebike GmBh",
-      curDelCosts: 0.0,
-      curQualDel: 0.0,
-      budget: 150000.0,
-      runningCosts: 0.0,
-      avgProdCostBike: "Incomplete",
-      estimatedQual: 0.0,
-      maxProdCapac: "Incomplete",
-      overDemand: 40000.0,*/
     };
   },
   methods: {
@@ -311,9 +283,6 @@ export default {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.confirmChangesDialog = !this.confirmChangesDialog;
         await this.saveVendor();
-        //return this.$store.modules.logistics ;
-      } else {
-        return null;
       }
     },
     getCosts() {
