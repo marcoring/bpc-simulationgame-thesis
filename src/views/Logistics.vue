@@ -112,6 +112,30 @@
         <h2 style="text-align: left;">Manage logistic process</h2>
       </v-row>
 
+      <v-row>
+        <v-col>
+      <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-truck</v-icon>
+          Smart Logistics
+        </v-btn>
+        </template>
+        <span>Smart Logistics: Information System choosing the supplier with the best price-quality.</span><br><br>
+        <span>Implementation Costs for Smart Logistics only occur once!</span><br>
+        </v-tooltip>
+      </v-container>
+      </v-col>
+
+      <v-col> 
       <v-container>
         <v-col align="start" >
         <v-tooltip bottom color="black">
@@ -127,15 +151,16 @@
          Hover me
         </v-btn>
         </template>
-        <span>Transportation company: Transportation companies differ in quality and price.</span><br>
-        <span>Sustainability factor: Level of sustainability of the company.</span><br>
-        <span>Regionality factor: Level of regionality of the company.</span><br>
+        <span>Transportation Company: Transportation companies differ in quality and price.</span><br>
+        <span>Sustainability Factor: Level of sustainability of the company.</span><br>
+        <span>Regionality Factor: Level of regionality of the company.</span><br>
         <span>Quality: Depending on the quality the price for each material is changed.</span><br>
         </v-tooltip>
-        </v-col>
       </v-container>
+       </v-col>
+       </v-row>
 
-      <v-row>
+        <v-row>
         <v-col>
           <v-select
             :value="vendor"
@@ -148,7 +173,22 @@
           />
         </v-col>
 
-        <v-col>
+      <v-col>
+        <v-container fluid>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="smartLogistic"
+              label="Enable Smart Logistic"
+            ></v-checkbox>
+          </v-container>
+        <v-text-field
+          v-if="smartLogistic"
+          label="Smart Logistic Cost:"
+          :value="15000.00"
+          type="number"
+          filled
+          disabled
+        />
           <v-text-field
             label="Delivery costs (EUR)"
             :value="calculatedDeliveryCosts"
@@ -176,7 +216,7 @@
               disabled
             />
         </v-col>
-      </v-row>
+        </v-row>
     </div>
 
     <v-row ref="navigation">
@@ -266,6 +306,8 @@ export default {
   },
   data() {
     return {
+      smartLogistic: false,
+      smartLogCost: 7000,
       showError: false,
       stepText: '',
       teamColor: this.$store.state.color,
@@ -283,7 +325,10 @@ export default {
       } else if (this.$store.state.logisticStep >= 5) {
         // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         this.confirmChangesDialog = !this.confirmChangesDialog;
-        await this.saveVendor();
+        await this.saveVendor({
+          Smartlogistic:this.smartLogistic,
+          Smartlogcost:this.smartLogCost
+        });
       }
     },
     getCosts() {

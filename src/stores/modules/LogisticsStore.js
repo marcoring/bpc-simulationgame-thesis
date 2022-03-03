@@ -83,12 +83,14 @@ const actions = {
               console.log(error.config);
         }
     },
-    async saveVendor({ commit, dispatch, getters, rootGetters }) {
+    async saveVendor({ commit, dispatch, getters, rootGetters }, data) {
       const payload = JSON.stringify({                       
             Guid:rootGetters.gameData.Guid,    
             Roundid:rootGetters.gameData.Roundid,  
             Userid:rootGetters.gameData.Userid,
-            Vendorid:getters.vendor.Vendorid,            
+            Vendorid:getters.vendor.Vendorid,  
+            Smartlogistic:data.smartLogistic,
+            Smartlogcost:String(data.smartlogcost)      
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
