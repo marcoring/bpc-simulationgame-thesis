@@ -303,7 +303,9 @@ export default {
       this.nextDashboardStep();
     } 
     
+    // updates values of Cost Accounting Card
     await this.updateGameData(),
+    // updates values of Inventory Card
     await this.updateGameDataInventory()
   }
 };

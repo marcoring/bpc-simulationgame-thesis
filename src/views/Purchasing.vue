@@ -188,7 +188,7 @@
             >  
             <!-- Battery: Cost per material (EUR) -->
             <v-text-field
-              label="Battery: Cost per material (EUR)"
+              label="Battery: Cost per Material (EUR)"
               :value="calculatedCostPerMaterialBattery"
               filled
               disabled
@@ -234,7 +234,7 @@
               class="pr-4"
             >
             <v-text-field
-                label="Battery: Total cost (EUR)"
+                label="Battery: Total Cost (EUR)"
                 :value="calculatedTotalCostBattery"
                 filled
                 disabled
@@ -262,6 +262,20 @@
               filled
               disabled
             />
+          </v-col>
+          </v-row>
+
+          <v-row v-if="this.$store.state.round > 1">
+          <v-col align="center" justify="center">
+          <v-container>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="granulateBattery"
+              label="Enable Granulate"
+              hint="If Granulate is NOT enabled, the Type contains 'STANDARD'"
+              persistent-hint
+            ></v-checkbox>
+          </v-container>
           </v-col>
         </v-row>
         </v-card>
@@ -339,7 +353,7 @@
             >  
             <!-- Engine: Cost per material (EUR) -->
             <v-text-field
-              label="Engine: Cost per material (EUR)"
+              label="Engine: Cost per Material (EUR)"
               :value="calculatedCostPerMaterialEngine"
               filled
               disabled
@@ -385,7 +399,7 @@
               class="pr-4"
             >
             <v-text-field
-                label="Engine: Total cost (EUR)"
+                label="Engine: Total Cost (EUR)"
                 :value="calculatedTotalCostEngine"
                 filled
                 disabled
@@ -415,8 +429,22 @@
             />
           </v-col>
         </v-row>
-      </v-card>
-    </v-container>
+
+        <v-row v-if="this.$store.state.round > 1">
+          <v-col align="center" justify="center">
+          <v-container>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="granulateEngine"
+              label="Enable Granulate"
+              hint="If Granulate is NOT enabled, the Type contains 'STANDARD'"
+              persistent-hint
+            ></v-checkbox>
+          </v-container>
+          </v-col>
+        </v-row>
+        </v-card>
+      </v-container>
 
     <!-- Manage Frame purchasing process-->
       <v-container>
@@ -490,7 +518,7 @@
             >  
             <!-- Frame: Cost per material (EUR) -->
             <v-text-field
-              label="Frame: Cost per material (EUR)"
+              label="Frame: Cost per Material (EUR)"
               :value="calculatedCostPerMaterialFrame"
               filled
               disabled
@@ -536,7 +564,7 @@
               class="pr-4"
             >
             <v-text-field
-                label="Frame: Total cost (EUR)"
+                label="Frame: Total Cost (EUR)"
                 :value="calculatedTotalCostFrame"
                 filled
                 disabled
@@ -564,6 +592,20 @@
               filled
               disabled
             />
+          </v-col>
+        </v-row>
+
+                  <v-row v-if="this.$store.state.round > 1">
+          <v-col align="center" justify="center">
+          <v-container>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="granulateFrame"
+              label="Enable Granulate"
+              hint="If Granulate is NOT enabled, the Type contains 'STANDARD'"
+              persistent-hint
+            ></v-checkbox>
+          </v-container>
           </v-col>
         </v-row>
         </v-card>
@@ -641,7 +683,7 @@
             >  
             <!-- Sensors: Cost per material (EUR) -->
             <v-text-field
-              label="Sensors: Cost per material (EUR)"
+              label="Sensors: Cost per Material (EUR)"
               :value="calculatedCostPerMaterialSensors"
               filled
               disabled
@@ -687,7 +729,7 @@
               class="pr-4"
             >
             <v-text-field
-                label="Sensors: Total cost (EUR)"
+                label="Sensors: Total Cost (EUR)"
                 :value="calculatedTotalCostSensors"
                 filled
                 disabled
@@ -717,8 +759,22 @@
             />
           </v-col>
         </v-row>
-      </v-card>
-    </v-container>
+
+        <v-row v-if="this.$store.state.round > 1">
+          <v-col align="center" justify="center">
+          <v-container>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="granulateSensors"
+              label="Enable Granulate"
+              hint="If Granulate is NOT enabled, the Type contains 'STANDARD'"
+              persistent-hint
+            ></v-checkbox>
+          </v-container>
+          </v-col>
+        </v-row>
+        </v-card>
+      </v-container>
     </div>
 
     <v-row ref="navigation">
@@ -910,20 +966,52 @@ export default {
       }
       return lines;
     },
+    getBasebatteryPrice: function() {
+      return this.batteryVendor != null ? this.batteryVendor.Basebatteryprice : "";
+    },
+    getBasebatteryPriceGranulate: function() {
+      return this.batteryVendor != null ? this.batteryVendor.Basebatterygranulateprice : "";
+    },
+    getBaseframePrice: function() {
+      return this.frameVendor != null ? this.frameVendor.Baseframeprice : "";
+    },
+    getBaseframePriceGranulate: function() {
+      return this.frameVendor != null ? this.frameVendor.Baseframegranulateprice : "";
+    },
+    getBaseenginePrice: function() {
+      return this.engineVendor != null ? this.engineVendor.Baseengineprice : "";
+    },
+    getBaseenginePriceGranulate: function() {
+      return this.engineVendor != null ? this.engineVendor.Baseenginegranulateprice : "";
+    },
+    getBasesensorsPrice: function() {
+      return this.sensorsVendor != null ? this.sensorsVendor.Basesensorprice : "";
+    },
+    getBasesensorsPriceGranulate: function() {
+      return this.sensorsVendor != null ? this.sensorsVendor.Basesensorgranulateprice : "";
+    },
     getBatteryVendorname: function() {
       return this.batteryVendor != null ? this.batteryVendor.Vendorname : "";
     },
     calculatedCostPerMaterialFrame: function() {
-      return this.frameVendor != null ? (this.frameVendor.Developmentcost * (1 + this.quality.frame / 100)).toFixed(2) : "";
+       if (this.$store.state.round > 1 && this.granulateFrame === true) {
+      return this.frameVendor != null ? (Number(this.getBaseframePriceGranulate)).toFixed(2) : "";
+      } else return this.frameVendor != null ? (Number(this.getBaseframePrice)).toFixed(2) : "";
     },
     calculatedCostPerMaterialSensors: function() {
-      return this.sensorsVendor != null ? (this.sensorsVendor.Developmentcost * (1 + this.quality.sensors / 100)).toFixed(2) : "";
+       if (this.$store.state.round > 1 && this.granulateSensors === true) {
+      return this.sensorsVendor != null ? (Number(this.getBasesensorsPriceGranulate)).toFixed(2) : "";
+      } else return this.sensorsVendor != null ? (Number(this.getBasesensorsPrice)).toFixed(2) : "";
     },
-     calculatedCostPerMaterialBattery: function() {
-      return this.batteryVendor != null ? (this.batteryVendor.Developmentcost * (1 + this.quality.battery / 100)).toFixed(2) : "";
+    calculatedCostPerMaterialBattery: function() {
+       if (this.$store.state.round > 1 && this.granulateBattery === true) {
+      return this.batteryVendor != null ? (Number(this.getBasebatteryPriceGranulate)).toFixed(2) : "";
+      } else return this.batteryVendor != null ? (Number(this.getBasebatteryPrice)).toFixed(2) : "";
     },
     calculatedCostPerMaterialEngine: function() {
-      return this.engineVendor != null ? (this.engineVendor.Developmentcost * (1 + this.quality.engine / 100)).toFixed(2) : "";
+       if (this.$store.state.round > 1 && this.granulateEngine === true) {
+      return this.engineVendor != null ? (Number(this.getBaseenginePriceGranulate)).toFixed(2) : "";
+      } else return this.engineVendor != null ? (Number(this.getBaseenginePrice)).toFixed(2) : "";
     },
     calculatedTotalCostBattery: function() {
       return this.batteryVendor != null ? (this.calculatedCostPerMaterialBattery * this.amount.battery).toFixed(2) : "";
@@ -970,6 +1058,10 @@ export default {
       confirmChangesDialog: false,
       showError: false,
       stepText: '',
+      granulateBattery: false,
+      granulateEngine: false,
+      granulateFrame: false,
+      granulateSensors: false,
       quality: { 
         battery: { label: "Battery: Quality (%)", val: 50 },
         engine: { label: "Engine: Quality (%)", val: 50 },

@@ -286,9 +286,10 @@ const actions = {
   async updateBatteryVendors({ commit }) {
         try {
             var response = await axios.get(
-                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/AppDevVendorSet/?$format=json"
+                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/MaterialVendorSet/?$format=json"
               );
             var batteryVendors = response.data.d.results;
+            console.log('batteryVendors',batteryVendors)
             commit('updateBatteryVendors', batteryVendors);
         } catch (error) {
             if (error.response) {
@@ -312,7 +313,7 @@ const actions = {
     async updateEngineVendors({ commit }) {
         try {
             var response = await axios.get(
-                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/AppDevVendorSet/?$format=json"
+                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/MaterialVendorSet/?$format=json"
               );
             var engineVendors = response.data.d.results;
             commit('updateEngineVendors', engineVendors);
@@ -338,7 +339,7 @@ const actions = {
     async updateFrameVendors({ commit }) {
         try {
             var response = await axios.get(
-                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/AppDevVendorSet/?$format=json"
+                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/MaterialVendorSet/?$format=json"
               );
             var frameVendors = response.data.d.results;
             commit('updateFrameVendors', frameVendors);
@@ -364,7 +365,7 @@ const actions = {
     async updateSensorsVendors({ commit }) {
         try {
             var response = await axios.get(
-                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/AppDevVendorSet/?$format=json"
+                "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/MaterialVendorSet/?$format=json"
               );
             var sensorsVendors = response.data.d.results;
             commit('updateSensorsVendors', sensorsVendors);
