@@ -37,7 +37,7 @@
             :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
             disabled
             />
-                        <v-text-field
+            <v-text-field
             label="Sustainability Factor (%):"
             :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
             disabled
@@ -102,22 +102,6 @@
           </v-card>
         </v-col>
         </v-row>
-
-        <v-row>
-        <v-col>
-          <!-- Cost Accounting -->
-          <cost-accounting-card
-            align="center"
-            style="height:100%"
-            :budget="10.0"
-            :runningCosts="222.222"
-            :avgProdCostBike="'Incomplete'"
-            :estimatedQual="21.29"
-            :maxProdCapac="'Incomplete'"
-            :overDemand="40000.0"
-          />
-        </v-col>
-      </v-row>
 
       <v-divider class="mt-5 mb-5"/>
 
@@ -229,9 +213,7 @@
         </v-col>
       </v-row>
       </v-container>
-
-      <v-divider class="mt-5 mb-5"/>
-
+      
       <!-- Container Internal QA -->
       <v-row v-if="internalQA == true" align="start" justify="start">
       <p><b>Internal QA</b></p>
@@ -293,8 +275,24 @@
             filled
             disabled
           />
+          <v-container fluid>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="selectedDigitalTwin"
+              label="Enable Digital Twin"
+            ></v-checkbox>
+          </v-container>
+        <v-text-field
+          v-if="selectedDigitalTwin"
+          label="Digital Twin Cost:"
+          :value="25000.00"
+          type="number"
+          filled
+          disabled
+        />
           <v-text-field
-            label="Digital Twins Quality (%):"
+            v-if="selectedDigitalTwin" 
+            label="Digital Twin Quality (%):"
             filled
             type="number"
             min="0"
@@ -356,7 +354,6 @@
 </template>
 
 <script>
-import CostAccountingCard from "../components/CostAccountingCard.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
@@ -365,9 +362,10 @@ import VueYoutube from 'vue-youtube';
 Vue.use(VueYoutube);
 
 export default {
-  components: { CostAccountingCard, ConfirmationDialog, ErrorChagesDialog},
+  components: { ConfirmationDialog, ErrorChagesDialog},
   data() {
     return {
+      selectedDigitalTwin:false,
       internalQA: false,
       externalQA: true,
       selected: null,
@@ -377,16 +375,6 @@ export default {
       round: this.$store.state.round,
       confirmChangesDialog: false,
       selectedQAType: "",
-      // QAType: [
-      //   {
-      //     name: "QA-Type 1",
-      //     value: ["4040", "543218", "80"],
-      //   },
-      //   {
-      //     name: "QA-Type 2",
-      //     value: ["7060", "345180", "124"],
-      //   },
-      // ],
       numOfEmpl: 1,
       quality: { label: "Quality (%)", val: 50, color: "primary" },
     };
