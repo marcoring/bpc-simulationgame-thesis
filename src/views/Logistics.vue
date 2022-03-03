@@ -144,6 +144,7 @@
             :color="teamColor"
             label="Choose transportation company..."
             item-text="name"
+            clearable
           />
         </v-col>
 

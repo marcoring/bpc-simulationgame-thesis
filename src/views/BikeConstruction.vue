@@ -185,6 +185,7 @@
             :color="teamColor"
             label="Select Assembly Line ..."
             item-text="name"
+            clearable
           />
         </v-col>
 

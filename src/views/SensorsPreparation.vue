@@ -196,6 +196,7 @@
             :color="teamColor"
             label="Select Production Line ..."
             item-text="name"
+            clearable
           />
         </v-col>
 

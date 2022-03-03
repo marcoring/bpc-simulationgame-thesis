@@ -111,29 +111,29 @@
     </v-row>
 
     <!-- Inventory -->
-    <v-row class="pa-6 text-left">
+    <v-row class="pa-6 text-left" ref="leaderboard">
       <v-col>
         <inventory-card style="height:100%"/>
       </v-col>
     </v-row>
 
-    <!-- Leaderboard -->
-    <v-row class="pa-6 text-left" ref="leaderboard">
+    <!-- Leaderboard 
+    <v-row class="pa-6 text-left">
       <v-col>
         <teams-leaderboard />
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 
 <script>
-import TeamsLeaderboard from "../components/TeamsLeaderboard.vue";
+// import TeamsLeaderboard from "../components/TeamsLeaderboard.vue";
 import CostAccountingCard from "../components/CostAccountingCard.vue";
 import InventoryCard from "../components/InventoryCard.vue"
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  components: {CostAccountingCard, TeamsLeaderboard, InventoryCard},
+  components: {CostAccountingCard, /*TeamsLeaderboard,*/ InventoryCard},
   data() {
     return {
       overlay: true,
@@ -192,8 +192,12 @@ export default {
         this.stepText = 'Here you can find useful data about your current financial situation';
         this.secondStep();
       } else if(this.$store.state.dashboardStep === 3){
-        this.stepText = 'And here you can compare your team with others! Every single decision can get you to #1';
+        this.stepText = 'And here you can compare items in your Inventory! You can see items inside your Inventory when they were surplus during the production process.';
         this.thirdStep();
+        /*
+      } else if(this.$store.state.dashboardStep === 3){
+        this.stepText = 'And here you can compare your team with others! Every single decision can get you to #1';
+        this.thirdStep();*/
       } else {
         this.finalStep();
       }

@@ -135,6 +135,7 @@
             :color="teamColor"
             label="Choose Outsourcing Company..."
             item-text="name"
+            clearable
           />
         </v-col>
 

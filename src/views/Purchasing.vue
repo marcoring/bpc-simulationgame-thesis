@@ -143,6 +143,7 @@
               label=" Choose Battery vendor..."
               item-text="name"
               filled
+              clearable
             />
             </v-col>
 
@@ -272,10 +273,46 @@
             <v-checkbox
               v-model="granulateBattery"
               label="Enable Granulate"
-              hint="If Granulate is NOT enabled, the Type contains 'STANDARD'"
+              hint="If Granulate is NOT enabled, the Type contains 'STANDARD'."
               persistent-hint
             ></v-checkbox>
           </v-container>
+          </v-col>
+
+          <v-col align="center" justify="center" v-if="this.$store.state.round > 2">
+          <v-container>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="demandassessment"
+              label="Enable Demand Assessment"
+              hint="Information Systems Demand Assessment enhancing the Purchase Capability by 5 times."
+              persistent-hint
+            ></v-checkbox>
+          </v-container>
+          <v-text-field
+          v-if="demandassessment"
+          label="Demand Assessment Implementation Costs:"
+          :value="25000.00"
+          type="number"
+          filled
+          disabled
+        />
+        <v-text-field
+          v-if="demandassessment"
+          label="Purchaser (EUR):"
+          :value="getPurchaser"
+          type="number"
+          filled
+          disabled
+        />
+        <v-text-field
+          v-if="demandassessment"
+          label="Base Salary (EUR):"
+          :value="getBaseSalary"
+          type="number"
+          filled
+          disabled
+        />
           </v-col>
         </v-row>
         </v-card>
@@ -308,6 +345,7 @@
               label=" Choose Engine vendor..."
               item-text="name"
               filled
+              clearable
             />
             </v-col>
 
@@ -473,6 +511,7 @@
               label=" Choose Frame vendor..."
               item-text="name"
               filled
+              clearable
             />
             </v-col>
 
@@ -638,6 +677,7 @@
               label=" Choose Sensors vendor..."
               item-text="name"
               filled
+              clearable
             />
             </v-col>
 
@@ -966,6 +1006,16 @@ export default {
       }
       return lines;
     },
+    getPurchaser: function() {
+      if(this.demandassessment === true) {
+        return this.amount.battery != null ? this.amount.battery / 9000 / 5 : ""
+      } else {
+        return this.amount.battery != null ? this.amount.battery / 9000 : ""
+      }
+    },
+    getBaseSalary: function () {
+      return this.getPurchaser != null ? this.getPurchaser * 10000 : "";
+    },
     getBasebatteryPrice: function() {
       return this.batteryVendor != null ? this.batteryVendor.Basebatteryprice : "";
     },
@@ -1052,6 +1102,7 @@ export default {
   },
   data() {
     return {
+      demandassessment: false,
       info: null,
       isEditing: true,
       teamColor: this.$store.state.color,

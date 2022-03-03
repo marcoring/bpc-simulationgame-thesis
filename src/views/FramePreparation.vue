@@ -192,6 +192,7 @@
             :color="teamColor"
             label="Select Production Line ..."
             item-text="name"
+            clearable
           />
         <v-text-field
           label="Assembly Line Costs (EUR)"

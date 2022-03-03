@@ -170,6 +170,7 @@
             :color="teamColor"
             label="Select External Quality Assurance ..."
             item-text="name"
+            clearable
           />
         </v-col>
 
