@@ -93,7 +93,39 @@
         <h2 style="text-align: left;">Manage purchasing process</h2>
       </v-row>
 
+      <v-row>
+        <v-col>
+
       <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-factory</v-icon>
+          Manufactoring Plan
+        </v-btn>
+        </template>
+        <span>To manufacture a bike, you need materials in the following quantity.</span><br><br><br>
+        <span>Please consider that granulate materials (available at Round 2) can only be prepared with 3D-Printer!</span><br><br>
+        <span>Each Bike consits of:</span><br><br><br>
+        <span><v-icon color="white">mdi-battery</v-icon>1 Battery</span><br><br>
+        <span><v-icon color="white">mdi-engine</v-icon>1 Engine</span><br><br>
+        <span><v-icon color="white">mdi-bike</v-icon> 1 Frame </span><br><br>
+        <span><v-icon color="white">mdi-chip</v-icon>10 Sensors</span><br><br><br>
+        <span>Ensure that you have enough of each material.</span><br><br>
+        </v-tooltip>
+        </v-col>
+      </v-container>
+        </v-col>
+        
+        <v-col>
+        <v-container>
         <v-col align="start" >
         <v-tooltip bottom color="black">
         <template v-slot:activator="{ on, attrs }">
@@ -108,13 +140,16 @@
           Hover me
         </v-btn>
         </template>
-        <span>Sustainability factor: Level of sustainability of the company.</span><br>
-        <span>Regionality factor: Level of regionality of the company.</span><br>
-        <span>Quality: Depending on the quality the price for each material is changed</span><br>
-        <span>Amount: Each bike has 1 battery, 1 engine, 1 frame and 10 sensors</span>
+        <span>Sustainability factor: Level of sustainability of the company.</span><br><br>
+        <span>Regionality factor: Level of regionality of the company.</span><br><br>
+        <span>Quality: Depending on the quality the price for each material is changed</span><br><br>
         </v-tooltip>
         </v-col>
       </v-container>
+
+
+       </v-col>
+        </v-row>
 
       <!-- Manage Battery purchasing process-->
       <v-container>
@@ -173,7 +208,7 @@
                       single-line
                       :min="1"
                       :max="100"
-                      :thumb-size="24"
+                      :thumb-size="42"
                       type="number"
                       style="width: 60px"
                   />
@@ -195,9 +230,21 @@
               disabled
             />
             </v-col>
-
             <v-col
               class="pr-4"
+            >
+            <v-text-field
+                label="Battery: Total Cost (EUR)"
+                :value="calculatedTotalCostBattery"
+                filled
+                disabled
+              />
+            </v-col>
+
+          </v-row>
+           <v-row no-gutters>
+          <v-col
+              class="ml-6 mt-6 ml-6 mb-6"
             >
 
           <!-- Slider Battery: Amount(PC) -->
@@ -207,9 +254,9 @@
               label="Battery: Amount (PC)"
               :color="teamColor"
               :min="1"
-              :max="100"
+              :max="1000000"
               :thumb-color="teamColor"
-              :thumb-size="24"
+              :thumb-size="42"
               thumb-label="always"
               :track-color="'teamColor' + 'lighten-3'"
               :track-fill-color="teamColor"
@@ -221,27 +268,16 @@
                   hide-details
                   single-line
                   :min="1"
-                  :max="100"
+                  :max="1000000"
                   type="number"
-                  style="width: 60px"
+                  style="width: 80px"
                 />
               </template>
             </v-slider>
             </v-col>
           </v-row>
 
-          <v-row no-gutters>
-            <v-col
-              class="pr-4"
-            >
-            <v-text-field
-                label="Battery: Total Cost (EUR)"
-                :value="calculatedTotalCostBattery"
-                filled
-                disabled
-              />
-            </v-col>
-          
+          <v-row no-gutters>          
             <v-col
               class="pr-4"
             >         
@@ -283,32 +319,34 @@
           <v-container>
             <p>{{ selected }}</p>
             <v-checkbox
-              v-model="demandassessment"
+              v-model="demandassessmentBattery"
               label="Enable Demand Assessment"
               hint="Information Systems Demand Assessment enhancing the Purchase Capability by 5 times."
               persistent-hint
             ></v-checkbox>
           </v-container>
           <v-text-field
-          v-if="demandassessment"
+          v-if="demandassessmentBattery"
           label="Demand Assessment Implementation Costs:"
-          :value="25000.00"
+          :value="7000.00"
           type="number"
           filled
           disabled
         />
         <v-text-field
-          v-if="demandassessment"
+          v-if="demandassessmentBattery"
           label="Purchaser (EUR):"
-          :value="getPurchaser"
+          :value="getPurchaserBattery"
           type="number"
           filled
           disabled
+          hint="Required employees need to buy and manage materials."
+          persistent-hint
         />
         <v-text-field
-          v-if="demandassessment"
+          v-if="demandassessmentBattery"
           label="Base Salary (EUR):"
-          :value="getBaseSalary"
+          :value="getBaseSalaryBattery"
           type="number"
           filled
           disabled
@@ -375,7 +413,7 @@
                       single-line
                       :min="1"
                       :max="100"
-                      :thumb-size="24"
+                      :thumb-size="42"
                       type="number"
                       style="width: 60px"
                   />
@@ -396,10 +434,18 @@
               filled
               disabled
             />
+              <v-text-field
+                label="Engine: Total Cost (EUR)"
+                :value="calculatedTotalCostEngine"
+                filled
+                disabled
+              />
             </v-col>
 
-            <v-col
-              class="pr-4"
+          </v-row>
+           <v-row no-gutters>
+          <v-col
+              class="ml-6 mt-6 ml-6 mb-6"
             >
 
           <!-- Slider Engine: Amount(PC) -->
@@ -409,9 +455,9 @@
               label="Engine: Amount (PC)"
               :color="teamColor"
               :min="1"
-              :max="100"
+              :max="1000000"
               :thumb-color="teamColor"
-              :thumb-size="24"
+              :thumb-size="42"
               thumb-label="always"
               :track-color="'teamColor' + 'lighten-3'"
               :track-fill-color="teamColor"
@@ -423,27 +469,16 @@
                   hide-details
                   single-line
                   :min="1"
-                  :max="100"
+                  :max="1000000"
                   type="number"
-                  style="width: 60px"
+                  style="width: 80px"
                 />
               </template>
             </v-slider>
             </v-col>
           </v-row>
 
-          <v-row no-gutters>
-            <v-col
-              class="pr-4"
-            >
-            <v-text-field
-                label="Engine: Total Cost (EUR)"
-                :value="calculatedTotalCostEngine"
-                filled
-                disabled
-              />
-            </v-col>
-          
+          <v-row no-gutters>          
             <v-col
               class="pr-4"
             >         
@@ -480,6 +515,45 @@
             ></v-checkbox>
           </v-container>
           </v-col>
+
+          <v-col align="center" justify="center" v-if="this.$store.state.round > 2">
+          <v-container>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="demandassessmentEngine"
+              label="Enable Demand Assessment"
+              hint="Information Systems Demand Assessment enhancing the Purchase Capability by 5 times."
+              persistent-hint
+            ></v-checkbox>
+          </v-container>
+          <v-text-field
+          v-if="demandassessmentEngine"
+          label="Demand Assessment Implementation Costs:"
+          :value="7000.00"
+          type="number"
+          filled
+          disabled
+        />
+        <v-text-field
+          v-if="demandassessmentEngine"
+          label="Purchaser (EUR):"
+          :value="getPurchaserEngine"
+          type="number"
+          filled
+          disabled
+          hint="Required employees need to buy and manage materials."
+          persistent-hint
+        />
+        <v-text-field
+          v-if="demandassessmentEngine"
+          label="Base Salary (EUR):"
+          :value="getBaseSalaryEngine"
+          type="number"
+          filled
+          disabled
+        />
+          </v-col>
+
         </v-row>
         </v-card>
       </v-container>
@@ -562,10 +636,18 @@
               filled
               disabled
             />
+              <v-text-field
+                label="Frame: Total Cost (EUR)"
+                :value="calculatedTotalCostFrame"
+                filled
+                disabled
+              />
             </v-col>
 
-            <v-col
-              class="pr-4"
+          </v-row>
+           <v-row no-gutters>
+          <v-col
+              class="ml-6 mt-6 ml-6 mb-6"
             >
 
           <!-- Slider Frame: Amount(PC) -->
@@ -575,9 +657,9 @@
               label="Frame: Amount (PC)"
               :color="teamColor"
               :min="1"
-              :max="100"
+              :max="1000000"
               :thumb-color="teamColor"
-              :thumb-size="24"
+              :thumb-size="42"
               thumb-label="always"
               :track-color="'teamColor' + 'lighten-3'"
               :track-fill-color="teamColor"
@@ -589,30 +671,18 @@
                   hide-details
                   single-line
                   :min="1"
-                  :max="100"
+                  :max="1000000"
                   type="number"
-                  style="width: 60px"
+                  style="width: 80px"
                 />
               </template>
             </v-slider>
             </v-col>
           </v-row>
-
-          <v-row no-gutters>
+          <v-row no-gutters>          
             <v-col
               class="pr-4"
-            >
-            <v-text-field
-                label="Frame: Total Cost (EUR)"
-                :value="calculatedTotalCostFrame"
-                filled
-                disabled
-              />
-            </v-col>
-          
-            <v-col
-              class="pr-4"
-            >         
+            >      
             <!-- Sustainability factor Frame -->
             <v-text-field
               label="Sustainability factor Frame"
@@ -634,7 +704,7 @@
           </v-col>
         </v-row>
 
-                  <v-row v-if="this.$store.state.round > 1">
+        <v-row v-if="this.$store.state.round > 1">
           <v-col align="center" justify="center">
           <v-container>
             <p>{{ selected }}</p>
@@ -646,6 +716,45 @@
             ></v-checkbox>
           </v-container>
           </v-col>
+
+          <v-col align="center" justify="center" v-if="this.$store.state.round > 2">
+          <v-container>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="demandassessmentFrame"
+              label="Enable Demand Assessment"
+              hint="Information Systems Demand Assessment enhancing the Purchase Capability by 5 times."
+              persistent-hint
+            ></v-checkbox>
+          </v-container>
+          <v-text-field
+          v-if="demandassessmentFrame"
+          label="Demand Assessment Implementation Costs:"
+          :value="7000.00"
+          type="number"
+          filled
+          disabled
+        />
+        <v-text-field
+          v-if="demandassessmentFrame"
+          label="Purchaser (EUR):"
+          :value="getPurchaserFrame"
+          type="number"
+          filled
+          disabled
+          hint="Required employees need to buy and manage materials."
+          persistent-hint
+        />
+        <v-text-field
+          v-if="demandassessmentFrame"
+          label="Base Salary (EUR):"
+          :value="getBaseSalaryFrame"
+          type="number"
+          filled
+          disabled
+        />
+          </v-col>
+
         </v-row>
         </v-card>
       </v-container>
@@ -728,10 +837,18 @@
               filled
               disabled
             />
+              <v-text-field
+                label="Sensors: Total Cost (EUR)"
+                :value="calculatedTotalCostSensors"
+                filled
+                disabled
+              />
             </v-col>
 
-            <v-col
-              class="pr-4"
+          </v-row>
+           <v-row no-gutters>
+          <v-col
+              class="ml-6 mt-6 ml-6 mb-6"
             >
 
           <!-- Slider Sensors: Amount(PC) -->
@@ -741,9 +858,9 @@
               label="Sensors: Amount (PC)"
               :color="teamColor"
               :min="1"
-              :max="100"
+              :max="1000000"
               :thumb-color="teamColor"
-              :thumb-size="24"
+              :thumb-size="42"
               thumb-label="always"
               :track-color="'teamColor' + 'lighten-3'"
               :track-fill-color="teamColor"
@@ -755,27 +872,16 @@
                   hide-details
                   single-line
                   :min="1"
-                  :max="100"
+                  :max="1000000"
                   type="number"
-                  style="width: 60px"
+                  style="width: 80px"
                 />
               </template>
             </v-slider>
             </v-col>
           </v-row>
 
-          <v-row no-gutters>
-            <v-col
-              class="pr-4"
-            >
-            <v-text-field
-                label="Sensors: Total Cost (EUR)"
-                :value="calculatedTotalCostSensors"
-                filled
-                disabled
-              />
-            </v-col>
-          
+             <v-row no-gutters>          
             <v-col
               class="pr-4"
             >         
@@ -812,6 +918,45 @@
             ></v-checkbox>
           </v-container>
           </v-col>
+
+          <v-col align="center" justify="center" v-if="this.$store.state.round > 2">
+          <v-container>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="demandassessmentSensors"
+              label="Enable Demand Assessment"
+              hint="Information Systems Demand Assessment enhancing the Purchase Capability by 5 times."
+              persistent-hint
+            ></v-checkbox>
+          </v-container>
+          <v-text-field
+          v-if="demandassessmentSensors"
+          label="Demand Assessment Implementation Costs:"
+          :value="7000.00"
+          type="number"
+          filled
+          disabled
+        />
+        <v-text-field
+          v-if="demandassessmentSensors"
+          label="Purchaser (EUR):"
+          :value="getPurchaserSensors"
+          type="number"
+          filled
+          disabled
+          hint="Required employees need to buy and manage materials."
+          persistent-hint
+        />
+        <v-text-field
+          v-if="demandassessmentSensors"
+          label="Base Salary (EUR):"
+          :value="getBaseSalarySensors"
+          type="number"
+          filled
+          disabled
+        />
+          </v-col>
+
         </v-row>
         </v-card>
       </v-container>
@@ -1006,15 +1151,45 @@ export default {
       }
       return lines;
     },
-    getPurchaser: function() {
-      if(this.demandassessment === true) {
-        return this.amount.battery != null ? this.amount.battery / 9000 / 5 : ""
+    getPurchaserBattery: function() {
+      if(this.demandassessmentBattery === true) {
+        return this.amount.battery != null ? (Number(this.amount.battery / 9000 / 5)).toFixed(5) : ""
       } else {
-        return this.amount.battery != null ? this.amount.battery / 9000 : ""
+        return this.amount.battery != null ? (Number(this.amount.battery / 9000)).toFixed(5) : ""
       }
     },
-    getBaseSalary: function () {
-      return this.getPurchaser != null ? this.getPurchaser * 10000 : "";
+    getPurchaserEngine: function() {
+      if(this.demandassessmentEngine === true) {
+        return this.amount.engine != null ? (Number(this.amount.engine / 9000 / 5)).toFixed(5) : ""
+      } else {
+        return this.amount.engine != null ? (Number(this.amount.engine / 9000)).toFixed(5) : ""
+      }
+    },
+    getPurchaserFrame: function() {
+      if(this.demandassessmentFrame === true) {
+        return this.amount.frame != null ? (Number(this.amount.frame / 9000 / 5)).toFixed(5) : ""
+      } else {
+        return this.amount.frame != null ? (Number(this.amount.frame / 9000)).toFixed(5) : ""
+      }
+    },
+    getPurchaserSensors: function() {
+      if(this.demandassessmentSensors === true) {
+        return this.amount.sensors != null ? (Number(this.amount.sensors / 9000 / 5)).toFixed(5) : ""
+      } else {
+        return this.amount.sensors != null ? (Number(this.amount.sensors / 9000)).toFixed(5) : ""
+      }
+    },
+    getBaseSalaryBattery: function () {
+      return this.getPurchaserBattery != null ? (Number(this.getPurchaserBattery * 10000)).toFixed(5) : "";
+    },
+    getBaseSalaryEngine: function () {
+      return this.getPurchaserEngine != null ? (Number(this.getPurchaserEngine * 10000)).toFixed(5) : "";
+    },
+    getBaseSalaryFrame: function () {
+      return this.getPurchaserFrame != null ? (Number(this.getPurchaserFrame * 10000)).toFixed(5) : "";
+    },
+    getBaseSalarySensors: function () {
+      return this.getPurchaserSensors != null ? (Number(this.getPurchaserSensors * 10000)).toFixed(5) : "";
     },
     getBasebatteryPrice: function() {
       return this.batteryVendor != null ? this.batteryVendor.Basebatteryprice : "";
@@ -1102,7 +1277,11 @@ export default {
   },
   data() {
     return {
-      demandassessment: false,
+      demandassessmentBattery: false,
+      demandassessmentEngine: false,
+      demandassessmentFrame: false,
+      demandassessmentSensors: false,
+      demassessmentfixcost: 7000,
       info: null,
       isEditing: true,
       teamColor: this.$store.state.color,
@@ -1176,25 +1355,33 @@ export default {
           amount: this.amount,
           quality: this.quality,
           totalCost: this.calculatedTotalCostBattery,
-          costPerUnit: this.calculatedCostPerMaterialBattery
+          costPerUnit: this.calculatedCostPerMaterialBattery,
+          demandassessment: this.demandassessmentBattery,
+          demassessmentfixcost: this.demassessmentfixcost
         });
         await this.saveVendorEngine({
           amount: this.amount,
           quality: this.quality,
           totalCost: this.calculatedTotalCostEngine,
-          costPerUnit: this.calculatedCostPerMaterialEngine
+          costPerUnit: this.calculatedCostPerMaterialEngine,
+          demandassessment: this.demandassessmentEngine,
+          demassessmentfixcost: this.demassessmentfixcost
         });
         await this.saveVendorFrame({
           amount: this.amount,
           quality: this.quality,
           totalCost: this.calculatedTotalCostFrame,
-          costPerUnit: this.calculatedCostPerMaterialFrame
+          costPerUnit: this.calculatedCostPerMaterialFrame,
+          demandassessment: this.demandassessmentFrame,
+          demassessmentfixcost: this.demassessmentfixcost
         });
         await this.saveVendorSensors({
           amount: this.amount,
           quality: this.quality,
           totalCost: this.calculatedTotalCostSensors,
-          costPerUnit: this.calculatedCostPerMaterialSensors
+          costPerUnit: this.calculatedCostPerMaterialSensors,
+          demandassessment: this.demandassessmentSensors,
+          demassessmentfixcost: this.demassessmentfixcost
         });
       }
     },

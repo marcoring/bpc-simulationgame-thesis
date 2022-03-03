@@ -398,7 +398,9 @@ const actions = {
             Quality:String(data.quality.battery),
             Materialid:"BAT",
             Totalcost:data.totalCost,
-            Costperunit:data.costPerUnit
+            Costperunit:data.costPerUnit,
+            Demandassessment:data.demandassessmentBattery,
+            Demassessmentfixcost:String(data.demassessmentfixcost)
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -449,7 +451,9 @@ const actions = {
             Quality:String(data.quality.engine),
             Materialid:"ENG",
             Totalcost:data.totalCost,
-            Costperunit:data.costPerUnit
+            Costperunit:data.costPerUnit,
+            Demandassessment:data.demandassessmentEngine,
+            Demassessmentfixcost:String(data.demassessmentfixcost)
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -500,7 +504,9 @@ const actions = {
             Quality:String(data.quality.frame),
             Materialid:"FR",
             Totalcost:data.totalCost,
-            Costperunit:data.costPerUnit
+            Costperunit:data.costPerUnit,
+            Demandassessment:data.demandassessmentFrame,
+            Demassessmentfixcost:String(data.demassessmentfixcost)
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -551,7 +557,9 @@ const actions = {
             Quality:String(data.quality.sensors),
             Materialid:"SEN",
             Totalcost:data.totalCost,
-            Costperunit:data.costPerUnit
+            Costperunit:data.costPerUnit,
+            Demandassessment:data.demandassessmentSensors,
+            Demassessmentfixcost:String(data.demassessmentfixcost)
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
