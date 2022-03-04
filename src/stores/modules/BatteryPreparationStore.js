@@ -101,7 +101,9 @@ const actions = {
           Quality:String(data.amount.quality.val),
           Workload:String(data.amount.workload.val),
           Safety:String(data.amount.safety.val),
-          Alnumber:Number(data.amount.assemblyLines.val)
+          Alnumber:Number(data.amount.assemblyLines.val),
+          Digitaltwin:data.Digitaltwin,
+          Smartmonitoring:data.Smartmonitoring
     });
     // this function removes backslashes from JSON String
     const payload_without_bs = JSON.parse(payload);

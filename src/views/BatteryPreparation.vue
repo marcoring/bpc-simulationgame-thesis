@@ -134,6 +134,8 @@
         <h2 style="text-align: left;">Manage Battery Preparation Process</h2>
       </v-row>
 
+      <v-row>
+        <v-col>
       <v-container>
         <v-col align="start" >
         <v-tooltip bottom color="black">
@@ -158,6 +160,33 @@
         </v-tooltip>
         </v-col>
       </v-container>
+      </v-col>
+
+      <v-col>
+      <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-chat-question </v-icon>
+         Digital Twin
+        </v-btn>
+        </template>
+          <span>Information System Digital Twin for Quality Assurance:.</span><br><br>
+          <span>No Safety needed anymore!</span><br>
+          <span>Only Internal Quality Assurance possible.</span><br><br>
+          <span>You will find further Information on the Quality Assurance Page.</span>
+        </v-tooltip>
+        </v-col>
+      </v-container>
+      </v-col>
+      </v-row>
 
       <v-row>
         <v-col>
@@ -290,8 +319,53 @@
             />
           </template>
         </v-slider>
+           <v-container fluid v-if="this.$store.state.round > 2">
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="digitalTwin"
+              label="Enable Digital Twin"
+            ></v-checkbox>
+          </v-container>
+        <v-text-field
+          v-if="digitalTwin == true"
+          label="Digital Twin Cost (EUR):"
+          hint="Implementation Costs of Digital Twin only occur once during the simulation game for each material."
+          persistent-hint
+          value="25000"
+          type="number"
+          filled
+          disabled
+        />
+
+        <v-container fluid>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="smartMonitoring"
+              label="Enable Smart Monitoring"
+            ></v-checkbox>
+          </v-container>
+        <v-text-field
+          v-if="smartMonitoring == true"
+          label="Maintain Cost per Product(EUR):"
+          hint="Information System Smart Monitoring reducing the Maintain Cost per Product."
+          persistent-hint
+          value="0.25"
+          type="number"
+          filled
+          disabled
+        />
+        <v-text-field
+          v-if="smartMonitoring == false"
+          label="Maintain Cost per Product(EUR):"
+          value="0.50"
+          type="number"
+          filled
+          disabled
+        />
+
       </v-col>
       </v-row>
+
 
      <v-row>
         <v-col md='4' align="left">
@@ -454,6 +528,8 @@ export default {
       },
       showError: false,
       confirmChangesDialog: false,
+      smartMonitoring: false,
+      digitalTwin: false,
       selectedLine: "",
       numOfLines: 1,
       teamColor: this.$store.state.color,
@@ -476,6 +552,8 @@ export default {
         this.confirmChangesDialog = !this.confirmChangesDialog;
         await this.saveVendor({
           amount: this.amount,
+          Digitaltwin: this.digitalTwin,
+          Smartmonitoring: this.smartMonitoring
         });
       } 
     },

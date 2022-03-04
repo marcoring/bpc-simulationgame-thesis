@@ -146,30 +146,59 @@
       </h2>
     </v-row>
 
-    <v-container>
-      <v-col align="start" >
-      <v-tooltip bottom color="black">
-      <template v-slot:activator="{ on, attrs }">
-      <v-btn
-        :color="teamColor"
-        dark
-        v-bind="attrs"
-        v-on="on"
-        x-large
-      >
-      <v-icon>mdi-chat-question </v-icon>
-        Hover me
-      </v-btn>
-      </template>
-      <span>Assembly Line Cost: Different production lines with additional features are available depending on the round.</span><br>
-      <span>Production Cost: Additional production lines could be bought to improve the production capacity.</span><br>
-      <span>Environmental Factor: Environmental friendliness of the process.</span><br>
-      <span>Quality: The quality at each step influences the total quality of the product. The weights for the quality could be different depending on the step and round.</span><br>
-      <span>Workload: Chosen workload will affect production costs and the number of produced bikes.</span><br>
-      <span>Safety: Safety will influence the number of defective bikes.</span>
-      </v-tooltip>
+      <v-row>
+        <v-col>
+      <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-chat-question </v-icon>
+         Hover me
+        </v-btn>
+        </template>
+          <span>Assembly Line Cost: Different production lines with additional features are available depending on the round.</span><br>
+          <span>Production Cost: Additional production lines could be bought to improve the production capacity.</span><br>
+          <span>Environmental Factor: Environmental friendliness of the process.</span><br>
+          <span>Quality: The quality at each step influences the total quality of the product. The weights for the quality could be different depending on the step and round.</span><br>
+          <span>Workload: Chosen workload will affect production costs and the number of produced bikes.</span><br>
+          <span>Safety: Safety will influence the number of defective bikes.</span>
+        </v-tooltip>
+        </v-col>
+      </v-container>
       </v-col>
-    </v-container>
+
+      <v-col>
+      <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-chat-question </v-icon>
+         Digital Twin
+        </v-btn>
+        </template>
+          <span>Information System Digital Twin for Quality Assurance:.</span><br><br>
+          <span>No Safety needed anymore!</span><br>
+          <span>Only Internal Quality Assurance possible.</span><br><br>
+          <span>You will find further Information on the Quality Assurance Page.</span>
+        </v-tooltip>
+        </v-col>
+      </v-container>
+      </v-col>
+      </v-row>
 
     <v-row>
       <v-col>
@@ -318,9 +347,53 @@
           filled
           disabled
         />
+        <v-container fluid v-if="this.$store.state.round > 2">
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="digitalTwin"
+              label="Enable Digital Twin"
+            ></v-checkbox>
+          </v-container>
+        <v-text-field
+          v-if="digitalTwin == true"
+          label="Digital Twin Cost (EUR):"
+          hint="Implementation Costs of Digital Twin only occur once during the simulation game for each material."
+          persistent-hint
+          value="25000"
+          type="number"
+          filled
+          disabled
+        />
+
+        <v-container fluid>
+            <p>{{ selected }}</p>
+            <v-checkbox
+              v-model="smartMonitoring"
+              label="Enable Smart Monitoring"
+            ></v-checkbox>
+          </v-container>
+        <v-text-field
+          v-if="smartMonitoring == true"
+          label="Maintain Cost per Product(EUR):"
+          hint="Information System Smart Monitoring reducing the Maintain Cost per Product."
+          persistent-hint
+          value="0.25"
+          type="number"
+          filled
+          disabled
+        />
+        <v-text-field
+          v-if="smartMonitoring == false"
+          label="Maintain Cost per Product(EUR):"
+          value="0.50"
+          type="number"
+          filled
+          disabled
+        />
+
       </v-col>
-    </v-row>
-    </div>
+      </v-row>
+      </div>
      <v-row>
         <v-col md='4' align="left">
           <v-btn :color="teamColor" rounded dark @click="toPreviousStep">
@@ -373,6 +446,8 @@ export default {
       teamColor: this.$store.state.color,
       round: this.$store.state.round,
       confirmChangesDialog: false,
+      smartMonitoring: false,
+      digitalTwin: false,
       selectedLine: "",
       numOfLines: 1,
       selectedCustomization: false,
@@ -515,7 +590,9 @@ export default {
         this.confirmChangesDialog = !this.confirmChangesDialog;
         await this.saveVendor({
           amount: this.amount,
-          selectedCustomization: this.selectedCustomization
+          selectedCustomization: this.selectedCustomization,
+          Digitaltwin: this.digitalTwin,
+          Smartmonitoring: this.smartMonitoring
         });
       } 
     },
