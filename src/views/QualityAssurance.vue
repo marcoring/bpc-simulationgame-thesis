@@ -41,6 +41,7 @@
             :value="getLastEmployeesatisfaction"
             disabled
             />
+            <hr>
             <v-text-field
             value="Internal QA:"
             disabled
@@ -167,6 +168,9 @@
         </h2>
       </v-row>
 
+      <v-row>
+
+        <v-col>
       <!-- Hover me -->
       <v-container>
         <v-col align="start" >
@@ -193,6 +197,35 @@
         </v-tooltip>
         </v-col>
       </v-container>
+      </v-col>
+    <v-col>
+      <!-- Hover me -->
+      <v-container>
+        <v-col align="start" >
+        <v-tooltip bottom color="black">
+        <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          :color="teamColor"
+          dark
+          v-bind="attrs"
+          v-on="on"
+          x-large
+        >
+        <v-icon>mdi-book </v-icon>
+         READ THIS
+        </v-btn>
+        </template>
+        <span>!! CAREFUL !!</span><br><br>
+        <span>If you have decided to choose Digital Twin earlier in the game, for instance</span>
+        <span>inside preperation materials, you should now NOT take external Quality Assurance.</span><br>
+        <span>Instead take internal Quality Assurance.</span>
+        </v-tooltip>
+        </v-col>
+      </v-container>
+      </v-col>
+
+      </v-row>
+
 
       <!-- Checkbox Components -->
       <div class="additions">

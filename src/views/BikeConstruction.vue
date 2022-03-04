@@ -380,6 +380,15 @@
           filled
           disabled
         />
+        <v-text-field
+          v-if="smartMonitoring == true"
+          label="Sensor Cost (EUR):"
+          :value="returnSensorCost"
+          type="number"
+          filled
+          disabled
+        />
+
 
       </v-col>
       </v-row>
@@ -458,6 +467,9 @@ export default {
           value: vendor
         }}
       }) : []
+    },
+    returnSensorCost: function() {
+      return  this.vendor != null ? (this.amount.assemblyLines.val * 0.1) : 0;
     },
      lastAssemblylineid() {
       return this.lastVendor != null ? this.lastVendor.Assemblylineid : "No Data";

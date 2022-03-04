@@ -88,7 +88,7 @@ const actions = {
         }
     },
     async saveVendor({ commit, dispatch, getters, rootGetters }, data) {
-      console.log('saveVendor', getters.vendor)
+      console.log('data', data)
     const payload = JSON.stringify({                       
           Guid:String(rootGetters.gameData.Guid),    
           Roundid:rootGetters.gameData.Roundid,  
@@ -103,7 +103,7 @@ const actions = {
           Safety:String(data.amount.safety.val),
           Alnumber:Number(data.amount.assemblyLines.val),
           Digitaltwin:data.Digitaltwin,
-          Smartmonitoring:data.Smartmonitoring
+          Smartmonitoring:data.Smartmonitoring,
     });
     // this function removes backslashes from JSON String
     const payload_without_bs = JSON.parse(payload);

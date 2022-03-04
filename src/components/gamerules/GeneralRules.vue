@@ -25,7 +25,7 @@
                         <h2 :style="'color:' + teamColor">How to play?</h2>
                     </div>
                     <span class="text-passage text-counter second-plate">
-                        <b>The goal of the game is to design the production and sales of the IoT bikes in a way that it is possible to earn more than the other teams.</b>
+                        <b>The goal of the game is to design the production and sales in a way that it is possible to earn more than the other teams.</b>
                     </span>
                     <span class="text-passage text-counter second-plate">
                         The decisions are different in every round. More details on each round can be read in the corresponding section. 
@@ -129,8 +129,7 @@ export default {
           showNextButton: true,
           currentRuleNumber: 0,
           teamColor: this.$store.state.color,
-          // TODO set timerCount to 5 Seconds
-          timerCount: 0
+          timerCount: 5
         }
     },
     methods: {
@@ -142,8 +141,7 @@ export default {
         }
       },
       next() {
-          // TODO set timerCount to 5 Seconds
-            this.timerCount = 0;
+            this.timerCount = 5;
             if(this.currentRuleNumber === 3) {
                 this.$store.state.generalRulesRead = true;
             } 
