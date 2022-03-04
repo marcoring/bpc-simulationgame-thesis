@@ -58,6 +58,7 @@ export default {
           "Develop and mantain your own application.",
           "Decide between different options for a quality assurance process.",
           "Sell bikes produced to ensure profitability.",
+          "Good Luck!"
           // "Production processes: It can be decided how many assembly lines should be used in the different production steps.",
           // "Sales process: There is an option for an Online Shop which boosts the sales numbers.",
         ],
@@ -67,27 +68,26 @@ export default {
           "Production processes: An additional production step is required to prepare the batteries for production. Furthermore, it is possible to buy automated assembly lines in which the production process is cheaper and the capacity is better.",
           "Quality assurance: There is a possibility to choose between internal and external vendors.",
           "Sales process: Online marketing is available to make sales more efficient. Furthermore, sales can be split to two different products (Standard and Standard Pro).",
+          "Good Luck!"
         ],
         round3Rules:
-          "Welcome to round 3! You can check your statistics on the left side. Also, check out these new features:",
+          "Welcome to round 3! Check out these new features:",
         round3Keywords: [
           "Costumize your bike parts.",
           "Automatic production with predictive maintenance is now possible.",
           "You can now choose robotic quality assurance options.",
           "Analyze markets based on deep learning.",
-          "Good Luck! May the Force be with you."
+          "Good Luck & May the Force be with you!"
         ],
         round4Rules:
-          "The popularity of IoT Bikes reaches towards its peak. Demand has risen up to 40.000 bikes. New features for round four are as follows:",
+          "Welcome to round 4!",
         round4Keywords: [
-          "Production processes: Smart assembly lines (robots move parts between them) are available.",
-          "Sales process: Drone-based delivery to the customers can be chosen additionally.",
-          "Application development and maintenance: One can choose an appropriate outsourcing company for application development.",
+          "You can now deliver your items with the help of drones.",
+          "This is your last round",
+          "Good luck again!"
         ],
         round5Rules:
-          "The growth of popularity only increases slightly, up to 45.000 bikes. The teams have the possibility to establish their offerings and further increase their profit.",
-        round6Rules:
-          "The growth of popularity only increases slightly, up to 50.000 bikes. The teams have the possibility to establish their offerings and further increase their profit.",
+          "Game Over! The Game ends at this point. Thank you for participating.",
       },
       dialog: true,
       teamColor: this.$store.state.color,
