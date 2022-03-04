@@ -31,7 +31,7 @@ const actions = {
       }
       try {
       var response = await axios.get(
-          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/QaProcessSet?(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
+          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/QaProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
         );
         console.log("TEST", response.data.d, getters.vendors)
       return getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid);

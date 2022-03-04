@@ -453,20 +453,6 @@ export default {
       confirmChangesDialog: false,
       selectedLine: "",
       numOfLines: 1,
-      // assemblyLines: [
-      //   {
-      //     name: "Assembly Line 1",
-      //     value: ["100", "50", "200"],
-      //   },
-      //   {
-      //     name: "Assembly Line 2",
-      //     value: ["300", "100", "600"],
-      //   },
-      //   {
-      //     name: "Assembly Line 3",
-      //     value: ["500", "250", "2000"],
-      //   },
-      // ],
       teamColor: this.$store.state.color,
       round: this.$store.state.round
     };
@@ -495,20 +481,6 @@ export default {
       //this.$router.push({ path: "/dashboard" });
       this.toggleDialog();
     },
-    // calculateCosts(selectedLine) {
-    //   // check for NaN
-    //   if (typeof selectedLine === "undefined") {
-    //     return "";
-    //   } else {
-    //     return (
-    //       selectedLine *
-    //       this.numOfLines *
-    //       (1 + this.quality.val / 100) *
-    //       (1 + this.workload.val / 100) *
-    //       (1 + this.safety.val / 100)
-    //     ).toFixed(2);
-    //   }
-    // },
     toNextStep() {
       this.$router.push({ path: "/bikeConstruction" });
     },

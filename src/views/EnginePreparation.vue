@@ -521,20 +521,6 @@ export default {
       //this.$router.push({ path: "/dashboard" });
       this.toggleDialog();
     },
-    // calculateCosts(selectedLine) {
-    //   // check for NaN
-    //   if (typeof selectedLine === "undefined") {
-    //     return "";
-    //   } else {
-    //     return (
-    //       selectedLine *
-    //       this.numOfLines *
-    //       (1 + this.quality.val / 100) *
-    //       (1 + this.workload.val / 100) *
-    //       (1 + this.safety.val / 100)
-    //     ).toFixed(2);
-    //   }
-    // },
     toNextStep() {
       if(this.$store.state.round >= 3) {
         this.$router.push({ path: "/batteryPreparation" });

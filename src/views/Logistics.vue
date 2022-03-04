@@ -255,7 +255,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
 // import CostAccountingCard from "../components/CostAccountingCard.vue";
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';

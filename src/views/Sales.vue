@@ -28,33 +28,23 @@
           </v-card-title>
           <v-card-text>
              <v-text-field
-            label="Internal/External: Yearly Costs (EUR):"
-            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+            label="Sales Price Per Bike (PC):"
+            :value="lastAmountPricePerBike"
             disabled
             />
             <v-text-field
-            label="Regionality Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
-            disabled
-            />
-                        <v-text-field
-            label="Sustainability Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            label="Sales Cost (EUR):"
+            :value="lastCalculateSalesCost"
             disabled
             />
             <v-text-field
-            label="Quality (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            label="Number of Sales Persons:"
+            :value="lastNumOfSalesPersons"
             disabled
             />
             <v-text-field
-            label="Number of Employees:"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
-            disabled
-            />
-             <v-text-field
-            label="QA Capacity (PC):"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            label="Sales Capacity (PC):"
+            :value="lastCalculateSalesCapacity"
             disabled
             />
           </v-card-text>
@@ -70,7 +60,7 @@
             <v-card-text>
              <v-text-field
             label="Sales Price Per Bike (PC):"
-            :value="amount.pricePerBike"
+            :value="getAmountPricePerBike"
             disabled
             />
             <v-text-field
@@ -80,7 +70,7 @@
             />
             <v-text-field
             label="Number of Sales Persons:"
-            :value="amount.numOfSalesPersons"
+            :value="getNumOfSalesPersons"
             disabled
             />
             <v-text-field
@@ -243,6 +233,7 @@
             />
             <v-text-field
               label="Sales Capacity (PC)"
+              v-model="calculateSalesCapacity"
               :value="calculateSalesCapacity"
               filled
               disabled
@@ -273,27 +264,28 @@
       <v-tab-item>
         <v-row>
           <v-col>
-            <v-text-field
-              label="Standard"
-              type="number"
-              min="0"
-              v-model="standardPrice"
-              :color="teamColor"
-            />
-            <v-text-field
-              label="Standard Pro"
-              type="number"
-              min="0"
-              v-model="standardProPrice"
-              :color="teamColor"
-            />
-            <v-text-field
-              label="Premium"
-              type="number"
-              min="0"
-              v-model="premiumPrice"
-              :color="teamColor"
-            />
+
+          <!-- Hover Me -->
+          <v-container>
+            <v-col align="center" >
+              <v-tooltip bottom color="black">
+              <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                :color="teamColor"
+                dark
+                v-bind="attrs"
+                v-on="on"
+                x-large
+              >
+              <v-icon>mdi-egg-easter </v-icon>
+              </v-btn>
+              </template>
+              <span>CONGRATULATIONS</span><br><br>
+              <span>You have successfully found the easter egg of the bike simulation game!</span><br>
+              </v-tooltip>
+            </v-col>
+          </v-container>
+
           </v-col>
         </v-row>
       </v-tab-item>
@@ -338,14 +330,14 @@
 <script>
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from '../dialogs/ErrorChagesDialog.vue';
-import { mapGetters, mapActions, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "sales",
   components: { ConfirmationDialog, ErrorChagesDialog },
   computed: {
-    ...mapGetters('sales', ['vendors', 'vendor']),
+    ...mapGetters('sales', ['lastVendor']),
      getCalculateSalesActivitiesCost() {
        var devCostTemp = 0;
       if(this.$store.state.round >= 1 && this.Onlineshop == true){
@@ -378,20 +370,38 @@ export default {
 			}
 			return capacity;
 		},		
-    changeValue() {
+    getAmountPricePerBike: function() {
+      return this.amount.pricePerBike >= 0 ? this.amount.pricePerBike : "";
+    },
+    getNumOfSalesPersons: function() {
+      return this.amount.numOfSalesPersons >= 0 ? this.amount.numOfSalesPersons : "";
+    },
+    changeValue: function() {
       return this.numOfSalesPers != 0 ? (this.numOfSalesPers * 0): "";
     },
-    getNewCapacity() {
+    getNewCapacity: function() {
       return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * (7000 * this.calculateCapacityWithMultiplier)).toFixed(2): "";
     },
-    calculateSalesCost() {
-      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 42366.00).toFixed(2) : "";
+    calculateSalesCost: function() {
+      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 42366.00) : "";
     },
-    getBaseSalary() {
+    getBaseSalary: function() {
       return (42366.00).toFixed(2);
     },
-    calculateSalesCapacity() {
-      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 7000).toFixed(2) : "";
+    calculateSalesCapacity: function() {
+      return this.amount.numOfSalesPersons >= 0 ? (this.amount.numOfSalesPersons * 7000) : "";
+    },
+    lastCalculateSalesCost: function() {
+      return this.lastVendor != null ? this.lastVendor.Salescost : "";
+    },
+    lastCalculateSalesCapacity: function() {
+      return this.lastVendor != null ? this.lastVendor.Salescapacity : "";
+    },
+    lastAmountPricePerBike: function() {
+      return this.lastVendor != null ? this.lastVendor.Priceperbike : "";
+    },
+    lastNumOfSalesPersons: function() {
+      return this.lastVendor != null ? this.lastVendor.Salespersons : "";
     },
   },
   data() {
@@ -407,22 +417,16 @@ export default {
       teamColor: this.$store.state.color,
       confirmChangesDialog: false,
       salesTabs: null,
-      numOfSalesPers: 0,
-      standardPrice: 0.0,
-      standardProPrice: 0.0,
-      premiumPrice: 0.0,
       amount: {
         numOfSalesPersons: { label: "Number of Sales Persons", val: 0 },
         pricePerBike: { label: "Price per Bike", val: 0 },
-        getSelectedActivity: { label: "Development Cost (EUR)", val: 0}
+        getSelectedActivity: { label: "Development Cost (EUR)", val: 0},
       },
     };
   },
   methods: {
-    ...mapActions('sales', ['vendor']),
     ...mapActions('sales', ['getLastVendor']),
     ...mapActions('sales', ['saveVendor']),
-    ...mapMutations('sales', ['updateVendor']),
     toggleShowError() {
       this.showError = !this.showError;
     },
@@ -436,8 +440,14 @@ export default {
          this.confirmChangesDialog = !this.confirmChangesDialog;
          // Parameter kann in Methode hier mitgegeben werden
          await this.saveVendor({
-           amount: this.amount, 
-           Onlineshop: this.Onlineshop
+          amount: this.amount, 
+          Onlineshop: this.Onlineshop,
+          Onlinemarketing:this.Onlinemarketing,        
+          Marketanalyzer:this.Onlinemarketing,        
+          Dronedelivery:this.Dronedelivery,        
+          Salespersons:this.getNumOfSalesPersons,        
+          Salescost:this.calculateSalesCost,   
+          Salescapacity:this.calculateSalesCapacity
           });
        }
     },
@@ -532,7 +542,7 @@ export default {
 			return item;
 		},
   },
-  mounted() {
+  async mounted() {
     this.$store.state.innerGuideDone = 
                this.$store.state.purchasingStep >= 5 || 
                this.$store.state.logisticStep >= 5 || 
@@ -548,6 +558,8 @@ export default {
     if(this.$store.state.salesStep <= 4) {
       this.nextSalesStep();
     }  
+
+    await this.getLastVendor();
   },
   watch: {
     '$store.state.salesStep': function() {

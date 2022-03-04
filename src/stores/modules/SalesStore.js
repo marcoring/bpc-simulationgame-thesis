@@ -5,36 +5,27 @@ axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 //to handle state
 const state = {
-    vendors: [],
-    vendor: null,
-    types: [],
-    type: null,
-    quality: [],
-    amount: [],
+    lastVendor: null
 }
 
 //to handle state
 const getters = {
-    vendors: state => state.vendors,
-    vendor: state => state.vendor,
-    types: state => state.types,
-    type: state => state.type,
-    quality: state => state.quality,
-    amount: state => state.amount,
+    lastVendor: state => state.lastVendor
 }
 
 //to handle actions
 const actions = {
-    async getLastVendor({getters, rootGetters}) {
+    async getLastVendor({ rootGetters, commit}) {
       if(rootGetters.gameData.Roundid == 1) {
         return null;
       }
       try {
       var response = await axios.get(
-          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/SalesProcessSet?(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')$format=json`
+          `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/SalesProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid - 1},Userid='${rootGetters.gameData.Userid}')?$format=json`
         );
-        console.log("TEST", response.data.d, getters.vendors)
-      return getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid);
+        var lastVendor = response.data.d;
+        console.log('LAST VENDOR SALES STORE', lastVendor)
+        commit('updateLastVendor', lastVendor);
   } catch (error) {
       if (error.response) {
           // The request was made and the server responded with a status code
@@ -60,17 +51,16 @@ const actions = {
             Guid:rootGetters.gameData.Guid,    
             Roundid:rootGetters.gameData.Roundid,  
             Userid:rootGetters.gameData.Userid,   
-            Priceperbike:data.amount.pricePerBike,        
+            Priceperbike:String(data.amount.pricePerBike),        
             Onlineshop:data.Onlineshop, 
-            /*Onlinemarketing:getters.Onlinemarketing,        
-            Marketanalyzer:getters.Onlinemarketing,        
-            Dronedelivery:getters.Dronedelivery,        
-            Salespersons:getters.amount.numOfSalesPersons,        
-            Salescost:getters.calculateSalesCost,        
-            Salescapacity:getters.calculateSalesCapacity*/
+            Onlinemarketing:data.Onlinemarketing,        
+            Marketanalyzer:data.Onlinemarketing,        
+            Dronedelivery:data.Dronedelivery,        
+            Salespersons:Number(data.amount.numOfSalesPersons),        
+            Salescost:String(data.Salescost),        
+            Salescapacity:String(data.Salescapacity)
       });
       // this function return backslashes from JSON String
-      
       console.log("PAYLOAD", payload);
       const payload_without_bs = JSON.parse(payload);
       console.log("PAYLOAD WITHOUT BS", payload_without_bs);
@@ -116,13 +106,7 @@ const actions = {
 
 //to handle mutations
 const mutations = {
-    // Hier könnte ich noch checks einbauen, ob Vendors so stimmt z.b., bevor ich sie setze
-    updateVendors: (state, vendors) => state.vendors = vendors,
-    updateVendor: (state, vendor) => state.vendor = vendor,
-    updateTypes: (state, types) => state.types = types,
-    updateType: (state, type) => state.type = type,
-    updateQuality: (state, quality) => state.quality = quality,
-    updateAmount: (state, amount) => state.amount = amount,
+    updateLastVendor: (state, lastVendor) => state.lastVendor = lastVendor
 }
 
 //export store module

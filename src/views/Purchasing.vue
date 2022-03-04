@@ -254,7 +254,7 @@
               label="Battery: Amount (PC)"
               :color="teamColor"
               :min="1"
-              :max="1000000"
+              :max="100000"
               :thumb-color="teamColor"
               :thumb-size="42"
               thumb-label="always"
@@ -268,7 +268,7 @@
                   hide-details
                   single-line
                   :min="1"
-                  :max="1000000"
+                  :max="100000"
                   type="number"
                   style="width: 80px"
                 />
@@ -455,7 +455,7 @@
               label="Engine: Amount (PC)"
               :color="teamColor"
               :min="1"
-              :max="1000000"
+              :max="100000"
               :thumb-color="teamColor"
               :thumb-size="42"
               thumb-label="always"
@@ -469,7 +469,7 @@
                   hide-details
                   single-line
                   :min="1"
-                  :max="1000000"
+                  :max="100000"
                   type="number"
                   style="width: 80px"
                 />
@@ -657,7 +657,7 @@
               label="Frame: Amount (PC)"
               :color="teamColor"
               :min="1"
-              :max="1000000"
+              :max="100000"
               :thumb-color="teamColor"
               :thumb-size="42"
               thumb-label="always"
@@ -671,7 +671,7 @@
                   hide-details
                   single-line
                   :min="1"
-                  :max="1000000"
+                  :max="100000"
                   type="number"
                   style="width: 80px"
                 />
@@ -858,7 +858,7 @@
               label="Sensors: Amount (PC)"
               :color="teamColor"
               :min="1"
-              :max="1000000"
+              :max="100000"
               :thumb-color="teamColor"
               :thumb-size="42"
               thumb-label="always"
@@ -872,7 +872,7 @@
                   hide-details
                   single-line
                   :min="1"
-                  :max="1000000"
+                  :max="100000"
                   type="number"
                   style="width: 80px"
                 />

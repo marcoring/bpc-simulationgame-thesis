@@ -234,10 +234,12 @@ export default {
           "Sales process: Drone-based delivery to the customers can be chosen additionally.",
           "Application development and maintenance: One can choose an appropriate outsourcing company for application development.",
         ],
-        round5Rules:
-          "The growth of popularity only increases slightly, up to 45.000 bikes. The teams have the possibility to establish their offerings and further increase their profit.",
-        round6Rules:
-          "The growth of popularity only increases slightly, up to 50.000 bikes. The teams have the possibility to establish their offerings and further increase their profit.",
+        round5Ruless: [
+          "GAME OVER",
+        ],
+        round5Keywords: [
+          "May the Force be with you!",
+        ],
       },
     };
   },
@@ -305,7 +307,7 @@ export default {
         enable connection with ABAP-server and send
         post-request about current round-ending.
       */
-      if (this.$store.state.round >= 6) {
+      if (this.$store.state.round >= 5) {
         // End Game
         this.roundUpdate(1);
       } else {
@@ -359,8 +361,6 @@ export default {
           return this.rules.round4Rules;
         case 5:
           return this.rules.round5Rules;
-        case 6:
-          return this.rules.round6Rules;
         default:
           return this.rules.round1Rules;
       }
@@ -376,9 +376,7 @@ export default {
         case 4:
           return this.rules.round4Keywords;
         case 5:
-          return null;
-        case 6:
-          return null;
+          return this.rules.round5Keywords;
         default:
           return null;
       }
