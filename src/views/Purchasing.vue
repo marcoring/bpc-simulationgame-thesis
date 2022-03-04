@@ -1357,7 +1357,8 @@ export default {
           totalCost: this.calculatedTotalCostBattery,
           costPerUnit: this.calculatedCostPerMaterialBattery,
           demandassessment: this.demandassessmentBattery,
-          demassessmentfixcost: this.demassessmentfixcost
+          demassessmentfixcost: this.demassessmentfixcost,
+          Purchaser: this.getPurchaserBattery
         });
         await this.saveVendorEngine({
           amount: this.amount,
@@ -1365,7 +1366,8 @@ export default {
           totalCost: this.calculatedTotalCostEngine,
           costPerUnit: this.calculatedCostPerMaterialEngine,
           demandassessment: this.demandassessmentEngine,
-          demassessmentfixcost: this.demassessmentfixcost
+          demassessmentfixcost: this.demassessmentfixcost,
+          Purchaser: this.getPurchaserEngine
         });
         await this.saveVendorFrame({
           amount: this.amount,
@@ -1373,7 +1375,8 @@ export default {
           totalCost: this.calculatedTotalCostFrame,
           costPerUnit: this.calculatedCostPerMaterialFrame,
           demandassessment: this.demandassessmentFrame,
-          demassessmentfixcost: this.demassessmentfixcost
+          demassessmentfixcost: this.demassessmentfixcost,
+          Purchaser: this.getPurchaserFrame
         });
         await this.saveVendorSensors({
           amount: this.amount,
@@ -1381,7 +1384,8 @@ export default {
           totalCost: this.calculatedTotalCostSensors,
           costPerUnit: this.calculatedCostPerMaterialSensors,
           demandassessment: this.demandassessmentSensors,
-          demassessmentfixcost: this.demassessmentfixcost
+          demassessmentfixcost: this.demassessmentfixcost,
+          Purchaser: this.getPurchaserSensors
         });
       }
     },

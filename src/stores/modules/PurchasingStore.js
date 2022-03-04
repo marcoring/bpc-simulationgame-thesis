@@ -400,7 +400,8 @@ const actions = {
             Totalcost:data.totalCost,
             Costperunit:data.costPerUnit,
             Demandassessment:data.demandassessmentBattery,
-            Demassessmentfixcost:String(data.demassessmentfixcost)
+            Demassessmentfixcost:String(data.demassessmentfixcost),
+            Purchaser:data.Purchaser
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -453,7 +454,8 @@ const actions = {
             Totalcost:data.totalCost,
             Costperunit:data.costPerUnit,
             Demandassessment:data.demandassessmentEngine,
-            Demassessmentfixcost:String(data.demassessmentfixcost)
+            Demassessmentfixcost:String(data.demassessmentfixcost),
+            Purchaser:data.Purchaser
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -506,7 +508,8 @@ const actions = {
             Totalcost:data.totalCost,
             Costperunit:data.costPerUnit,
             Demandassessment:data.demandassessmentFrame,
-            Demassessmentfixcost:String(data.demassessmentfixcost)
+            Demassessmentfixcost:String(data.demassessmentfixcost),
+            Purchaser:data.Purchaser
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);
@@ -559,7 +562,8 @@ const actions = {
             Totalcost:data.totalCost,
             Costperunit:data.costPerUnit,
             Demandassessment:data.demandassessmentSensors,
-            Demassessmentfixcost:String(data.demassessmentfixcost)
+            Demassessmentfixcost:String(data.demassessmentfixcost),
+            Purchaser:data.Purchaser
       });
       // this function return backslashes from JSON String
       const payload_without_bs = JSON.parse(payload);

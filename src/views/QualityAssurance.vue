@@ -28,11 +28,9 @@
           </v-card-title>
           <v-card-text>
              <v-text-field
-            label="Internal/External: Yearly Costs (EUR):"
-            :value="getLastVendorCosts"
+            value="External QA:"
             disabled
             />
-            <!--
             <v-text-field
             label="Vendor ID:"
             :value="getLastVendorid"
@@ -43,7 +41,15 @@
             :value="getLastEmployeesatisfaction"
             disabled
             />
-            -->
+            <v-text-field
+            value="Internal QA:"
+            disabled
+            />
+             <v-text-field
+            label="Yearly Costs (EUR):"
+            :value="getLastVendorCosts"
+            disabled
+            />
             <v-text-field
             label="Quality (%):"
             :value="getLastQuality"
@@ -309,7 +315,7 @@
           />
           <v-text-field
             label="Internal Quality (%):"
-            v-model="returnInternalQuality"
+            v-model="amountInternalQuality"
             filled
             type="number"
             min="0"
@@ -461,7 +467,10 @@ export default {
     },
     getLastVendorCosts: function() {
       console.log('this.lastVendor', this.lastVendor);
-      return this.lastVendor != null ? this.lastVendor.Costs : 'No Data'
+      return this.lastVendor != null ? (this.lastVendor.Numberofemployees * 40433) : 'No Data'
+    },
+    getLastEmployeesatisfaction: function() {
+      return this.lastVendor != null ? this.lastVendor.Employeesatisfaction : 'No Data'
     },
     getLastRegionalityfactor: function() {
       return this.lastVendor != null ? this.lastVendor.Regionalityfactor : 'No Data'
@@ -476,7 +485,7 @@ export default {
       return this.lastVendor != null ? this.lastVendor.Numberofemployees : 'No Data'
     },
     getLastCapacity: function() {
-      return this.lastVendor != null ? this.lastVendor.Capacity : 'No Data'
+      return this.lastVendor != null ? (this.lastVendor.Numberofemployees * 50000) : 'No Data'
     },
     getLastDigitaltwinquality: function() {
       return this.lastVendor != null ? this.lastVendor.Digitaltwinquality : 'No Data'
@@ -506,7 +515,7 @@ export default {
       return this.vendor != null ? this.vendor.Vendorname : "";
     },
     getLastVendorid() {
-      return this.lastVendor != null ? this.lastVendor.Vendorid : "";
+      return this.lastVendor != null ? this.lastVendor.Vendorid : "No Data";
     },
     calculatedCosts: function() {
       return this.amountNumberofemployees >= 0 ? (this.amountNumberofemployees * 40433) : 0;
