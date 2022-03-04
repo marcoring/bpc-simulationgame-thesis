@@ -29,73 +29,122 @@
           <v-card-text>
              <v-text-field
             label="Internal/External: Yearly Costs (EUR):"
-            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+            :value="getLastVendorCosts"
+            disabled
+            />
+            <!--
+            <v-text-field
+            label="Vendor ID:"
+            :value="getLastVendorid"
             disabled
             />
             <v-text-field
-            label="Regionality Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            label="Employeesatisfaction (%):"
+            :value="getLastEmployeesatisfaction"
             disabled
             />
-            <v-text-field
-            label="Sustainability Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
-            disabled
-            />
+            -->
             <v-text-field
             label="Quality (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            :value="getLastQuality"
             disabled
             />
             <v-text-field
             label="Number of Employees:"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            :value="getLastNumberofemployees"
             disabled
             />
              <v-text-field
             label="QA Capacity (PC):"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            :value="getLastCapacity"
             disabled
-            />
+            />             
+            <v-text-field
+            label="Digital Twin Quality (%):"
+            :value="getLastDigitaltwinquality"
+            disabled
+            >
           </v-card-text>
           </v-card>
         </v-col>
 
-        <v-col>
+        <v-col v-if="internalQA === true && externalQA === false">
           <!-- Current Round Status -->
           <v-card style="height:100%">
             <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
               Current Round
             </v-card-title>
             <v-card-text>
-             <v-text-field
-            label="Internal/External: Yearly Costs (EUR):"
-            :value="lastVendor != null ? lastVendor.Vendorname : 'No Data'"
+            <v-text-field
+            label="Quality Assurance:"
+            value="INTERNAL QA"
             disabled
             />
             <v-text-field
-            label="Regionality Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
-            disabled
-            />
-                        <v-text-field
-            label="Sustainability Factor (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
-            disabled
-            />
-            <v-text-field
-            label="Quality (%):"
-            :value="lastCalculatedRegionalityfactor != null ? lastCalculatedRegionalityfactor : 'No Data'"
+            label="Internal Quality (%):"
+            v-model="amountInternalQuality"
             disabled
             />
             <v-text-field
             label="Number of Employees:"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            v-model="amountNumberofemployees"
+            disabled
+            />
+             <v-text-field
+            label="Digital Twin:"
+            v-model="selectedDigitalTwin"
+            disabled
+            />
+            <v-text-field
+            v-if="selectedDigitalTwin"
+            label="Digital Twin Cost:"
+            :value="25000.00"
+            type="number"
+            disabled
+            />
+            <v-text-field
+            label="Digital Twin Quality (%):"
+            v-model="amountDigitalTwinQuality"
+            disabled
+            />
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col v-if="externalQA === true && internalQA === false">
+          <!-- Current Round Status -->
+          <v-card style="height:100%">
+            <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+              Current Round
+            </v-card-title>
+            <v-card-text>
+            <v-text-field
+            label="Quality Assurance:"
+            value="EXTERNAL QA"
+            disabled
+            />
+             <v-text-field
+            label="External: Yearly Costs (EUR):"
+            :value="getVendor"
+            disabled
+            />
+            <v-text-field
+            label="Regionality Factor (%):"
+            :value="getRegionalityfactor"
+            disabled
+            />
+            <v-text-field
+            label="Sustainability Factor (%):"
+            :value="getSustainabilityfactor"
+            disabled
+            />
+            <v-text-field
+            label="Quality (%):"
+            :value="getQuality"
             disabled
             />
              <v-text-field
             label="QA Capacity (PC):"
-            :value="lastCalculatedSustainabilityfactor != null ? lastCalculatedSustainabilityfactor : 'No Data'"
+            :value="getCapacity"
             disabled
             />
             </v-card-text>
@@ -149,8 +198,8 @@
       <v-container fluid>
       <v-row align="center" justify="center">
       <v-radio-group row>
-        <v-radio id="externalQA" label="Internal QA" value="radio-1" v-on:click="toggle"></v-radio>
-        <v-radio id="internalQA" label="External QA" value="radio-2" v-on:click="toggle"></v-radio>
+        <v-radio id="externalQA" label="Internal QA" value="radio-1" v-on:click="toggleInternal"></v-radio>
+        <v-radio id="internalQA" label="External QA" value="radio-2" v-on:click="toggleExternal"></v-radio>
       </v-radio-group>
       </v-row>
       </v-container>
@@ -161,7 +210,7 @@
       <p><b>External QA</b></p>
       </v-row>
       <v-container>
-      <v-row v-if="externalQA == true">
+      <v-row v-if="externalQA == true && internalQA == false">
         <v-col>
           <v-select
             :value="vendor"
@@ -201,13 +250,13 @@
           />
           <v-text-field
             label="QA Capacity (PC):"
-            :value="calculatedCapacity"
+            :value="calculatedCapacityExtern"
             filled
             disabled
           />
           <v-text-field
             label="Cost Per Year (EUR):"
-            :value="calculatedCosts"
+            :value="calculatedCostsExtern"
             filled
             disabled
           />
@@ -219,7 +268,7 @@
       <v-row v-if="internalQA == true" align="start" justify="start">
       <p><b>Internal QA</b></p>
       </v-row>
-      <v-container v-if="internalQA == true">
+      <v-container v-if="internalQA == true && externalQA == false">
         <v-col>
           <v-text-field
             label="Internal QA Company:"
@@ -230,6 +279,8 @@
           <v-text-field
             label="Number of Employees:"
             type="number"
+            v-model="amountNumberofemployees"
+            value="returnNumEployees"
             filled
             min="0"
             max="1000000"
@@ -258,6 +309,7 @@
           />
           <v-text-field
             label="Internal Quality (%):"
+            v-model="returnInternalQuality"
             filled
             type="number"
             min="0"
@@ -272,7 +324,7 @@
           />
           <v-text-field
             label="QA Capacity (PC):"
-            :value="calculatedCosts"
+            :value="calculatedCapacity"
             filled
             disabled
           />
@@ -294,6 +346,8 @@
           <v-text-field
             v-if="selectedDigitalTwin" 
             label="Digital Twin Quality (%):"
+            v-model="amountDigitalTwinQuality"
+            :value="returnDigitalTwinQuality"
             filled
             type="number"
             min="0"
@@ -366,7 +420,10 @@ export default {
   components: { ConfirmationDialog, ErrorChagesDialog},
   data() {
     return {
-      selectedDigitalTwin:false,
+      selectedDigitalTwin: false,
+      amountInternalQuality: 0,
+      amountDigitalTwinQuality: 0,
+      amountNumberofemployees: 0,
       internalQA: false,
       externalQA: true,
       selected: null,
@@ -381,7 +438,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('qualityAssurance', ['vendors', 'vendor']),
+    ...mapGetters('qualityAssurance', ['vendors', 'vendor', 'lastVendor']),
     player() {
       return this.$refs.youtube.player
     },       
@@ -393,13 +450,74 @@ export default {
         }
       }) : []
     },
+    returnDigitalTwinQuality: function() {
+      return this.amountDigitalTwinQuality >= 0 ? this.amountDigitalTwinQuality : 0
+    },
+    returnInternalQuality: function() {
+      return this.amountInternalQuality >= 0 ? this.amountInternalQuality : 0
+    },
+    returnNumEployees: function() {
+      return this.amountNumberofemployees >= 0 ? this.amountNumberofemployees : 0
+    },
+    getLastVendorCosts: function() {
+      console.log('this.lastVendor', this.lastVendor);
+      return this.lastVendor != null ? this.lastVendor.Costs : 'No Data'
+    },
+    getLastRegionalityfactor: function() {
+      return this.lastVendor != null ? this.lastVendor.Regionalityfactor : 'No Data'
+    },
+    getLastSustainabilityfactor: function() {
+      return this.lastVendor != null ? this.lastVendor.Sustainabilityfactor : 'No Data'
+    },
+    getLastQuality: function() {
+      return this.lastVendor != null ? this.lastVendor.Quality : 'No Data'
+    },
+    getLastNumberofemployees() {
+      return this.lastVendor != null ? this.lastVendor.Numberofemployees : 'No Data'
+    },
+    getLastCapacity: function() {
+      return this.lastVendor != null ? this.lastVendor.Capacity : 'No Data'
+    },
+    getLastDigitaltwinquality: function() {
+      return this.lastVendor != null ? this.lastVendor.Digitaltwinquality : 'No Data'
+    },
+    getVendor: function() {
+      return this.vendor != null ? this.vendor.Vendorname : 'No Data'
+    },
+    getRegionalityfactor: function() {
+      return this.vendor != null ? this.vendor.Regionalityfactor : 'No Data'
+    },
+    getSustainabilityfactor: function() {
+      return this.vendor != null ? this.vendor.Sustainabilityfactor : 'No Data'
+    },
+    getQuality: function() {
+      return this.vendor != null ? this.vendor.Quality : 'No Data'
+    },
+    getNumberofemployees() {
+      return this.vendor != null ? this.vendor.Numberofemployees : 'No Data'
+    },
+    getCapacity: function() {
+      return this.vendor != null ? this.vendor.Capacity : 'No Data'
+    },
+    getDigitaltwinquality: function() {
+      return this.vendor != null ? this.vendor.Digitaltwinquality : 'No Data'
+    },
     getName() {
       return this.vendor != null ? this.vendor.Vendorname : "";
     },
+    getLastVendorid() {
+      return this.lastVendor != null ? this.lastVendor.Vendorid : "";
+    },
     calculatedCosts: function() {
-      return this.vendor != null ? this.vendor.Costs : "";
+      return this.amountNumberofemployees >= 0 ? (this.amountNumberofemployees * 40433) : 0;
     },
     calculatedCapacity: function() {
+      return this.amountNumberofemployees >= 0 ? (this.amountNumberofemployees * 50000) : 0;
+    },
+    calculatedCostsExtern: function() {
+      return this.vendor != null ? this.vendor.Costs : "";
+    },
+    calculatedCapacityExtern: function() {
       return this.vendor != null ? this.vendor.Capacity : "";
     },
     calculatedQuality: function(){
@@ -415,11 +533,16 @@ export default {
   methods: {
     ...mapActions('qualityAssurance', ['updateVendors']),
     ...mapActions('qualityAssurance', ['getLastVendor']),
-    ...mapActions('qualityAssurance', ['saveVendor']),
+    ...mapActions('qualityAssurance', ['saveVendorIntern']),
+    ...mapActions('qualityAssurance', ['saveVendorExtern']),
     ...mapMutations('qualityAssurance', ['updateVendor']),
-    toggle() {
-      this.internalQA = !this.internalQA;
-      this.externalQA = !this.externalQA;
+    toggleInternal() {
+      this.internalQA = true;
+      this.externalQA = false;
+    },
+    toggleExternal() {
+      this.internalQA = false;
+      this.externalQA = true;
     },
     playVideo() {
       this.player.playVideo()
@@ -433,11 +556,25 @@ export default {
     toggleShowError() {
       this.showError = !this.showError;
     },
-    toggleDialog() {
-      if(this.selectedQAType === "") {
+    async toggleDialog() {
+      if(this.internalQA == true && this.externalQA == false) {
+        if(this.amountInternalQuality == 0 && this.amountNumberofemployees == 0) {
         this.toggleShowError();
       } else {
         this.confirmChangesDialog = !this.confirmChangesDialog;
+        await this.saveVendorIntern({
+            Quality:this.returnInternalQuality,
+            Digitaltwinquality:this.returnDigitalTwinQuality,
+            Numberofemployees:this.returnNumEployees
+        });
+      }
+      } else if (this.externalQA == true && this.internalQA == false) {
+        if(this.vendor === null) {
+        this.toggleShowError();
+      } else {
+        this.confirmChangesDialog = !this.confirmChangesDialog;
+        await this.saveVendorExtern();
+      }
       }
     },
     updateProgress() {
@@ -469,74 +606,9 @@ export default {
        
     }
   },
-  props: {
-    prevInternExtern: {
-      type: String,
-      default: "",
-    },
-    prevYearCost: {
-      type: Number,
-      default: 0.0,
-    },
-    prevQual: {
-      type: Number,
-      default: 0.0,
-    },
-    prevNumOfEmpl: {
-      type: Number,
-      default: 0,
-    },
-    prevQACap: {
-      type: Number,
-      default: 0.0,
-    },
-    curInternExtern: {
-      type: String,
-      default: "",
-    },
-    curYearCost: {
-      type: Number,
-      default: 0.0,
-    },
-    curQual: {
-      type: Number,
-      default: 0.0,
-    },
-    curNumOfEmpl: {
-      type: Number,
-      default: 0,
-    },
-    curQACap: {
-      type: Number,
-      default: 0.0,
-    },
-    budget: {
-      type: Number,
-      default: 0.0,
-    },
-    runningCosts: {
-      type: Number,
-      default: 0.0,
-    },
-    avgProdCostBike: {
-      type: String,
-      default: "",
-    },
-    estimatedQual: {
-      type: Number,
-      default: 0.0,
-    },
-    maxProdCapac: {
-      type: String,
-      default: "",
-    },
-    overDemand: {
-      type: Number,
-      default: 0.0,
-    },
-  },
   async mounted() {
     await this.updateVendors();
+    await this.getLastVendor();
   },
 };
 </script>
