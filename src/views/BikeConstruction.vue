@@ -374,7 +374,7 @@ export default {
     };
   },
   computed: {
-     ...mapGetters('framePreparation', ['vendors', 'vendor', 'lastVendor']),
+     ...mapGetters('bikeConstruction', ['vendors', 'vendor', 'lastVendor']),
       vendorsSelect: function() {
       return this.vendors ? this.vendors.map(vendor => {
         if (vendor.Materialid == 'CON') {
@@ -383,6 +383,9 @@ export default {
           value: vendor
         }}
       }) : []
+    },
+     lastAssemblylineid() {
+      return this.lastVendor != null ? this.lastVendor.Assemblylineid : "No Data";
     },
     assemblyLineName() {
       return this.vendor != null ? this.vendor.Alname : '';
@@ -476,10 +479,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions('framePreparation', ['updateVendors']),
-    ...mapActions('framePreparation', ['getLastVendor']),
-    ...mapActions('framePreparation', ['saveVendor']),
-    ...mapMutations('framePreparation', ['updateVendor']),
+    ...mapActions('bikeConstruction', ['updateVendors']),
+    ...mapActions('bikeConstruction', ['getLastVendor']),
+    ...mapActions('bikeConstruction', ['saveVendor']),
+    ...mapMutations('bikeConstruction', ['updateVendor']),
    toggleShowError() {
       this.showError = !this.showError;
     },

@@ -454,6 +454,9 @@ export default {
       return this.vendor != null ? this.vendor.Acqusitioncost : '';
       }
     },
+     lastAssemblylineid() {
+      return this.lastVendor != null ? this.lastVendor.Assemblylineid : "No Data";
+    },
     getAlnumber: function() {
       return this.amount.assemblyLines != null ? this.amount.assemblyLines.val : "No Data";
     },

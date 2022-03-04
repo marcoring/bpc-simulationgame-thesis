@@ -340,7 +340,7 @@ export default {
   components: { ConfirmationDialog, ErrorChagesDialog },
   name: "BatteryPreparation",
     computed: {
-    ...mapGetters('framePreparation', ['vendors', 'vendor', 'lastVendor']),
+    ...mapGetters('batteryPreparation', ['vendors', 'vendor', 'lastVendor']),
     vendorsSelect: function() {
       return this.vendors ? this.vendors.map(vendor => {
         if (vendor.Materialid == 'BAT') {
@@ -349,6 +349,9 @@ export default {
           value: vendor
         }}
       }) : []
+    },
+    lastAssemblylineid() {
+      return this.lastVendor != null ? this.lastVendor.Assemblylineid : "No Data";
     },
     assemblyLineName() {
       return this.vendor != null ? this.vendor.Alname : '';
@@ -405,7 +408,7 @@ export default {
       return this.lastVendor != null ? this.lastVendor.Safety : "No Data";
     },
     getProductionline: function() {
-      return this.vendor != null ? this.vendor.Alname : '';
+      return this.vendor != null ? this.vendor.Assemblylineid : '';
     },
     getProductcustomization: function() {
       return this.selectedCustomization != null ? this.selectedCustomization : "No Data";
@@ -458,10 +461,10 @@ export default {
     };
   },
   methods: {
-    ...mapActions('framePreparation', ['updateVendors']),
-    ...mapActions('framePreparation', ['getLastVendor']),
-    ...mapActions('framePreparation', ['saveVendor']),
-    ...mapMutations('framePreparation', ['updateVendor']),
+    ...mapActions('batteryPreparation', ['updateVendors']),
+    ...mapActions('batteryPreparation', ['getLastVendor']),
+    ...mapActions('batteryPreparation', ['saveVendor']),
+    ...mapMutations('batteryPreparation', ['updateVendor']),
    toggleShowError() {
       this.showError = !this.showError;
     },

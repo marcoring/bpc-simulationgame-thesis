@@ -396,7 +396,7 @@ export default {
     };
   },
     computed: {
-    ...mapGetters('framePreparation', ['vendors', 'vendor', 'lastVendor']),
+    ...mapGetters('sensorsPreparation', ['vendors', 'vendor', 'lastVendor']),
       vendorsSelect: function() {
       return this.vendors ? this.vendors.map(vendor => {
         if (vendor.Materialid == 'SEN') {
@@ -503,12 +503,15 @@ export default {
     getEnvironmentalFactor() {
       return this.vendor != null ? this.vendor.Environmentalfactor : 'No Data';
     },
+     lastAssemblylineid() {
+      return this.lastVendor != null ? this.lastVendor.Assemblylineid : "No Data";
+    },
   },
   methods: {
-    ...mapActions('framePreparation', ['updateVendors']),
-    ...mapActions('framePreparation', ['getLastVendor']),
-    ...mapActions('framePreparation', ['saveVendor']),
-    ...mapMutations('framePreparation', ['updateVendor']),
+    ...mapActions('sensorsPreparation', ['updateVendors']),
+    ...mapActions('sensorsPreparation', ['getLastVendor']),
+    ...mapActions('sensorsPreparation', ['saveVendor']),
+    ...mapMutations('sensorsPreparation', ['updateVendor']),
     toggleShowError() {
       this.showError = !this.showError;
     },

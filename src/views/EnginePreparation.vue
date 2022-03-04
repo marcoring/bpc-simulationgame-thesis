@@ -385,7 +385,7 @@ export default {
     };
   },
   computed: {
-  ...mapGetters('framePreparation', ['vendors', 'vendor', 'lastVendor']),
+  ...mapGetters('enginePreparation', ['vendors', 'vendor', 'lastVendor']),
   vendorsSelect: function() {
     return this.vendors ? this.vendors.map(vendor => {
       if (vendor.Materialid == 'ENG') {
@@ -468,6 +468,9 @@ export default {
       return this.vendor != null ? this.vendor.Acqusitioncost : '';
       }
     },
+     lastAssemblylineid() {
+      return this.lastVendor != null ? this.lastVendor.Assemblylineid : "No Data";
+    },
     getAlnumber: function() {
       return this.amount.assemblyLines != null ? this.amount.assemblyLines.val : "No Data";
     },
@@ -497,10 +500,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions('framePreparation', ['updateVendors']),
-    ...mapActions('framePreparation', ['getLastVendor']),
-    ...mapActions('framePreparation', ['saveVendor']),
-    ...mapMutations('framePreparation', ['updateVendor']),
+    ...mapActions('enginePreparation', ['updateVendors']),
+    ...mapActions('enginePreparation', ['getLastVendor']),
+    ...mapActions('enginePreparation', ['saveVendor']),
+    ...mapMutations('enginePreparation', ['updateVendor']),
      toggleShowError() {
       this.showError = !this.showError;
     },
