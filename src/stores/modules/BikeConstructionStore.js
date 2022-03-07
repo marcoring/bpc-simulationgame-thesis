@@ -93,7 +93,7 @@ const state = {
             Guid:String(rootGetters.gameData.Guid),    
             Roundid:rootGetters.gameData.Roundid,  
             Userid:String(rootGetters.gameData.Userid),
-            Materialid:"BAT",
+            Materialid:"CON",
             Assemblylineid:String(getters.vendor.Assemblylineid),
             Totalacquisitioncost:String(getters.vendor.Acqusitioncost),
             Prodcapacity:String(getters.vendor.Maxcapacity),
