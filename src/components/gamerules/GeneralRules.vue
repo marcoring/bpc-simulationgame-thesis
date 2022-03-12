@@ -16,7 +16,7 @@
                         Please read these rules <b>carefully</b> and <b>thoroughly</b>!
                     </div>
                     <div class="text-passage text-counter">
-                        The game consists of <b>6 rounds</b>, during which the players make various decisions in up to <b>10 process steps</b>: 
+                        The game consists of <b>4 rounds</b>, during which the players make various decisions in up to <b>10 process steps</b>: 
                         <game-steps :temaColor="teamColor"></game-steps>
                     </div>
                 </div>
