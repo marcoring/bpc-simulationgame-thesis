@@ -655,7 +655,7 @@ export default {
       this.toggleDialog();
     },
     toNextStep() {
-      if (this.$store.state.round >= 3) {
+      if (this.$store.state.round >= 1) {
         this.$router.push({ path: "/batteryPreparation" });
       }
     },
