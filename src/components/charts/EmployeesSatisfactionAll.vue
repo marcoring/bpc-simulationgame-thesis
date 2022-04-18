@@ -28,7 +28,7 @@ export default {
             backgroundColor: "transparent",
             borderColor: "red",
             pointBackgroundColor: "red",
-          }
+          },
         ],
       },
       {
@@ -39,14 +39,15 @@ export default {
           text: "",
         },
         scales: {
-            yAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Score',
-                    
-                }
-            }]
-        } 
+          yAxes: [
+            {
+              scaleLabel: {
+                display: true,
+                labelString: "Score",
+              },
+            },
+          ],
+        },
       }
     );
   },

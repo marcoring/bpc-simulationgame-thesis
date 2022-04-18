@@ -1,9 +1,10 @@
 <template>
   <v-card rounded id="teams-leaderboard">
-    <v-card-title 
-      :style="'background-color:' + this.$store.state.color +'!important'" 
+    <v-card-title
+      :style="'background-color:' + this.$store.state.color + '!important'"
       style="color: white"
-    >Teams Leaderboard</v-card-title>
+      >Teams Leaderboard</v-card-title
+    >
     <v-data-table
       :headers="leaderboardHeaders"
       :items="leaderboardItems"
@@ -29,7 +30,7 @@ export default {
           divider: true,
           value: "position",
         },
-        { text: "Team Name", value: "teamName"},
+        { text: "Team Name", value: "teamName" },
         { text: "Team Color", value: "teamColor" },
         { text: "Budget (EUR)", value: "budget" },
         { text: "Bikes Sold", value: "bikesSold" },

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <menu-component 
+      <menu-component
         v-if="currentRouteName !== 'LandingPage' && this.showMenu"
         :calculatedProgressElements="calculatedProgressElements"
         @showTodo="toggleShowTodo"
@@ -12,10 +12,10 @@
         @endRound="toggleEndRoundsModal"
         @togglePanicButton="togglePanicButton"
       ></menu-component>
-      
+
       <!-- Header -->
-      <v-row 
-        v-if="currentRouteName !== 'LandingPage'" 
+      <v-row
+        v-if="currentRouteName !== 'LandingPage'"
         class="pa-3 mx-3 text-left justify-space-between"
         ref="header"
       >
@@ -24,10 +24,11 @@
           <h2><b>Team Name: </b>{{ teamName }}</h2>
           <h2><b>Round: </b>{{ this.$store.state.round }}</h2>
           <h2
-            :style="'background-color:' + this.$store.state.color + '!important'"
+            :style="
+              'background-color:' + this.$store.state.color + '!important'
+            "
             style="color: white"
-          >
-          </h2>
+          ></h2>
         </v-col>
 
         <v-col class="d-flex justify-center align-center">
@@ -53,20 +54,26 @@
           </v-btn>
 
           <!-- Button (End-Round: for Dashboard-view and Go-Back for other) -->
-          <end-round-dialog 
-            v-if="showEndRoundModal" 
+          <end-round-dialog
+            v-if="showEndRoundModal"
             @closeEndRoundModal="toggleEndRoundsModal"
-            @endRound="endRound(); toggleEndRoundsModal();"
+            @endRound="
+              endRound();
+              toggleEndRoundsModal();
+            "
           >
           </end-round-dialog>
           <!-- Button (End-Round: for Dashboard-view and Go-Back for other) -->
-          <v-btn 
-            v-if="currentRouteName === 'Dashboard'" 
-            :color="this.$store.state.color" 
+          <v-btn
+            v-if="currentRouteName === 'Dashboard'"
+            :color="this.$store.state.color"
             :disabled="!this.showMenu"
-            @click="toggleEndRoundsModal" 
-            rounded dark link>
-              <b>End Round</b>
+            @click="toggleEndRoundsModal"
+            rounded
+            dark
+            link
+          >
+            <b>End Round</b>
           </v-btn>
         </v-col>
       </v-row>
@@ -83,38 +90,56 @@
         />
       </v-app>
 
-      <general-rules 
-        v-if="showGeneralRules" 
+      <general-rules
+        v-if="showGeneralRules"
         @closeRules="toggleGeneralRules"
         @showRoundRules="toggleRoundRules"
       ></general-rules>
-      <easter-egg-dialog v-if="secretDialog" @closeEasterEgg="toggleSecretDialog" ></easter-egg-dialog>
-      <round-rules-dialog 
-        v-if="showRoundRules" 
+      <easter-egg-dialog
+        v-if="secretDialog"
+        @closeEasterEgg="toggleSecretDialog"
+      ></easter-egg-dialog>
+      <round-rules-dialog
+        v-if="showRoundRules"
         @closeRules="toggleRoundRules"
         :generalRules="false"
         :headerImage="false"
       ></round-rules-dialog>
-      <todo-dialog v-if="showTodo" :tasksList="calculatedProgressElements" @closeTodo="toggleShowTodo"></todo-dialog>
-      <panic-button v-if="showPanicButton" @togglePanicButton="togglePanicButton"></panic-button>
+      <todo-dialog
+        v-if="showTodo"
+        :tasksList="calculatedProgressElements"
+        @closeTodo="toggleShowTodo"
+      ></todo-dialog>
+      <panic-button
+        v-if="showPanicButton"
+        @togglePanicButton="togglePanicButton"
+      ></panic-button>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import MenuComponent from './components/ui/MenuComponent.vue';
-import EasterEggDialog from './dialogs/EasterEggDialog.vue';
-import EndRoundDialog from './dialogs/EndRoundDialog.vue';
-import GeneralRules from './components/gamerules/GeneralRules.vue';
-import RoundRulesDialog from './components/gamerules/RoundRulesDialog.vue';
-import TodoDialog from './dialogs/TodoDialog.vue';
-import PanicButton from './components/PanicButton/PanicButton.vue';
-import axios from 'axios';
-import { mapActions, mapMutations } from 'vuex';
+import MenuComponent from "./components/ui/MenuComponent.vue";
+import EasterEggDialog from "./dialogs/EasterEggDialog.vue";
+import EndRoundDialog from "./dialogs/EndRoundDialog.vue";
+import GeneralRules from "./components/gamerules/GeneralRules.vue";
+import RoundRulesDialog from "./components/gamerules/RoundRulesDialog.vue";
+import TodoDialog from "./dialogs/TodoDialog.vue";
+import PanicButton from "./components/PanicButton/PanicButton.vue";
+import axios from "axios";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
   name: "App",
-  components: { GeneralRules, EasterEggDialog, EndRoundDialog, MenuComponent, RoundRulesDialog, TodoDialog, PanicButton },
+  components: {
+    GeneralRules,
+    EasterEggDialog,
+    EndRoundDialog,
+    MenuComponent,
+    RoundRulesDialog,
+    TodoDialog,
+    PanicButton,
+  },
   data() {
     return {
       info: null,
@@ -234,12 +259,8 @@ export default {
           "Sales process: Drone-based delivery to the customers can be chosen additionally.",
           "Application development and maintenance: One can choose an appropriate outsourcing company for application development.",
         ],
-        round5Ruless: [
-          "GAME OVER",
-        ],
-        round5Keywords: [
-          "May the Force be with you!",
-        ],
+        round5Ruless: ["GAME OVER"],
+        round5Keywords: ["May the Force be with you!"],
       },
     };
   },
@@ -267,20 +288,19 @@ export default {
       this.showGeneralRules = !this.showGeneralRules;
     },
     updateProgress(key, newValue) {
-      this.progressElements.find(
-        (element) => element.id === key
-      ).value = newValue;
+      this.progressElements.find((element) => element.id === key).value =
+        newValue;
 
       const nextElement = this.progressElements.find(
-        (element) => 
-          element.value !== 100 && 
+        (element) =>
+          element.value !== 100 &&
           element.requiredRound <= this.$store.state.round
       );
 
-      if(nextElement) {
+      if (nextElement) {
         this.$store.state.nextStep = nextElement.id;
       } else {
-        this.$store.state.nextStep = '';
+        this.$store.state.nextStep = "";
       }
     },
     toggleSecretDialog() {
@@ -295,12 +315,11 @@ export default {
       this.progressElements.forEach((element) => {
         element.value = 5;
       });
-      this.$store.state.nextStep = 'purchasing'; 
+      this.$store.state.nextStep = "purchasing";
       this.toggleRoundRules();
       this.$store.state.roundRulesRead = false;
     },
-    newRoundRules() {
-    },
+    newRoundRules() {},
     endRound() {
       /*
         Future Work (TODO):
@@ -324,7 +343,7 @@ export default {
     toggleMenuVisability() {
       this.showMenu = !this.showMenu;
 
-       if(this.showMenu) {
+      if (this.showMenu) {
         this.$refs["header"].style.opacity = 1;
       } else {
         this.$refs["header"].style.opacity = 0.3;
@@ -332,11 +351,11 @@ export default {
     },
     togglePanicButton() {
       this.showPanicButton = !this.showPanicButton;
-    }
+    },
   },
   computed: {
     showEndRoundButton() {
-      return this.currentRouteName === 'Dashboard';
+      return this.currentRouteName === "Dashboard";
     },
     calculatedProgressElements() {
       return this.progressElements.filter(
@@ -385,20 +404,26 @@ export default {
   created() {
     // Navigate to main path when app is started
     if (this.$route.path !== "/") {
-      // this.$router.push({ path: "/dashboard" });  
-      this.$router.push({ path: this.$route.path });    
+      // this.$router.push({ path: "/dashboard" });
+      this.$router.push({ path: this.$route.path });
     }
   },
-  async mounted() {    
+  async mounted() {
     this.newRoundRules();
     await this.updateGameData();
     this.updateRound(this.$store.state.gameData.Roundid);
-    console.log("App mounted", this.$store.state.gameData.Roundid, this.$store.state.round);
-    axios.get(
-      "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/$metadata"
-    ).then(response => console.log(response));
+    console.log(
+      "App mounted",
+      this.$store.state.gameData.Roundid,
+      this.$store.state.round
+    );
+    axios
+      .get(
+        "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/$metadata"
+      )
+      .then((response) => console.log(response));
     //.then((response) => (this.info = response));
-    },
+  },
 };
 </script>
 
@@ -412,7 +437,7 @@ export default {
   margin-top: 60px;
 }
 
-.v-application--wrap{
+.v-application--wrap {
   min-height: 50vh !important;
 }
 </style>

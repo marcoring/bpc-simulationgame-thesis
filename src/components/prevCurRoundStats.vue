@@ -4,8 +4,13 @@
     <v-row>
       <v-col>
         <!-- Previous Round Status -->
-        <v-card style="height:100%">
-          <v-card-title :style="'background-color:' + this.$store.state.color +'!important'" style="color: white">
+        <v-card style="height: 100%">
+          <v-card-title
+            :style="
+              'background-color:' + this.$store.state.color + '!important'
+            "
+            style="color: white"
+          >
             Previous Round
           </v-card-title>
           <v-card-text>
@@ -23,8 +28,13 @@
 
       <v-col>
         <!-- Current Round Status -->
-        <v-card style="height:100%">
-          <v-card-title :style="'background-color:' + this.$store.state.color +'!important'" style="color: white">
+        <v-card style="height: 100%">
+          <v-card-title
+            :style="
+              'background-color:' + this.$store.state.color + '!important'
+            "
+            style="color: white"
+          >
             Current Round
           </v-card-title>
           <v-card-text>
@@ -43,7 +53,7 @@
       <v-col>
         <!-- Cost Accounting -->
         <cost-accounting-card
-          style="height:100%"
+          style="height: 100%"
           :budget="budget"
           :runningCosts="runningCosts"
           :avgProdCostBike="avgProdCostBike"

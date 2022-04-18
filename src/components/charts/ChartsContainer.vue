@@ -3,32 +3,41 @@
     <v-row class="pa-6 text-left">
       <v-col>
         <v-card>
-          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          >
             Overall Employee Satisfaction - Team Comparison
           </v-card-title>
           <employees-satisfaction-all />
         </v-card>
       </v-col>
-    </v-row>   
+    </v-row>
 
     <v-row class="pa-6 text-left">
       <v-col>
         <v-card>
-          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          >
             Your Employees Satisfaction - Each Step
           </v-card-title>
           <employees-satisfaction-steps />
         </v-card>
       </v-col>
-    </v-row>   
+    </v-row>
 
     <v-row class="pa-6 text-left">
       <v-col>
         <v-card>
-          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
-            Employees Satisfaction {{'- ' + selectedProcess}} 
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          >
+            Employees Satisfaction {{ "- " + selectedProcess }}
           </v-card-title>
-           <v-select
+          <v-select
             v-model="selectedProcess"
             :items="processes"
             :color="teamColor"
@@ -42,12 +51,15 @@
           <employees-satisfaction-details :data="chartData" />
         </v-card>
       </v-col>
-    </v-row>   
+    </v-row>
 
     <v-row class="pa-6 text-left">
       <v-col>
         <v-card>
-          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          >
             Budget distribution
           </v-card-title>
           <pie-chart />
@@ -55,20 +67,25 @@
       </v-col>
       <v-col>
         <v-card>
-          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          >
             Budget changes
           </v-card-title>
           <line-chart />
         </v-card>
       </v-col>
     </v-row>
-    <div id="overlay">
-    </div>
+    <div id="overlay"></div>
 
     <v-row class="pa-6 text-left">
       <v-col>
         <v-card>
-          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white">
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+          >
             Current round statistic
           </v-card-title>
           <bar-chart />
@@ -76,13 +93,17 @@
       </v-col>
       <v-col>
         <v-card>
-          <v-card-title :style="'background-color:' + teamColor +'!important'" style="color: white" ref="allRoundsCard">
+          <v-card-title
+            :style="'background-color:' + teamColor + '!important'"
+            style="color: white"
+            ref="allRoundsCard"
+          >
             All rounds comparison
           </v-card-title>
           <radar-chart />
         </v-card>
       </v-col>
-    </v-row>     
+    </v-row>
   </v-container>
 </template>
 
@@ -91,33 +112,33 @@ import lineChart from "./lineChart.vue";
 import pieChart from "./pieChart.vue";
 import barChart from "./barChart.vue";
 import radarChart from "./radarChart.vue";
-import EmployeesSatisfactionSteps from './EmployeesSatisfactionSteps.vue';
-import EmployeesSatisfactionAll from './EmployeesSatisfactionAll.vue';
-import EmployeesSatisfactionDetails from './EmployeesSatisfactionDetails.vue';
+import EmployeesSatisfactionSteps from "./EmployeesSatisfactionSteps.vue";
+import EmployeesSatisfactionAll from "./EmployeesSatisfactionAll.vue";
+import EmployeesSatisfactionDetails from "./EmployeesSatisfactionDetails.vue";
 
 export default {
   components: {
-    lineChart, 
-    pieChart, 
-    barChart, 
-    radarChart, 
-    EmployeesSatisfactionSteps, 
-    EmployeesSatisfactionAll, 
-    EmployeesSatisfactionDetails
+    lineChart,
+    pieChart,
+    barChart,
+    radarChart,
+    EmployeesSatisfactionSteps,
+    EmployeesSatisfactionAll,
+    EmployeesSatisfactionDetails,
   },
   data() {
     return {
       chartData: null,
       teamColor: this.$store.state.color,
-      selectedProcess: 'Battery Preparation',
+      selectedProcess: "Battery Preparation",
       processes: [
-        'Battery Preparation', 
-        'Frame Preparation', 
-        'Engine Preparation', 
-        'Sensor Preparation', 
-        'Bike Assembly', 
-        'Application & Development', 
-        'Logistic'
+        "Battery Preparation",
+        "Frame Preparation",
+        "Engine Preparation",
+        "Sensor Preparation",
+        "Bike Assembly",
+        "Application & Development",
+        "Logistic",
       ],
       set1: [
         {
@@ -147,7 +168,7 @@ export default {
           backgroundColor: "transparent",
           borderColor: "#e3a600",
           pointBackgroundColor: "#e3a600",
-        }
+        },
       ],
       set2: [
         {
@@ -177,7 +198,7 @@ export default {
           backgroundColor: "transparent",
           borderColor: "#e3a600",
           pointBackgroundColor: "#e3a600",
-        }
+        },
       ],
       set3: [
         {
@@ -207,7 +228,7 @@ export default {
           backgroundColor: "transparent",
           borderColor: "#e3a600",
           pointBackgroundColor: "#e3a600",
-        }
+        },
       ],
       set4: [
         {
@@ -226,7 +247,7 @@ export default {
         },
         {
           label: "Workload",
-          data: [88,99, 11, 12, 13, 14],
+          data: [88, 99, 11, 12, 13, 14],
           backgroundColor: "transparent",
           borderColor: "blue",
           pointBackgroundColor: "blue",
@@ -237,7 +258,7 @@ export default {
           backgroundColor: "transparent",
           borderColor: "#e3a600",
           pointBackgroundColor: "#e3a600",
-        }
+        },
       ],
       set5: [
         {
@@ -267,7 +288,7 @@ export default {
           backgroundColor: "transparent",
           borderColor: "#e3a600",
           pointBackgroundColor: "#e3a600",
-        }
+        },
       ],
       set6: [
         {
@@ -297,7 +318,7 @@ export default {
           backgroundColor: "transparent",
           borderColor: "#e3a600",
           pointBackgroundColor: "#e3a600",
-        }
+        },
       ],
       set7: [
         {
@@ -327,43 +348,43 @@ export default {
           backgroundColor: "transparent",
           borderColor: "#e3a600",
           pointBackgroundColor: "#e3a600",
-        }
-      ]
-    }
+        },
+      ],
+    };
   },
   watch: {
-    selectedProcess: function() {
-      switch(this.selectedProcess) {
-        case 'Battery Preparation':
+    selectedProcess: function () {
+      switch (this.selectedProcess) {
+        case "Battery Preparation":
           this.chartData = this.set1;
           break;
-        case 'Frame Preparation':
+        case "Frame Preparation":
           this.chartData = this.set2;
           break;
-        case 'Engine Preparation':
+        case "Engine Preparation":
           this.chartData = this.set3;
           break;
-        case 'Sensor Preparation':
+        case "Sensor Preparation":
           this.chartData = this.set4;
           break;
-        case 'Bike Assembly':
+        case "Bike Assembly":
           this.chartData = this.set5;
           break;
-        case 'Application & Development':
+        case "Application & Development":
           this.chartData = this.set6;
           break;
-        case 'Logistic':
+        case "Logistic":
           this.chartData = this.set7;
           break;
         default:
           this.chartData = this.set1;
       }
-    }
+    },
   },
   mounted() {
     this.chartData = this.set1;
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

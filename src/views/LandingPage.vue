@@ -20,7 +20,7 @@
                 required
                 solo
                 dense
-              >Tester test
+                >Tester test
               </v-text-field>
             </v-col>
           </v-row>

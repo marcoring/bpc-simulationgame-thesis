@@ -1,6 +1,11 @@
 <template>
   <v-container id="confirmation-dialog">
-    <v-dialog v-model="dialog" persistant width="30%" @click:outside="closeDialog">
+    <v-dialog
+      v-model="dialog"
+      persistant
+      width="30%"
+      @click:outside="closeDialog"
+    >
       <v-card>
         <v-card-text class="text-size">
           <br />
@@ -27,7 +32,7 @@ export default {
   data() {
     return {
       dialog: true,
-      teamColor: this.$store.state.color
+      teamColor: this.$store.state.color,
     };
   },
   methods: {
@@ -36,14 +41,13 @@ export default {
     },
     closeDialog() {
       this.$emit("closeDialog");
-    }
+    },
   },
 };
 </script>
 
-
 <style scoped>
 .text-size {
-   font-size: 14pt !important;
- }
+  font-size: 14pt !important;
+}
 </style>

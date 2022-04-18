@@ -1,10 +1,15 @@
 <template>
   <v-container id="cost-accounting-dialog">
-    <v-dialog v-model="dialog" persistant width="30%" @click:outside="closeDialog">
+    <v-dialog
+      v-model="dialog"
+      persistant
+      width="30%"
+      @click:outside="closeDialog"
+    >
       <v-card>
         <v-card-text class="text-size">
           <br />
-          <span class="text-size">{{itemDescription}}</span>
+          <span class="text-size">{{ itemDescription }}</span>
         </v-card-text>
         <v-divider />
         <v-card-actions>
@@ -21,23 +26,23 @@
 <script>
 export default {
   name: "cost-accounting-dialog",
-  props: ['itemDescription'],
+  props: ["itemDescription"],
   data() {
     return {
       dialog: true,
-      teamColor: this.$store.state.color
+      teamColor: this.$store.state.color,
     };
   },
   methods: {
     closeDialog() {
       this.$emit("closeDialog");
-    }
+    },
   },
 };
 </script>
 
 <style scoped>
 .text-size {
-    font-size: 14pt !important;
+  font-size: 14pt !important;
 }
 </style>
