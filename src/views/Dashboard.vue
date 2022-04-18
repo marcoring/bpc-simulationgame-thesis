@@ -346,8 +346,8 @@ export default {
 
     // updates values of Cost Accounting Card
     await this.updateGameData(),
-      // updates values of Inventory Card
-      await this.updateGameDataInventory();
+    // updates values of Inventory Card
+    await this.updateGameDataInventory();
   },
 };
 </script>

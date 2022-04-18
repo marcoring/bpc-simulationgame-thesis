@@ -151,7 +151,7 @@
                   </v-btn>
                 </template>
                 <span
-                  >Smart Logistics: Information System choosing the supplier
+                  >Smart Logistics: Information System automatically choosing the supplier
                   with the best price-quality.</span
                 ><br /><br />
                 <span

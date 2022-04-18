@@ -256,7 +256,7 @@
                 label="Battery: Amount (PC)"
                 :color="teamColor"
                 :min="1"
-                :max="100000"
+                :max="getSliderLength"
                 :thumb-color="teamColor"
                 :thumb-size="42"
                 thumb-label="always"
@@ -270,7 +270,7 @@
                     hide-details
                     single-line
                     :min="1"
-                    :max="100000"
+                    :max="getSliderLength"
                     type="number"
                     style="width: 80px"
                   />
@@ -445,7 +445,7 @@
                 label="Engine: Amount (PC)"
                 :color="teamColor"
                 :min="1"
-                :max="100000"
+                :max="getSliderLength"
                 :thumb-color="teamColor"
                 :thumb-size="42"
                 thumb-label="always"
@@ -459,7 +459,7 @@
                     hide-details
                     single-line
                     :min="1"
-                    :max="100000"
+                    :max="getSliderLength"
                     type="number"
                     style="width: 80px"
                   />
@@ -634,7 +634,7 @@
                 label="Frame: Amount (PC)"
                 :color="teamColor"
                 :min="1"
-                :max="100000"
+                :max="getSliderLength"
                 :thumb-color="teamColor"
                 :thumb-size="42"
                 thumb-label="always"
@@ -648,7 +648,7 @@
                     hide-details
                     single-line
                     :min="1"
-                    :max="100000"
+                    :max="getSliderLength"
                     type="number"
                     style="width: 80px"
                   />
@@ -820,7 +820,7 @@
                 label="Sensors: Amount (PC)"
                 :color="teamColor"
                 :min="1"
-                :max="100000"
+                :max="getSliderLengthSensors"
                 :thumb-color="teamColor"
                 :thumb-size="42"
                 thumb-label="always"
@@ -834,7 +834,7 @@
                     hide-details
                     single-line
                     :min="1"
-                    :max="100000"
+                    :max="getSliderLengthSensors"
                     type="number"
                     style="width: 80px"
                   />
@@ -963,6 +963,7 @@
 import ConfirmationDialog from "../dialogs/ConfirmationDialog.vue";
 import ErrorChagesDialog from "../dialogs/ErrorChagesDialog.vue";
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import index from "../stores/index";
 
 export default {
   components: { ConfirmationDialog, ErrorChagesDialog },
@@ -989,6 +990,14 @@ export default {
       "lastVendorSensors",
       "lastVendorSensorsM",
     ]),
+    ...mapGetters("lastGame", [ "gameData"]),
+    getSliderLength: function () {
+      console.log("GAMEDATA", index.getters.gameData.Demand);
+      return index != null ? (index.getters.gameData.Demand * 10) : 1000000;
+    },
+    getSliderLengthSensors: function () {
+      return index != null ? (index.getters.gameData.Demand * 100) : 10000000;
+    },
     vendorsSelect: function () {
       return this.vendors.map((vendor) => {
         return {
@@ -1393,6 +1402,7 @@ export default {
     ...mapActions("purchasing", ["getLastVendorFrameM"]),
     ...mapActions("purchasing", ["getLastVendorSensors"]),
     ...mapActions("purchasing", ["getLastVendorSensorsM"]),
+    ...mapActions("lastGame", ["updateGameData"]),
     ...mapMutations("purchasing", ["updateBatteryVendor"]),
     ...mapMutations("purchasing", ["updateEngineVendor"]),
     ...mapMutations("purchasing", ["updateFrameVendor"]),
@@ -1549,6 +1559,7 @@ export default {
     await this.getLastVendorFrameM();
     await this.getLastVendorSensors();
     await this.getLastVendorSensorsM();
+    await this.updateGameData();
   },
   watch: {
     "$store.state.purchasingStep": function () {
