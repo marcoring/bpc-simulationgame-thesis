@@ -428,8 +428,7 @@
             value="0.50"
             type="number"
             filled
-            disab
-            led
+            disabled
           />
           <v-text-field
             v-if="smartMonitoring == true"

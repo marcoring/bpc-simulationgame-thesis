@@ -178,7 +178,6 @@ export default {
   computed: {
     ...mapGetters(["gameDataInventory", "gameData"]),
     getBattery: function () {
-      console.log("this.gameDataInventory", this.gameDataInventory);
       return this.gameDataInventory != null
         ? this.gameDataInventory.Amountbat
         : 0;
@@ -225,7 +224,7 @@ export default {
     },
     getEnginePrepared: function () {
       return this.gameDataInventory != null
-        ? this.gameDataInventory.Amountprodsen
+        ? this.gameDataInventory.Amountprodeng
         : 0;
     },
     getFramePrepared: function () {
