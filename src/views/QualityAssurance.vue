@@ -532,7 +532,6 @@ export default {
         : 0;
     },
     getLastVendorCosts: function () {
-      console.log("this.lastVendor", this.lastVendor);
       return this.lastVendor != null
         ? this.lastVendor.Numberofemployees * 40433
         : "No Data";
@@ -644,7 +643,7 @@ export default {
       this.additional = [];
     },
     playing() {
-      console.log("We are watching!!!");
+      // console.log("We are watching!!!");
     },
     toggleShowError() {
       this.showError = !this.showError;

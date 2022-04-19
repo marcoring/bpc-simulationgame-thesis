@@ -106,7 +106,7 @@
                     x-large
                   >
                     <v-icon>mdi-factory</v-icon>
-                    Manufactoring Plan
+                    Bill of Material
                   </v-btn>
                 </template>
                 <span
@@ -992,7 +992,6 @@ export default {
     ]),
     ...mapGetters("lastGame", [ "gameData"]),
     getSliderLength: function () {
-      console.log("GAMEDATA", index.getters.gameData.Demand);
       return index != null ? (index.getters.gameData.Demand * 10) : 1000000;
     },
     getSliderLengthSensors: function () {
@@ -1089,8 +1088,6 @@ export default {
     prevRoundTableData: function () {
       const lines = [];
       if (this.lastVendorBattery != null && this.lastVendorBatteryM != null) {
-        /*console.log('LASTVENDOR-Battery', this.lastVendorBattery),
-        console.log('LASTVENDOR-BatteryM', this.lastVendorBatteryM),*/
         lines.push({
           material: "Battery",
           vendor: this.lastVendorBatteryM.Vendorname,

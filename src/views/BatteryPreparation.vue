@@ -171,7 +171,7 @@
       </v-col>
 
       <v-col>
-        <v-container>
+        <v-container v-if="this.$store.state.round > 1">
           <v-col align="start">
             <v-tooltip bottom color="black">
               <template v-slot:activator="{ on, attrs }">
@@ -344,7 +344,7 @@
           disabled
         />
 
-        <v-container fluid>
+        <v-container fluid v-if="this.$store.state.round > 1">
           <p>{{ selected }}</p>
           <v-checkbox
             v-model="smartMonitoring"

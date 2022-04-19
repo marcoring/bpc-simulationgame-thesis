@@ -21,7 +21,6 @@ const actions = {
         "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/GetLastGame?$format=json"
       );
       var gameData = response.data.d;
-      console.log("updateGameData", gameData);
       commit("updateGameData", gameData);
       // await Promise.all([
       //   // Promise.all läuft parallel und awaitet mehrere gleichzeitig
@@ -54,7 +53,6 @@ const actions = {
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/InventorySet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}')`
       );
       var gameDataInventory = response.data.d.results;
-      console.log("updateGameDataInventory", gameDataInventory);
       commit("updateGameDataInventory", gameDataInventory);
     } catch (error) {
       if (error.response) {

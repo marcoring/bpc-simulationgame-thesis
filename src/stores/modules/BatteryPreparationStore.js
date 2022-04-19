@@ -94,7 +94,6 @@ const actions = {
     }
   },
   async saveVendor({ commit, dispatch, getters, rootGetters }, data) {
-    console.log("data", data);
     const payload = JSON.stringify({
       Guid: String(rootGetters.gameData.Guid),
       Roundid: rootGetters.gameData.Roundid,
@@ -123,7 +122,6 @@ const actions = {
       var response = await axios.put(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/ProdProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Userid='${rootGetters.gameData.Userid}',Materialid='BAT')`,
         payload_without_bs,
-        console.log("PAYLOAD", payload_without_bs),
         {
           axiosConfig,
         }

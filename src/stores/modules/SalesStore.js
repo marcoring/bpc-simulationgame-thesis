@@ -28,7 +28,6 @@ const actions = {
         }')?$format=json`
       );
       var lastVendor = response.data.d;
-      console.log("LAST VENDOR SALES STORE", lastVendor);
       commit("updateLastVendor", lastVendor);
     } catch (error) {
       if (error.response) {
@@ -50,7 +49,6 @@ const actions = {
     }
   },
   async saveVendor({ commit, dispatch, /*getters,*/ rootGetters }, data) {
-    console.log("SAVE VENDOR", data);
     const payload = JSON.stringify({
       Guid: rootGetters.gameData.Guid,
       Roundid: rootGetters.gameData.Roundid,
@@ -65,9 +63,7 @@ const actions = {
       Salescapacity: String(data.Salescapacity),
     });
     // this function return backslashes from JSON String
-    console.log("PAYLOAD", payload);
     const payload_without_bs = JSON.parse(payload);
-    console.log("PAYLOAD WITHOUT BS", payload_without_bs);
     const axiosConfig = {
       headers: {
         Accept: "application/json",
@@ -84,7 +80,6 @@ const actions = {
       );
       var vendors = response.data.d.results;
       commit("saveVendor", vendors);
-      console.log("PAYLOAD", payload_without_bs);
       await dispatch("updateGameData", {}, { root: true });
     } catch (error) {
       if (error.response) {

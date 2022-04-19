@@ -39,7 +39,6 @@ const actions = {
           rootGetters.gameData.Userid
         }')?$format=json`
       );
-      console.log("TESTTEST", response.data.d);
       // commit('updateLastVendor',  getters.vendors.find(v => v.Vendorid == response.data.d.Vendorid));
       commit("updateLastVendor", response.data.d);
     } catch (error) {
@@ -88,7 +87,6 @@ const actions = {
     }
   },
   async saveVendorIntern({ commit, dispatch, rootGetters }, data) {
-    console.log("DATA", data);
     const payload = JSON.stringify({
       Guid: rootGetters.gameData.Guid,
       Roundid: rootGetters.gameData.Roundid,

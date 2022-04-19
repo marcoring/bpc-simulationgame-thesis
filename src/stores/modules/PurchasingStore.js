@@ -64,9 +64,6 @@ const actions = {
         }')?$format=json`
       );
       commit("updateLastVendorBattery", response.data.d);
-      /*for (const property in response.data.d) {
-      console.log(`${property}: ${response.data.d[property]}`);
-    }*/
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -106,9 +103,6 @@ const actions = {
           (v) => v.Vendorid == response.data.d.Vendorid
         )
       );
-      /*for (const property in response.data.d) {
-      console.log(`${property}: ${response.data.d[property]}`);
-    }*/
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -183,9 +177,6 @@ const actions = {
           (v) => v.Vendorid == response.data.d.Vendorid
         )
       );
-      /*for (const property in response.data.d) {
-      console.log(`${property}: ${response.data.d[property]}`);
-    }*/
     } catch (error) {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -351,7 +342,6 @@ const actions = {
         "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/MaterialVendorSet/?$format=json"
       );
       var batteryVendors = response.data.d.results;
-      console.log("batteryVendors", batteryVendors);
       commit("updateBatteryVendors", batteryVendors);
     } catch (error) {
       if (error.response) {
@@ -477,7 +467,6 @@ const actions = {
       var response = await axios.put(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Materialid='BAT',Userid='${rootGetters.gameData.Userid}')`,
         payload_without_bs,
-        console.log("PAYLOAD", payload_without_bs),
         {
           axiosConfig,
         }
@@ -531,7 +520,6 @@ const actions = {
       var response = await axios.put(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Materialid='ENG',Userid='${rootGetters.gameData.Userid}')`,
         payload_without_bs,
-        console.log("PAYLOAD", payload_without_bs),
         {
           axiosConfig,
         }
@@ -585,7 +573,6 @@ const actions = {
       var response = await axios.put(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Materialid='FR',Userid='${rootGetters.gameData.Userid}')`,
         payload_without_bs,
-        console.log("PAYLOAD", payload_without_bs),
         {
           axiosConfig,
         }
@@ -639,7 +626,6 @@ const actions = {
       var response = await axios.put(
         `http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/PurchaseProcessSet(Guid=guid'${rootGetters.gameData.Guid}',Roundid=${rootGetters.gameData.Roundid},Materialid='SEN',Userid='${rootGetters.gameData.Userid}')`,
         payload_without_bs,
-        console.log("PAYLOAD", payload_without_bs),
         {
           axiosConfig,
         }

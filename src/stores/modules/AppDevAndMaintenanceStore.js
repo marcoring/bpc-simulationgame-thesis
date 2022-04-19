@@ -39,8 +39,6 @@ const actions = {
           rootGetters.gameData.Userid
         }')?$format=json`
       );
-
-      console.log("LASTVENDORID", response.data.d, getters.vendors);
       commit(
         "updateLastVendor",
         getters.vendors.find((v) => v.Vendorid == response.data.d.Vendorid)

@@ -257,8 +257,6 @@ export default {
         : "No Data";
     },
     getOutsourcingCompany: function () {
-      console.log("Vendor", this.vendor);
-      console.log("lastVendor", this.lastVendor);
       return this.vendor != null ? this.vendor.Vendorname : "";
     },
     getDevelopmentQuality: function () {

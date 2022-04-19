@@ -184,10 +184,8 @@ export default {
       if (newValue) {
         this.refreshInterval = setInterval(async () => {
           await this.updateGameData();
-          console.log("UPDATE", this.gameData);
         }, 3000);
       } else {
-        console.log("UPDATE STOPPED");
         clearInterval(this.refreshInterval);
       }
     },

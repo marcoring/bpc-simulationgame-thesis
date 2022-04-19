@@ -181,7 +181,6 @@ export default {
   computed: {
     ...mapGetters("lastGame", ["gameData"]),
     getBudget: function () {
-      console.log("index", index);
       return index != null ? index.getters.gameData.Budget : "";
     },
     getVariableCosts: function () {
