@@ -412,17 +412,10 @@ export default {
     this.newRoundRules();
     await this.updateGameData();
     this.updateRound(this.$store.state.gameData.Roundid);
-    console.log(
-      "App mounted",
-      this.$store.state.gameData.Roundid,
-      this.$store.state.round
-    );
     axios
       .get(
         "http://z40lp1.informatik.tu-muenchen.de:8000/sap/opu/odata/sap/Z_40_T2_BIKEGAME_ACF_SRV/$metadata"
       )
-      .then((response) => console.log(response));
-    //.then((response) => (this.info = response));
   },
 };
 </script>
